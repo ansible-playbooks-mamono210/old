@@ -1,0 +1,6 @@
+- name: 全ユーザーを削除する
+  user: >
+    name={{ item.key }}
+    state=absent
+    remove=yes
+  with_dict: "{{ users }}"

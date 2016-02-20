@@ -1,0 +1,49 @@
+- name: ユーザーを追加する 
+  user: >
+    name={{ item.key }}
+  with_dict: "{{ users }}"
+
+- name: 公開鍵を登録する
+  authorized_key: >
+    user={{ item.key }}
+    key="{{ item.value.authorized_key }}"
+  with_dict: "{{ users }}"
+
+- name: SSHパスワード認証を無効化する
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^PasswordAuthentication yes"
+    line: "PasswordAuthentication no"
+
+- name: ルートログインを無効化する
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#PermitRootLogin yes"
+    line: "PermitRootLogin no"
+
+- name: RSA公開鍵認証を有効化する 
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#PubkeyAuthentication yes"
+    line: "PubkeyAuthentication yes"
+
+- name: sshd_configのSSH接続ポート設定を変更する
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    state: present
+    regexp: "^#Port 22"
+    line: "Port {{ ssh_port }}"
+
+- name: SSH接続ポートを開放する
+  shell: firewall-cmd --add-port={{ ssh_port }}/tcp --zone=public --permanent
+
+- name: Firewallをリロードする
+  shell: firewall-cmd --reload
+   
+- name: sshdを再起動する
+  service: 
+    name=sshd
+    state=restarted

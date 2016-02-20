@@ -1,0 +1,23 @@
+- name: SSH接続ポートを削除する
+  shell: firewall-cmd --remove-port={{ ssh_port }}/tcp --zone=public --permanent
+
+- name: Firewallの設定を反映させる
+  shell: firewall-cmd --reload
+
+- name: 変更されているsshd_configを削除する
+  shell: rm -rf /etc/ssh/sshd_config
+
+- name: 初期状態のsshd_configを作成する
+  copy: 
+    src=sshd_config
+    dest=/etc/ssh/sshd_config
+    owner=root
+    mode=600
+
+- name: sshdを再起動する
+  service:
+    name=sshd
+    state=restarted
+
+- name: ログアウトする
+  shell: ps ax | grep sshd | grep ansible | kill `awk {'print $1'}` 

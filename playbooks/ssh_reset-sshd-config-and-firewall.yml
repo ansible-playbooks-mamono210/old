@@ -1,0 +1,6 @@
+- hosts: all
+  remote_user: ansible 
+  su: yes
+ 
+  roles:
+    - ssh/reset-sshd-config-and-firewall

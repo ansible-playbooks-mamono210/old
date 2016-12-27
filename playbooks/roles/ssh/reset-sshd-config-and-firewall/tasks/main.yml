@@ -20,4 +20,4 @@
     state=restarted
 
 - name: ログアウトする
-  shell: ps ax | grep sshd | grep ansible | kill `awk {'print $1'}` 
+  shell: ps ax | grep sshd | grep tomonori | kill `awk {'print $1'}` 

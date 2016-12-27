@@ -1,0 +1,7 @@
+---
+- hosts: all
+  sudo: true
+  remote_user: root
+ 
+  roles:
+    - vnc/install_tiger-vnc-server

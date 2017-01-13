@@ -1,0 +1,79 @@
+- name: システム全体をアップデートする
+  sudo: yes
+  yum: name=* state=latest
+
+- name: SELinuxの状態確認
+  sudo: yes
+  command:
+    /usr/sbin/selinuxenabled
+  register:
+    result
+  changed_when: false
+  failed_when: result.rc not in [0, 1]
+
+- name: 起動時にSELinux無効化 (/etc/sysconfig/selinux)
+  sudo: yes
+  selinux: state=disabled
+  when: result.rc == 0
+
+- name: Rubyインストールに必要なパッケージをインストールする
+  sudo: yes
+  yum:
+    name: '{{ item }}'
+    state: latest
+  with_items:
+    - git
+    - gcc
+    - bzip2
+    - openssl-devel
+    - libyaml-devel
+    - libffi-devel
+    - readline-devel
+    - zlib-devel
+    - gdbm-devel
+    - ncurses-devel
+
+- name: 古い rbenv リポジトリを削除する
+  sudo: yes
+  file: 
+    path: /root/.rbenv
+    state: absent
+
+- name: rbenv ruby-build を git clone する
+  git:
+    repo: '{{ item.repo }}'
+    dest: '{{ item.dest }}'
+  with_items:
+    - repo: https://github.com/rbenv/rbenv.git
+      dest: /root/.rbenv
+    - repo: https://github.com/rbenv/ruby-build.git
+      dest: /root/.rbenv/plugins/ruby-build
+ 
+- name: bashにrbenvのパスを反映させる
+  lineinfile:
+    dest: /root/.bash_profile
+    line: '{{ item }}'
+    state: present
+  with_items:
+    - 'export PATH="$HOME/.rbenv/bin:$PATH"'
+    - 'eval "$(rbenv init -)"'
+
+- name: .bash_profileをリロードする
+  shell: bash -lc "source /root/.bash_profile"
+
+- name: Ruby 2.3.3 をインストールする
+  shell: bash -lc "rbenv install -v 2.3.3"
+
+- name: rbenvをリロードする
+  shell: /bin/bash -lc "rbenv rehash"
+
+- name: Ruby 2.3.3 をシステムで利用するRubyのバージョンに設定する
+  shell: /bin/bash -lc "rbenv global 2.3.3"
+
+- name: Rubyのバージョンを確認する
+  shell: ruby -v
+  register: RESULT
+
+- name: Rubyが無事インストール出来たか確認する
+  debug: var=RESULT
+

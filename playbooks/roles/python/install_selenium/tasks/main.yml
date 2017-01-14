@@ -1,0 +1,71 @@
+- name: システム全体をアップデートする
+  sudo: yes
+  yum: name=* state=latest
+
+- name: SELinuxの状態確認
+  sudo: yes
+  command:
+    /usr/sbin/selinuxenabled
+  register:
+    result
+  changed_when: false
+  failed_when: result.rc not in [0, 1]
+
+- name: 起動時にSELinux無効化 (/etc/sysconfig/selinux)
+  sudo: yes
+  selinux: state=disabled
+  when: result.rc == 0
+
+- name: 必要なパッケージをインストールする
+  sudo: yes
+  yum:
+    name: 'epel-release'
+    state: latest
+
+- name: pipをインストールする
+  sudo: yes
+  yum:
+    name: 'python-pip'
+    state: latest
+
+- name: pipをアップグレードする
+  sudo: yes
+  shell: pip install --upgrade pip
+
+- name: Xvfbをインストールする
+  sudo: yes
+  yum:
+    name: xorg-x11-server-Xvfb
+    state: latest
+
+- name: pyvirtualdisplayをインストールする
+  sudo: yes
+  shell: pip install pyvirtualdisplay
+
+- name: Firefoxをインストールする
+  sudo: yes
+  yum:
+    name: firefox
+    state: latest
+
+- name: Geckodriverをダウンロードし解凍するパスへ配置する
+  unarchive:
+    src: '{{ geckodriver_url }}'
+    dest: /usr/local/bin
+    remote_src: True
+
+- name: Python Seleniumをインストールする
+  shell: pip install selenium
+
+- name: Seleniumテストスクリプトをデプロイサーバへアップロードする
+  template:
+    src: selenium_install_test.py
+    dest: /tmp
+
+- name: Seleniumのインストールテストを実行する
+  shell: python /tmp/selenium_install_test.py
+  register: RESULT
+
+- name: Seleniumがインストールされたか確認する
+  debug: var=RESULT
+

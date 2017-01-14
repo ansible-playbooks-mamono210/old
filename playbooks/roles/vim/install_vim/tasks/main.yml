@@ -1,0 +1,16 @@
+- name: vim をインストールする
+  sudo: yes
+  yum:
+    name: 'vim-enhanced'
+    state: latest
+
+- name: vim を vi コマンドで利用出来るようにする 
+  sudo: yes
+  lineinfile:
+    dest: /etc/profile
+    line: alias vi='vim'
+    state: present
+
+- name: /etc/profile をリロードする
+  sudo: yes
+  shell: bash -lc "source /etc/profile"

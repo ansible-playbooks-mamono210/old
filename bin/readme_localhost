@@ -1,0 +1,7 @@
+# Installation of ansible
+yum install epel-release
+yum install ansible git
+
+
+# How to use playbooks
+ansible-playbook -i localhost example.yml --ask-vault-pass

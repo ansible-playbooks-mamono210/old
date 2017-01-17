@@ -4,4 +4,4 @@
   remote_user: root
   
   roles:
-    - ssh/remove-users
+    - system/language/ruby/install/rbenv_2.3.3

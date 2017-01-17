@@ -1,4 +1,7 @@
-edit /etc/ssh/ssh_config
+# set private key to ~/.ssh
+
+
+# edit /etc/ssh/ssh_config
 
 StrictHostKeyChecking no
 

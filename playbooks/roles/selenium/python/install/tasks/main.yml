@@ -59,11 +59,11 @@
 
 - name: Seleniumテストスクリプトをデプロイサーバへアップロードする
   template:
-    src: selenium_install_test.py
+    src: install_test.py
     dest: /tmp
 
 - name: Seleniumのインストールテストを実行する
-  shell: python /tmp/selenium_install_test.py
+  shell: python /tmp/install_test.py
   register: RESULT
 
 - name: Seleniumがインストールされたか確認する

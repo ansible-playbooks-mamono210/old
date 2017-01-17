@@ -2,6 +2,6 @@
 - hosts: all
   sudo: true
   remote_user: root
-  
+ 
   roles:
-    - ruby/install_ruby2.3.3_rbenv
+    - system/vnc/server/install

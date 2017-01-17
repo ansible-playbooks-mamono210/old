@@ -1,0 +1,6 @@
+- hosts: all
+  remote_user: ios 
+  su: yes
+ 
+  roles:
+    - system/ssh/reset-sshd-config-and-firewall

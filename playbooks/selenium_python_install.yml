@@ -4,4 +4,4 @@
   remote_user: root
   
   roles:
-    - ssh/add-users_and_change-sshd-config-and-firewall
+    - selenium/python/install

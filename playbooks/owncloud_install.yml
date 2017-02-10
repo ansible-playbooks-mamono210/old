@@ -1,0 +1,13 @@
+---
+- hosts: all
+  sudo: true
+  remote_user: root
+  
+  roles:
+    - system/selinux/disabled
+    - system/httpd/install
+    - system/language/php70/install
+    - system/rdb/mariadb/install
+    - selenium/python/install
+    - owncloud/install
+    - owncloud/create_mariadb_database

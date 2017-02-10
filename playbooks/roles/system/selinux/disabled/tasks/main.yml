@@ -1,0 +1,14 @@
+- name: SELinuxの状態を確認する
+  sudo: yes
+  command:
+    /usr/sbin/selinuxenabled
+  register:
+    result
+  changed_when: false
+  failed_when: result.rc not in [0, 1]
+
+- name: 起動時にSELinuxを無効化する (/etc/sysconfig/selinux)
+  sudo: yes
+  selinux: 
+    state: disabled
+  when: result.rc == 0

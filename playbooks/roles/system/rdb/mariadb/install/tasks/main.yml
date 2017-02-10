@@ -1,0 +1,90 @@
+- name: MariaDBリポジトリを追加する
+  sudo: yes
+  yum_repository:
+    name: mariadb
+    file: MariaDB
+    description: MariaDB
+    baseurl: http://yum.mariadb.org/10.1/centos7-amd64
+    gpgkey: https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
+    gpgcheck: yes
+    state: present
+
+- name: MariaDB-common、MariaDB-devel、MariaDB-shared、MariaDB-compat、MariaDB-server、MariaDB-clientをインストールする
+  sudo: yes
+  yum: 
+    name: '{{ item }}'
+  with_items:
+    - MariaDB-common
+    - MariaDB-devel
+    - MariaDB-shared
+    - MariaDB-compat
+    - MariaDB-server
+    - MariaDB-client
+  
+- name: MySQL-pythonをインストールする (Ansibleが使用)
+  sudo: yes
+  yum: 
+    name: MySQL-python
+
+- name: /etc/my.cnfを作成する
+  sudo: yes
+  template: 
+    src: my.cnf 
+    dest: /etc/my.cnf
+    owner: root
+    group: root 
+    mode: 0644
+
+- name: MariaDBを起動し自動起動設定をする
+  sudo: yes
+  service:
+    name: mariadb
+    state: started
+    enabled: yes
+
+- name: MariaDBのバージョンを確認する
+  shell: rpm -qa | grep -i mariadb
+  register: RESULT
+
+- name: MariaDBがインストールされたか確認する
+  debug: var=RESULT.stdout_lines
+
+- name: 匿名ユーザーを削除する
+  sudo: yes
+  mysql_user:
+    name: ''
+    state: absent
+  register: result
+  ignore_errors: true
+
+#- name: リモートからのrootログインを禁止
+#  mysql_user:
+#    name: root
+#    host: '{{ ansible_fqdn }}'
+#    state: absent
+
+- name: testデータベースを削除する
+  sudo: yes
+  mysql_db:
+    name: test
+    state: absent
+  ignore_errors: true
+
+- name: rootパスワードを設定する
+  sudo: yes
+  mysql_user:
+    name: root
+    host: "{{ item }}"
+    password: password 
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+  ignore_errors: true
+
+- name: MariaDBを再起動する
+  sudo: yes
+  service:
+    name: mariadb
+    state: restarted
+    enabled: yes

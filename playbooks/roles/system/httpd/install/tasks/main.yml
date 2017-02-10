@@ -1,0 +1,20 @@
+- name: Apache（httpd）をインストールする
+  sudo: yes
+  yum: 
+    name: httpd 
+    state: latest
+
+- name: firewalldでHTTPを許可する
+  sudo: yes
+  firewalld: 
+    service: http
+    state: enabled 
+    permanent: true
+    immediate: true
+
+- name: httpdサービスを起動する
+  sudo: yes
+  service: 
+    name: httpd
+    state: started
+    enabled: yes

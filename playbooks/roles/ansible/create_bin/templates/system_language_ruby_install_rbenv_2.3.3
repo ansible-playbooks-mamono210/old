@@ -1,0 +1,15 @@
+expect -c "
+
+    spawn ansible-playbook /home/ios/ansible/playbooks/system_language_ruby_install_rbenv_2.3.3.yml -u root -k -i "{{ item.key }}," --ask-vault-pass
+
+    expect "SSH*"
+
+    send -- \"{{ item.value.password }}\n\"
+
+    expect "Vault*password"
+
+    send \"{{ vault_password }}\n\"
+
+    interact
+    "
+

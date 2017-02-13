@@ -1,0 +1,34 @@
+expect -c "
+    
+    spawn ansible-playbook /home/ios/ansible/playbooks/system_ssh_reset-sshd-config-and-firewall.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass --private-key=/home/ios/.ssh/id_rsa_ios 
+
+    expect "SU*"
+
+    send -- \"{{ item.value.password }}\n\"
+
+    expect "Vault*password"
+
+    send \"{{ vault_password }}\n\"
+
+    expect "Enter*passphrase"
+
+    send \"{{ vault_password }}\n\"
+
+    interact
+    "    
+
+expect -c "
+
+    spawn ansible-playbook /home/ios/ansible/playbooks/system_ssh_remove-users.yml -u root -k -i "{{ item.key }}," --ask-vault-pass
+
+    expect "SSH*"
+
+    send -- \"{{ item.value.password }}\n\"
+
+    expect "Vault*password"
+
+    send \"{{ vault_password }}\n\"
+
+    interact
+    "
+

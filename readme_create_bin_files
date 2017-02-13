@@ -1,0 +1,4 @@
+# To create bin files
+
+cd ansible/playbooks
+ansible-playbook -i localhost ansible_create_bin.yml --ask-vault-pass

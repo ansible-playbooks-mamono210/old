@@ -1,0 +1,14 @@
+expect -c "
+
+    spawn ansible-playbook /home/ios/ansible/playbooks/system_vnc_server_install.yml -u root -k -i "{{ item.key }}," --ask-vault-pass
+
+    expect "SSH*"
+
+    send -- \"{{ item.value.password }}\n\"
+
+    expect "Vault*password"
+
+    send \"{{ vault_password }}\n\"
+
+    interact
+    "

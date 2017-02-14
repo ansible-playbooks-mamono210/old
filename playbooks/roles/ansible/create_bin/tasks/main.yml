@@ -1,55 +1,55 @@
-- name: create dirs
+- name: 各サーバのPlaybookトリーガースクリプトを配置するディレクトリを作成する
   file:
-    path: '/home/ios/ansible/bin/{{ item.key }}'
+    path: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}'
     state: directory
   with_dict: "{{ ipv4 }}"
 
-- name: copy owncloud_install template file into bin dir 
+- name: 「owncloud_install」をbinディレクトリに配置する
   template:
     src: owncloud_install
-    dest: /home/ios/ansible/bin/{{ item.key }}/
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"
 
-- name: copy selenium_python_install template file into bin dir
+- name: 「selenium_python_install」をbinディレクトリに配置する 
   template:
     src: selenium_python_install
-    dest: /home/ios/ansible/bin/{{ item.key }}/
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"
 
-- name: copy system_language_ruby_install_rbenv_2.3.3 template file into bin dir
+- name: 「system_language_ruby_install_rbenv_2.3.3」をbinディレクトリに配置する
   template:
     src: system_language_ruby_install_rbenv_2.3.3 
-    dest: /home/ios/ansible/bin/{{ item.key }}/
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"
 
-- name: copy system_ssh_add-users-and-change-sshd-config-and-firewall template file into bin dir
+- name: 「system_ssh_add-users-and-change-sshd-config-and-firewall」をbinディレクトリに配置する 
   template:
     src: system_ssh_add-users-and-change-sshd-config-and-firewall 
-    dest: /home/ios/ansible/bin/{{ item.key }}/
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"
 
 
-- name: copy system_ssh_add-users-and-change-sshd-config-and-firewall template file into bin dir
+- name: 「system_ssh_add-users-and-change-sshd-config-and-firewall」をbinディレクトリに配置する 
   template:
     src: system_ssh_reset-sshd-config-and-firewall_and_remove-users
-    dest: /home/ios/ansible/bin/{{ item.key }}/
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"
 
-- name: copy system_vim_install template file into bin dir
+- name: 「system_vim_install」をbinディレクトリに配置する 
   template:
     src: system_vim_install
-    dest: /home/ios/ansible/bin/{{ item.key }}/
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"
 
-- name: copy system_vnc_server_install template file into bin dir
+- name: 「system_vnc_server_install」をbinディレクトリに配置する
   template:
     src: system_vnc_server_install
-    dest: /home/ios/ansible/bin/{{ item.key }}/
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"

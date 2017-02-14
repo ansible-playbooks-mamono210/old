@@ -1,6 +1,6 @@
 expect -c "
 
-    spawn ansible-playbook /home/ios/ansible/playbooks/system_ssh_add-users-and-change-sshd-config-and-firewall.yml -u root -k -i "{{ item.key }}," --ask-vault-pass
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_ssh_add-users-and-change-sshd-config-and-firewall.yml -u root -k -i "{{ item.key }}," --ask-vault-pass
 
     expect "SSH*"
 

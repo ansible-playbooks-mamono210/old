@@ -1,6 +1,6 @@
 expect -c "
 
-    spawn ansible-playbook /home/ios/ansible/playbooks/owncloud_install.yml -u root -k -i "{{ item.key }}" --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/owncloud_install.yml -u root -k -i "{{ item.key }}," --ask-vault-pass 
 
     expect "SSH*"
 

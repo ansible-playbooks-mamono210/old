@@ -5,6 +5,8 @@
   
   roles:
     - system/selinux/disabled
+    - system/yum_update_all
+    - system/reboot
     - system/httpd/install
     - system/language/php70/install
     - system/rdb/mariadb/install

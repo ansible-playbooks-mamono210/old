@@ -4,4 +4,7 @@
   remote_user: root
   
   roles:
+    - system/selinux/disabled
+    - system/yum_update_all
+    - system/reboot
     - selenium/python/install

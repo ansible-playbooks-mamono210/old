@@ -1,0 +1,3 @@
+- name: システム全体をアップデートする
+  sudo: yes
+  yum: name=* state=latest

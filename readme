@@ -1,7 +1,41 @@
-# set private key to ~/.ssh
+###################################################
+# binディレクトリ内のスクリプトを実行する手順等
+###################################################
+
+1. 秘密鍵を「~/.ssh」へ配置する
+
+    今のところ秘密鍵は「ansible/id_rsa_ios」。将来的に編王になる場合もある。
+    ansible-vaultでdecryptする必要がある。
+
+        ansible-vault decrypt ansible/id_rsa_ios
 
 
-# edit /etc/ssh/ssh_config
 
-StrictHostKeyChecking no
+2. 「/etc/ssh/ssh_config」を編集する
 
+     Ansibleがノードにアクセスするためのsshクライアントの設定変更。
+
+         StrictHostKeyChecking no
+
+
+
+3. Ansibleのインストール
+   
+    yum install epel-release
+    yum install ansible git
+
+
+###############################################
+# playbookの利用方法
+###############################################
+
+1. localhostでplaybookを実行する
+
+    ansible-playbook -i localhost example.yml --ask-vault-pass
+
+
+
+2. 「bin」ディレクトリ内にplaybook実行補助スクリプトを作成する
+
+    cd ansible/playbooks
+    ansible-playbook -i localhost ansible_create_bin.yml --ask-vault-pass

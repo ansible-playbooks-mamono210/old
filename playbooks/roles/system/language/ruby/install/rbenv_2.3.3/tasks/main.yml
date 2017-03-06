@@ -1,25 +1,33 @@
+- name: Rubyがシステムにインストールされているか確認する
+  shell: ruby -v
+  register: result
+  ignore_errors: true 
+
 - name: Rubyインストールに必要なパッケージをインストールする
   sudo: yes
   yum:
     name: '{{ item }}'
     state: latest
   with_items:
-    - git
-    - gcc
     - bzip2
-    - openssl-devel
-    - libyaml-devel
+    - curl-devel
+    - gcc
+    - gdbm-devel
+    - git
     - libffi-devel
+    - libyaml-devel
+    - ncurses-devel
+    - openssl-devel
     - readline-devel
     - zlib-devel
-    - gdbm-devel
-    - ncurses-devel
+  when: result|failed
 
 - name: 古い rbenv リポジトリを削除する
   sudo: yes
   file: 
     path: /root/.rbenv
     state: absent
+  when: result|failed
 
 - name: rbenv ruby-build を git clone する
   git:
@@ -30,6 +38,7 @@
       dest: /root/.rbenv
     - repo: https://github.com/rbenv/ruby-build.git
       dest: /root/.rbenv/plugins/ruby-build
+  when: result|failed
  
 - name: bashにrbenvのパスを反映させる
   lineinfile:
@@ -39,23 +48,27 @@
   with_items:
     - 'export PATH="$HOME/.rbenv/bin:$PATH"'
     - 'eval "$(rbenv init -)"'
+  when: result|failed
 
 - name: .bash_profileをリロードする
   shell: bash -lc "source /root/.bash_profile"
+  when: result|failed
 
 - name: Ruby 2.3.3 をインストールする
   shell: bash -lc "rbenv install -v 2.3.3"
+  when: result|failed
 
 - name: rbenvをリロードする
   shell: /bin/bash -lc "rbenv rehash"
+  when: result|failed
 
 - name: Ruby 2.3.3 をシステムで利用するRubyのバージョンに設定する
   shell: /bin/bash -lc "rbenv global 2.3.3"
+  when: result|failed
 
 - name: Rubyのバージョンを確認する
   shell: ruby -v
-  register: RESULT
+  register: RUBY_VERSION_VARS_FINAL 
 
 - name: Rubyが無事インストール出来たか確認する
-  debug: var=RESULT
-
+  debug: var=RUBY_VERSION_VARS_FINAL

@@ -1,0 +1,80 @@
+- name: 作業ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ work_dir }}'
+    state: absent
+
+- name: 作業ディレクトリ作成 
+  become: yes
+  file:
+    path: '{{ work_dir }}'
+    state: directory
+    mode: 0755
+
+- name: Rubyインストールに必要なパッケージをインストールする
+  become: yes
+  yum:
+    name: '{{ item }}'
+    state: latest
+  with_items:
+    - bzip2
+    - curl-devel
+    - gcc
+    - gdbm-devel
+    - git
+    - libffi-devel
+    - libyaml-devel
+    - ncurses-devel
+    - openssl-devel
+    - readline-devel
+    - zlib-devel
+
+- name: Rubyがインストールされているか確認
+  command:
+    test -f {{ ruby_file_name }}
+  register:
+    ruby_test_vars
+  failed_when:
+    ruby_test_vars.rc not in [0, 1]
+  changed_when: false
+
+- name: Rubyがダウンロード済みか確認
+  command:
+    test -f {{ work_dir }}/{{ ruby_archive_version }}
+  register:
+    ruby_src_test_vars
+  failed_when:
+    ruby_test_vars.rc not in [0, 1]
+  changed_when: false
+
+- name: Rubyのソースコードのダウンロード
+  get_url:
+    url: "{{ ruby_url_dir }}/{{ ruby_archive_name }}"
+    dest: '{{ work_dir }}'
+  when: ruby_test_vars.rc == 1 and ruby_src_test_vars.rc == 1
+
+- name: Rubyのソースコードを展開
+  unarchive:
+    src: "{{ work_dir }}/{{ ruby_archive_name }}"
+    dest: '{{ work_dir }}'
+    copy: no
+  when: ruby_test_vars.rc == 1 and ruby_src_test_vars.rc == 1
+
+- name: Rubyのビルド1 (configure)
+  command: ./configure --disable-install-doc
+  args:
+    chdir: "{{ work_dir }}/{{ ruby_archive_version }}"
+  when: ruby_test_vars.rc == 1
+
+- name: Rubyのビルド2 (make)
+  command: make
+  args:
+    chdir: "{{ work_dir }}/{{ ruby_archive_version }}"
+  when: ruby_test_vars.rc == 1
+
+- name: Rubyのインストール
+  become: yes
+  command: make install
+  args:
+    chdir: "{{ work_dir }}/{{ ruby_archive_version }}"
+  when: ruby_test_vars.rc == 1

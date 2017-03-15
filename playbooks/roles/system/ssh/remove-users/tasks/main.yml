@@ -1,4 +1,5 @@
 - name: 全ユーザーを削除する
+  become: yes
   user: >
     name={{ item.key }}
     state=absent

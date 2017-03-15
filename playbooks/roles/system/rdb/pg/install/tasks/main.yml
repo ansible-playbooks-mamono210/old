@@ -1,4 +1,5 @@
 - name: PostgreSQLとヘッダファイルをインストールする
+  become: yes
   yum:
     name: '{{ item }}'
     state: latest

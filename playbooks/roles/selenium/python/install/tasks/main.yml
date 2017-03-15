@@ -1,50 +1,54 @@
 - name: 必要なパッケージをインストールする
-  sudo: yes
+  become: yes
   yum:
     name: 'epel-release'
     state: latest
 
 - name: pipをインストールする
-  sudo: yes
+  become: yes
   yum:
     name: 'python-pip'
     state: latest
 
 - name: pipをアップグレードする
-  sudo: yes
+  become: yes
   shell: pip install --upgrade pip
 
 - name: Xvfbをインストールする
-  sudo: yes
+  become: yes
   yum:
     name: xorg-x11-server-Xvfb
     state: latest
 
 - name: pyvirtualdisplayをインストールする
-  sudo: yes
+  become: yes
   shell: pip install pyvirtualdisplay
 
 - name: Firefoxをインストールする
-  sudo: yes
+  become: yes
   yum:
     name: firefox
     state: latest
 
 - name: Geckodriverをダウンロードし解凍するパスへ配置する
+  become: yes
   unarchive:
     src: '{{ geckodriver_url }}'
     dest: /usr/local/bin
     remote_src: True
 
 - name: Python Seleniumをインストールする
+  become: yes
   shell: pip install selenium
 
 - name: Seleniumテストスクリプトをデプロイサーバへアップロードする
+  become: yes
   template:
     src: install_test.py
     dest: /tmp
 
 - name: Seleniumのインストールテストを実行する
+  become: yes
   shell: python /tmp/install_test.py
   register: RESULT
 

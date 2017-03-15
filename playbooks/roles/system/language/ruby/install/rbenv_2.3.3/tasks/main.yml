@@ -4,7 +4,7 @@
   ignore_errors: true 
 
 - name: Rubyインストールに必要なパッケージをインストールする
-  sudo: yes
+  become: yes
   yum:
     name: '{{ item }}'
     state: latest
@@ -23,13 +23,14 @@
   when: result|failed
 
 - name: 古い rbenv リポジトリを削除する
-  sudo: yes
+  become: yes
   file: 
     path: /root/.rbenv
     state: absent
   when: result|failed
 
 - name: rbenv ruby-build を git clone する
+  become: yes
   git:
     repo: '{{ item.repo }}'
     dest: '{{ item.dest }}'
@@ -41,6 +42,7 @@
   when: result|failed
  
 - name: bashにrbenvのパスを反映させる
+  become: yes
   lineinfile:
     dest: /root/.bash_profile
     line: '{{ item }}'
@@ -51,18 +53,22 @@
   when: result|failed
 
 - name: .bash_profileをリロードする
+  become: yes
   shell: bash -lc "source /root/.bash_profile"
   when: result|failed
 
 - name: Ruby 2.3.3 をインストールする
+  become: yes
   shell: bash -lc "rbenv install -v 2.3.3"
   when: result|failed
 
 - name: rbenvをリロードする
+  become: yes
   shell: /bin/bash -lc "rbenv rehash"
   when: result|failed
 
 - name: Ruby 2.3.3 をシステムで利用するRubyのバージョンに設定する
+  become: yes
   shell: /bin/bash -lc "rbenv global 2.3.3"
   when: result|failed
 

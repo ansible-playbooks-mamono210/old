@@ -1,10 +1,7 @@
 ---
 - hosts: all
-  sudo: true
-  remote_user: root
+  remote_user: ios
+  become: yes 
   
   roles:
-    - system/selinux/disabled
-    - system/yum_update_all
-    - system/reboot
     - selenium/python/install

@@ -1,5 +1,5 @@
 - name: MariaDBリポジトリを追加する
-  sudo: yes
+  become: yes
   yum_repository:
     name: mariadb
     file: MariaDB
@@ -10,7 +10,7 @@
     state: present
 
 - name: MariaDB-common、MariaDB-devel、MariaDB-shared、MariaDB-compat、MariaDB-server、MariaDB-clientをインストールする
-  sudo: yes
+  become: yes
   yum: 
     name: '{{ item }}'
   with_items:
@@ -22,12 +22,12 @@
     - MariaDB-client
   
 - name: MySQL-pythonをインストールする (Ansibleが使用)
-  sudo: yes
+  become: yes
   yum: 
     name: MySQL-python
 
 - name: /etc/my.cnfを作成する
-  sudo: yes
+  become: yes
   template: 
     src: my.cnf 
     dest: /etc/my.cnf
@@ -36,7 +36,7 @@
     mode: 0644
 
 - name: MariaDBを起動し自動起動設定をする
-  sudo: yes
+  become: yes
   service:
     name: mariadb
     state: started
@@ -50,7 +50,7 @@
   debug: var=RESULT.stdout_lines
 
 - name: 匿名ユーザーを削除する
-  sudo: yes
+  become: yes
   mysql_user:
     name: ''
     state: absent
@@ -64,14 +64,14 @@
 #    state: absent
 
 - name: testデータベースを削除する
-  sudo: yes
+  become: yes
   mysql_db:
     name: test
     state: absent
   ignore_errors: true
 
 - name: rootパスワードを設定する
-  sudo: yes
+  become: yes
   mysql_user:
     name: root
     host: "{{ item }}"
@@ -83,7 +83,7 @@
   ignore_errors: true
 
 - name: MariaDBを再起動する
-  sudo: yes
+  become: yes
   service:
     name: mariadb
     state: restarted

@@ -1,8 +1,8 @@
 expect -c "
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/owncloud_install.yml -u root -k -i "{{ item.key }}," --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_update_and_set_seliux_disabled.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass --private-key={{ ansible_user_dir }}/.ssh/id_rsa_ios 
 
-    expect "SSH*"
+    expect "SU*"
 
     send -- \"{{ item.value.password }}\n\"
 
@@ -10,6 +10,29 @@ expect -c "
 
     send \"{{ vault_password }}\n\"
 
-    interact
-    "
+    expect "Enter*passphrase"
 
+    send \"{{ vault_password }}\n\"
+
+    interact
+    " 
+
+
+expect -c "
+
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/owncloud_install.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass --private-key={{ ansible_user_dir }}/.ssh/id_rsa_ios 
+
+    expect "SU*"
+
+    send -- \"{{ item.value.password }}\n\"
+
+    expect "Vault*password"
+
+    send \"{{ vault_password }}\n\"
+
+    expect "Enter*passphrase"
+
+    send \"{{ vault_password }}\n\"
+
+    interact
+    " 

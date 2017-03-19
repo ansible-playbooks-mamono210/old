@@ -1,0 +1,6 @@
+- name: Jenkins initialAdminPassword ファイルを取得する
+  become: yes
+  fetch:
+    src: /var/lib/jenkins/secrets/initialAdminPassword
+    dest: /tmp/initialAdminPassword
+    flat: yes

@@ -1,0 +1,9 @@
+---
+- hosts: all
+  remote_user: ios
+  become: yes 
+  
+  roles:
+    - jenkins/install
+#    - selenium/python/install
+    - jenkins/initialize

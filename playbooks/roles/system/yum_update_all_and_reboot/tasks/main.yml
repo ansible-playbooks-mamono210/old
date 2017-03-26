@@ -1,0 +1,32 @@
+- name: システム全体をアップデートする
+  become: yes
+  yum:
+    name: "*"
+    state: latest
+  register: result
+
+- name: システムを再起動する
+  become: yes
+  become_method: su
+  shell: /sbin/shutdown -r
+  async: 1
+  poll: 0
+  ignore_errors: true
+  when: result.changed == true
+
+- name: sshdが停止するまで待機する 
+  become: no 
+  local_action: wait_for
+  args:
+    host: "{{ inventory_hostname }}"
+    state: stopped
+    port: '{{ ssh_port }}'
+  when: result.changed == true
+
+- name: システムが再起動するまで待機する 
+  become: no 
+  local_action: wait_for
+  args:
+    host: "{{ inventory_hostname }}"
+    state: started
+  when: result.changed == true

@@ -5,5 +5,4 @@
   
   roles:
     - system/selinux/disabled
-    - system/yum_update_all
-    - system/reboot
+    - system/yum_update_all_and_reboot

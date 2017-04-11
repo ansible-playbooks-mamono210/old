@@ -4,4 +4,6 @@
   remote_user: root
   
   roles:
-    - system/ssh/add-users-and-change-sshd-config-and-firewall
+    - system/selinux/disabled
+    - system/ssh/add-users
+    - system/ssh/change-sshd-config-and-firewall

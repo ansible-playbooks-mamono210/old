@@ -1,14 +1,3 @@
-- name: ユーザーを追加する 
-  user: >
-    name={{ item.key }}
-  with_dict: "{{ users }}"
-
-- name: 公開鍵を登録する
-  authorized_key: >
-    user={{ item.key }}
-    key="{{ item.value.authorized_key }}"
-  with_dict: "{{ users }}"
-
 - name: SSHパスワード認証を無効化する
   lineinfile:
     dest: /etc/ssh/sshd_config
@@ -36,6 +25,15 @@
     state: present
     regexp: "^#Port 22"
     line: "Port {{ ssh_port }}"
+
+- name: 「/usr/lib/firewalld/services/ssh.xml」から「/etc/firewalld/services/ssh.xml」へ設定ファイルをコピーする 
+  become: yes
+  template:
+    src: ssh.xml
+    dest: /etc/firewalld/services/ssh.xml
+    owner: root
+    group: root
+    mode: 0600
 
 - name: SSH接続ポートを開放する
   shell: firewall-cmd --add-port={{ ssh_port }}/tcp --zone=public --permanent

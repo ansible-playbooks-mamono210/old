@@ -1,0 +1,10 @@
+- name: ユーザーを追加する 
+  user:
+    name: '{{ item.key }}'
+  with_dict: '{{ users }}'
+
+- name: 公開鍵を登録する
+  authorized_key:
+    user: '{{ item.key }}'
+    key: '{{ item.value.authorized_key }}'
+  with_dict: '{{ users }}'

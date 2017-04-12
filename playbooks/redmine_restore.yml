@@ -1,0 +1,8 @@
+---
+- hosts: all
+  remote_user: ios
+  become: yes 
+  
+  roles:
+    - redmine/get_backup_data/running_site
+    - redmine/restore_database

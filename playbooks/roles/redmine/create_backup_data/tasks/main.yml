@@ -32,12 +32,16 @@
 
 - name: Gitリポジトリをアーカイブする
   become: yes
-  shell: "tar cfv {{ redmine_backup_work_dir }}/git.tar /var/git"
+  shell: "tar cfv {{ redmine_backup_work_dir }}/git.tar git"
+  args:
+    chdir: /var
     
 - name: メディアファイルをアーカイブする
   become: yes
-  shell: "tar cfv {{ redmine_backup_work_dir }}/files.tar /var/lib/redmine"
-    
+  shell: "tar cfv {{ redmine_backup_work_dir }}/files.tar files"
+  args:
+    chdir: /var/lib/redmine
+  
 
 ############################################################
 # Ansible 2.3でarchiveモジュールが実装されたら以下の処理へ変更する

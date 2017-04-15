@@ -1,8 +1,10 @@
 ---
 - hosts: all
   remote_user: ios
+  vars_files:
+    - vars/redmine/install/default.yml
   become: yes 
-  
+
   roles:
     - system/httpd/install
     - system/language/ruby/install/source

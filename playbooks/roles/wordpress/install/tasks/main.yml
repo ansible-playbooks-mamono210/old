@@ -1,0 +1,19 @@
+- name: Wordpressインストールディレクトリを作成する
+  become: yes
+  file:
+    dest: '{{ wp_install_dir }}'
+    owner: apache
+    group: apache
+    mode: 0755
+    remote_src: yes
+    state: directory
+     
+- name: WordPressをダウンロードし解凍する
+  become: yes
+  unarchive:
+    src: '{{ wp_download_url }}'
+    dest: '{{ wp_install_dir }}'
+    owner: apache
+    group: apache
+    mode: 0755
+    remote_src: yes

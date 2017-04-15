@@ -81,3 +81,10 @@
     dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"
+
+- name: 「wordpress_install」をbinディレクトリに配置する
+  template:
+    src: wordpress_install
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
+    force: yes
+  with_dict: "{{ ipv4 }}"

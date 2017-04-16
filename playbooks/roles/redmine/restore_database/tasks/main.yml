@@ -20,20 +20,20 @@
     create: yes
     validate: "visudo -cf %s"
 
-- name: PostgreSQL / データベース「redmine」を削除する
+- name: PostgreSQL / Redmineデータベースを削除する
   become: yes
   become_user: postgres
   become_method: sudo
   postgresql_db:
-    name: redmine
+    name: '{{ db_name }}'
     state: absent 
 
-- name: PostgreSQL / データベース「redmine」を作成する
+- name: PostgreSQL / Redmineデータベースを作成する
   become: yes
   become_user: postgres
   become_method: sudo
   postgresql_db:
-    name: redmine
+    name: '{{ db_name }}'
     encoding: UTF-8
     lc_collate: ja_JP.UTF-8
     lc_ctype: ja_JP.UTF-8
@@ -44,9 +44,9 @@
   become_user: postgres
   become_method: sudo
   environment:
-    PGPASSWORD: '{{ db_passwd_redmine }}'
+    PGPASSWORD: '{{ db_password }}'
   shell:
-    "psql -h localhost -U redmine redmine < {{ redmine_restore_work_dir }}/redmine.psql"
+    "psql -h localhost -U {{ db_user }} {{ db_name }} < {{ restore_work_dir }}/redmine.psql"
 
 - name: データベースのマイグレーションを実行する
   become: yes

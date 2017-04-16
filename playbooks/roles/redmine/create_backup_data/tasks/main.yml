@@ -1,26 +1,26 @@
 - name: バックアップデータ格納ディレクトリを初期化する 
   become: yes
   file:
-    path: '{{ redmine_backup_data_path }}' 
+    path: '{{ backup_data_path }}' 
     state: absent
 
 - name: バックアップデータ格納ディレクトリを作成する
   become: yes
   file:
-    path: '{{ redmine_backup_data_path }}' 
+    path: '{{ backup_data_path }}' 
     state: directory
     mode: 0755
 
 - name: 作業用ディレクトリを初期化する
   become: yes
   file:
-    path: '{{ redmine_backup_work_dir }}' 
+    path: '{{ backup_work_dir }}' 
     state: absent 
 
 - name: 作業用ディレクトリを作成する
   become: yes
   file:
-    path: '{{ redmine_backup_work_dir }}' 
+    path: '{{ backup_work_dir }}' 
     state: directory
     mode: 0755
 
@@ -32,15 +32,15 @@
 
 - name: Gitリポジトリをアーカイブする
   become: yes
-  shell: "tar cfv {{ redmine_backup_work_dir }}/git.tar git"
+  shell: "tar cfv {{ backup_work_dir }}/git.tar git"
   args:
     chdir: /var
     
 - name: メディアファイルをアーカイブする
   become: yes
-  shell: "tar cfv {{ redmine_backup_work_dir }}/files.tar files"
+  shell: "tar cfv {{ backup_work_dir }}/files.tar files"
   args:
-    chdir: /var/lib/redmine
+    chdir: '{{ redmine_dir }}'
   
 
 ############################################################
@@ -51,7 +51,7 @@
 #  become: yes
 #  archive:
 #    path: /var/git
-#    dest: "{{ redmine_backup_data_path }}/git.tar.gz"
+#    dest: "{{ backup_data_path }}/git.tar.gz"
 #    owner: apache
 #    group: apache
 #    mode: 0755
@@ -59,8 +59,8 @@
 #- name: Redmineメディアファイルをアーカイブする
 #  become: yes
 #  archive:
-#    path: /var/lib/redmine/files
-#    dest: ""{{ redmine_backup_data_path }}/files.tar.gz"
+#    path: "{{ redmine_dir}}/files"
+#    dest: ""{{ backup_data_path }}/files.tar.gz"
 #    owner: apache
 #    group: apache
 #    mode: 0755
@@ -92,15 +92,15 @@
   become_user: postgres
   become_method: sudo
   environment:
-    PGPASSWORD: '{{ db_passwd_redmine }}'
+    PGPASSWORD: '{{ db_password }}'
   shell:
-    "pg_dump -h localhost -U redmine redmine > /tmp/redmine.psql"
+    "pg_dump -h localhost -U {{ db_user }}  {{ db_name }} > /tmp/redmine.psql"
 
 - name: Gitアーカイブスを公開ディレクトリへ移動する
   become: yes
   copy:
-    src: "{{ redmine_backup_work_dir }}/git.tar"
-    dest: "{{ redmine_backup_data_path }}/git.tar"
+    src: "{{ backup_work_dir }}/git.tar"
+    dest: "{{ backup_data_path }}/git.tar"
     owner: apache
     group: apache
     mode: 0755
@@ -109,8 +109,8 @@
 - name: メディアファイルアーカイブスを公開ディレクトリへ移動する
   become: yes
   copy:
-    src: "{{ redmine_backup_work_dir }}/files.tar"
-    dest: "{{ redmine_backup_data_path }}/files.tar"
+    src: "{{ backup_work_dir }}/files.tar"
+    dest: "{{ backup_data_path }}/files.tar"
     owner: apache
     group: apache
     mode: 0755
@@ -120,7 +120,7 @@
   become: yes
   copy:
     src: /tmp/redmine.psql
-    dest: "{{ redmine_backup_data_path }}/redmine.psql" 
+    dest: "{{ backup_data_path }}/redmine.psql" 
     owner: apache
     group: apache
     mode: 0755
@@ -135,7 +135,7 @@
 - name: 作業用ディレクトリを初期化する
   become: yes
   file:
-    path: '{{ redmine_backup_work_dir }}' 
+    path: '{{ backup_work_dir }}' 
     state: absent 
 
 - name: PostgreSQLダンプデータを削除する 

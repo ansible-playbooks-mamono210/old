@@ -1,6 +1,8 @@
 ---
 - hosts: all
   remote_user: ios
+  vars_files:
+    - vars/redmine/create_backup_data/default.yml
   become: yes 
   
   roles:

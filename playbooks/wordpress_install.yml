@@ -10,5 +10,5 @@
     - system/httpd/install
     - system/language/php70/install
     - system/rdb/mariadb/install
-    - wordpress/install
     - system/rdb/mariadb/create_database
+    - wordpress/install

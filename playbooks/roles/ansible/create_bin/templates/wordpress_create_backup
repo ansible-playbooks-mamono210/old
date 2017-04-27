@@ -1,0 +1,18 @@
+expect -c "
+
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/wordpress_create_backup.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass --private-key={{ ansible_user_dir }}/.ssh/id_rsa_ios 
+
+    expect "SU*"
+
+    send -- \"{{ item.value.password }}\n\"
+
+    expect "Vault*password"
+
+    send \"{{ vault_password }}\n\"
+
+    expect "Enter*passphrase"
+
+    send \"{{ vault_password }}\n\"
+
+    interact
+    " 

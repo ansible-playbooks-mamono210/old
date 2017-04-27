@@ -1,0 +1,14 @@
+- name: WP-CLIをダウンロードする
+  become: yes
+  get_url:
+    url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    dest: /tmp
+    owner: root
+    group: root
+    mode: 0755
+
+- name: WP-CLIをコマンドに登録する
+  become: yes
+  shell: mv wp-cli.phar /usr/local/bin/wp
+  args:
+    chdir: /tmp

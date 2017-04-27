@@ -1,0 +1,10 @@
+---
+- hosts: all
+  remote_user: ios
+  vars_files:
+    - vars/wordpress/create_backup_data/default.yml
+  become: yes 
+  
+  roles:
+    - wordpress/install_wp-cli
+    - wordpress/create_backup_data

@@ -1,0 +1,91 @@
+- name: バックアップデータ格納ディレクトリを初期化する 
+  become: yes
+  file:
+    path: '{{ backup_data_path }}' 
+    state: absent
+
+- name: バックアップデータ格納ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ backup_data_path }}' 
+    state: directory
+    mode: 0755
+
+- name: 作業用ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ backup_work_dir }}' 
+    state: absent 
+
+- name: 作業用ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ backup_work_dir }}' 
+    state: directory
+    mode: 0755
+
+- name: MariaDBダンプデータを削除する 
+  become: yes
+  file:
+    path: '/tmp/{{ db_dump_data_sql }}'
+    state: absent 
+
+- name: 「wp-content」ディレクトリをアーカイブする
+  become: yes
+  shell: "tar cfv {{ backup_work_dir }}/wp-content.tar wp-content"
+  args:
+    chdir: '{{ wp_install_dir }}'
+  
+
+############################################################
+# Ansible 2.3でarchiveモジュールが実装されたら以下の処理へ変更する
+############################################################
+#- name: 「wp-content」ディレクトリをアーカイブする
+#  become: yes
+#  archive:
+#    path: "{{ backup_work_dir }}/wp-content" 
+#    dest: "{{ backup_data_path }}/wp-content.tar.gz"
+#    owner: apache
+#    group: apache
+#    mode: 0755
+
+- name: MariaDB / データベース  {{ db_name }} をダンプする
+  become: yes
+#  environment:
+#    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  shell:
+    "wp db export /tmp/{{ db_dump_data_sql }} --allow-root"
+  args:
+    chdir: '{{ wp_install_dir }}'
+  
+- name: 「wp-content」アーカイブスを公開ディレクトリへコピーする
+  become: yes
+  copy:
+    src: "{{ backup_work_dir }}/wp-content.tar"
+    dest: "{{ backup_data_path }}/wp-content.tar"
+    owner: apache
+    group: apache
+    mode: 0755
+    remote_src: True
+
+- name: MariaDBダンプファイルを公開ディレクトリへコピーする
+  become: yes
+  copy:
+    src: "/tmp/{{ db_dump_data_sql }}"
+    dest: "{{ backup_data_path }}/{{ db_dump_data_sql }}"
+    owner: apache
+    group: apache
+    mode: 0755
+    remote_src: True
+
+- name: 作業用ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ backup_work_dir }}' 
+    state: absent 
+
+- name: MariaDBダンプデータを削除する 
+  become: yes
+  file:
+    path: "/tmp/{{ db_dump_data_sql }}"
+    state: absent 

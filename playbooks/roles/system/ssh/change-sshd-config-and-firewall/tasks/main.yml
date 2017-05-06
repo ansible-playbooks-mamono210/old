@@ -26,6 +26,12 @@
     regexp: "^#Port 22"
     line: "Port {{ ssh_port }}"
 
+- name: SSH接続ポートを開放する
+  shell: firewall-cmd --add-port={{ ssh_port }}/tcp --zone=public --permanent
+
+- name: Firewallをリロードする
+  shell: firewall-cmd --reload
+
 - name: 「/usr/lib/firewalld/services/ssh.xml」から「/etc/firewalld/services/ssh.xml」へ設定ファイルをコピーする 
   become: yes
   template:
@@ -35,13 +41,24 @@
     group: root
     mode: 0600
 
-- name: SSH接続ポートを開放する
-  shell: firewall-cmd --add-port={{ ssh_port }}/tcp --zone=public --permanent
-
-- name: Firewallをリロードする
-  shell: firewall-cmd --reload
-   
 - name: sshdを再起動する
   service: 
-    name=sshd
-    state=restarted
+    name: sshd
+    state: restarted
+
+- name: sshdが停止するまで待機する
+  become: no
+  local_action: wait_for
+  args:
+    host: '{{ inventory_hostname }}'
+    port: 22 
+    state: stopped
+
+- name: sshdが起動するまで待機する 
+  become: no
+  local_action: wait_for
+  args:
+     host: '{{ inventory_hostname }}'
+     port: '{{ ssh_port }}'
+     state: started
+     delay: 30

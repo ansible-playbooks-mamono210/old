@@ -1,6 +1,8 @@
+export ANSIBLE_HOST_KEY_CHECKING=False
+
 expect -c "
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_update_and_set_seliux_disabled.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass --private-key={{ ansible_user_dir }}/.ssh/id_rsa_ios 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_update_and_set_seliux_disabled.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass 
 
     expect "SU*"
 
@@ -20,7 +22,7 @@ expect -c "
 
 expect -c "
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/owncloud_install.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass --private-key={{ ansible_user_dir }}/.ssh/id_rsa_ios 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/owncloud_install.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass 
 
     expect "SU*"
 

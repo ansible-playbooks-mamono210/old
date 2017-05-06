@@ -1,29 +1,30 @@
 ###################################################
-# binディレクトリ内のスクリプトを実行する手順等
+# Ansible 2.4をインストールする
 ###################################################
 
-1. 秘密鍵を「~/.ssh」へ配置する
+2016年5月現在CentOS7においてyumコマンドでインストールされるAnsible 2.3は
+不具合が多い。そのためpipからAnsible 2.4をインストールする。
 
-    今のところ秘密鍵は「ansible/id_rsa_ios」。将来的に編王になる場合もある。
-    ansible-vaultでdecryptする必要がある。
+1. Ansibleをインストールする
 
-        ansible-vault decrypt ansible/id_rsa_ios
-
-
-
-2. 「/etc/ssh/ssh_config」を編集する
-
-     Ansibleがノードにアクセスするためのsshクライアントの設定変更。
-
-         StrictHostKeyChecking no
-
-
-
-3. Ansibleのインストール
-   
+    yum groupinstall "Development Tools" 
     yum install epel-release
-    yum install ansible git
+    yum install openssl-devel
+    yum install python-devel
+    yum install python-pip
+    pip install --upgrade pip
+    pip install --upgrade setuptools
+    pip install git+git://github.com/ansible/ansible.git@devel
+    ansible --version
 
+
+2. 秘密鍵を「~/.ssh」へ配置する
+
+    i.   ユーザー「Ansible」を作成する。
+    ii.  ssh-keygenコマンドで鍵ファイルを作成する。
+    iii. system_ssh_add-users-and-change-sshd-config-and-firewall で
+         ユーザーを対象ノードへ作成する
+    iii. 公開鍵ファイルを対象ノードの /home/ios/.ssh へ配置する。
 
 ###############################################
 # playbookの利用方法
@@ -34,8 +35,16 @@
     ansible-playbook -i localhost example.yml --ask-vault-pass
 
 
-
 2. 「bin」ディレクトリ内にplaybook実行補助スクリプトを作成する
 
-    cd ansible/playbooks
+    cd /path/to/ansible/playbooks
     ansible-playbook -i localhost ansible_create_bin.yml --ask-vault-pass
+
+3. 「expect」をインストールする
+
+    bin ディレクトリのシェルスクリプトファイルを実行するには
+    expectが必要なのでインストールしておく。
+
+4.  「ANSIBLE_HOST_KEY_CHECKING=False」 でPlaybook実行前に環境変数をシェルに渡す
+
+    bin ディレクトリのシェルスクリプトファイルには全て記述済み

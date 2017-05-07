@@ -2,7 +2,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 
 expect -c "
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_language_ruby_install_rbenv_2.3.3.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_language_ruby_install_rbenv_2.3.3.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
 
     expect "SU*"
 

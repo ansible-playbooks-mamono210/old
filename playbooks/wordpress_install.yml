@@ -1,6 +1,5 @@
 ---
 - hosts: all
-  remote_user: ios
   vars_files:
     - vars/system/rdb/mariadb/default.yml
     - vars/wordpress/default.yml

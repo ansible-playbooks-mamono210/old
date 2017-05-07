@@ -2,7 +2,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 
 expect -c "
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_update_and_set_seliux_disabled.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_update_and_set_seliux_disabled.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
 
     expect "SU*"
 
@@ -22,7 +22,7 @@ expect -c "
 
 expect -c "
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/redmine_install.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/redmine_install.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
 
     expect "SU*"
 

@@ -37,4 +37,5 @@
 
 - name: ログアウトする
   become: yes
-  shell: ps ax | grep sshd | grep ios | kill `awk {'print $1'}` 
+  shell:
+    "ps ax | grep sshd | grep {{ ansible_user_id }} | kill `awk {'print $1'}`" 

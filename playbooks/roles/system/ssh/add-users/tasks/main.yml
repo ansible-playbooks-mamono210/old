@@ -8,3 +8,13 @@
     user: '{{ item.key }}'
     key: '{{ item.value.authorized_key }}'
   with_dict: '{{ users }}'
+
+- name: ユーザー「Ansible」を追加する
+  user:
+    name: ansible
+
+- name: ユーザー「Ansible」の公開鍵を登録する
+  authorized_key:
+    user: ansible
+    state: present
+    key: "{{ lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"

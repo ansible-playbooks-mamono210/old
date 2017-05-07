@@ -1,12 +1,11 @@
 ---
 - hosts: all
-  remote_user: ios
   become: yes 
   
   roles:
     - system/httpd/install
     - system/language/php70/install
     - system/rdb/mariadb/install
-    - selenium/python/install
     - owncloud/install
     - owncloud/create_mariadb_database
+    - selenium/python/install

@@ -5,3 +5,10 @@
     state=absent
     remove=yes
   with_dict: "{{ users }}"
+
+- name: ユーザー「Ansible」を削除する
+  become: yes
+  user:
+    name: ansible
+    state: absent
+    remove: yes

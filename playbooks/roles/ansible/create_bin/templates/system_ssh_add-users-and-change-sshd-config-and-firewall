@@ -2,7 +2,15 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 
 rm -rf {{ ansible_user_dir }}/.ssh/known_hosts
 
+# ログファイルのパスを設定する
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/system_ssh_add-users-and-change-sshd-config-and-firewall.log"
+rm -rf ${LOG_PATH}
+export ANSIBLE_LOG_PATH=${LOG_PATH}
+
+
 expect -c "
+
+    set timeout -1
 
     spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_ssh_add-users-and-change-sshd-config-and-firewall.yml -u root -k -i "{{ item.key }}," --ask-vault-pass -c paramiko
 
@@ -14,5 +22,11 @@ expect -c "
 
     send \"{{ vault_password }}\n\"
 
-    interact
-    "
+    expect eof
+    exit
+    "    
+
+# SSH接続が失敗している場合は処理を終了する
+if tail -n 1 ${LOG_PATH} | grep unreachable=1 ; then
+    exit 1
+fi

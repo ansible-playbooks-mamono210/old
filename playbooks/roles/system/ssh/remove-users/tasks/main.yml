@@ -6,6 +6,11 @@
     remove=yes
   with_dict: "{{ users }}"
 
+- name: ユーザー「Ansible」のプロセスが起動していたら停止する
+  become: yes
+  shell:
+    "ps aux | grep sshd | grep ^ansible | kill `awk {'print $2'}`" 
+
 - name: ユーザー「Ansible」を削除する
   become: yes
   user:

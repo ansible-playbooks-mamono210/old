@@ -1,6 +1,13 @@
 export ANSIBLE_HOST_KEY_CHECKING=False
 
+# ログファイルのパスを設定する
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/redmine_create_backup.log"
+rm -rf ${LOG_PATH}
+export ANSIBLE_LOG_PATH=${LOG_PATH}
+
 expect -c "
+
+    set timeout -1
 
     spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/redmine_create_backup.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
 
@@ -16,5 +23,16 @@ expect -c "
 
     send \"{{ vault_password }}\n\"
 
-    interact
-    "
+    expect eof
+    exit
+    "    
+
+# SSH接続が失敗している場合はステータス「1」を返して終了する
+if tail -n 1 ${LOG_PATH} | grep unreachable=1 ; then
+    exit 1
+fi
+
+# 処理が失敗している場合はステータス「1」を返して終了する
+if ! tail -n 1 ${LOG_PATH} | grep failed=0 ; then
+    exit 1
+fi

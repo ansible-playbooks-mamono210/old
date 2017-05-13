@@ -35,7 +35,24 @@
     name: sshd
     state: restarted
 
-- name: ログアウトする
-  become: yes
-  shell:
-    "ps ax | grep sshd | grep {{ ansible_user_id }} | kill `awk {'print $1'}`" 
+- name: sshdが停止するまで待機する
+  become: no
+  local_action: wait_for
+  args:
+    host: '{{ inventory_hostname }}'
+    port: '{{ ssh_port }}'
+    state: stopped
+
+- name: sshdが起動するまで待機する 
+  become: no
+  local_action: wait_for
+  args:
+     host: '{{ inventory_hostname }}'
+     port: 22
+     state: started
+     delay: 15
+
+#- name: ログアウトする
+#  become: yes
+#  shell:
+#    "ps ax | grep sshd | grep {{ ansible_user_id }} | kill `awk {'print $1'}`" 

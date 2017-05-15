@@ -35,7 +35,8 @@
   unarchive:
     src: '{{ geckodriver_url }}'
     dest: /usr/local/bin
-    remote_src: True
+#    remote_src: True
+    copy: no
 
 - name: Python Seleniumをインストールする
   become: yes

@@ -1,11 +1,13 @@
 ---
 - hosts: all
+  vars_files:
+    - vars/system/rdb/mariadb/default.yml
+    - vars/owncloud/default.yml
   become: yes 
   
   roles:
     - system/httpd/install
     - system/language/php70/install
     - system/rdb/mariadb/install
+    - system/rdb/mariadb/create_database
     - owncloud/install
-    - owncloud/create_mariadb_database
-    - selenium/python/install

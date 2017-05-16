@@ -46,9 +46,9 @@
     force: yes
   with_dict: "{{ ipv4 }}"
 
-- name: 「system_language_ruby_install_rbenv_2.3.3」をbinディレクトリに配置する
+- name: 「language_ruby_install_rbenv_2.3.3」をbinディレクトリに配置する
   template:
-    src: system_language_ruby_install_rbenv_2.3.3 
+    src: language_ruby_install_rbenv_2.3.3 
     dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -75,16 +75,16 @@
     force: yes
   with_dict: "{{ ipv4 }}"
 
-- name: 「system_vim_install」をbinディレクトリに配置する 
+- name: 「vim_install」をbinディレクトリに配置する 
   template:
-    src: system_vim_install
+    src: vim_install
     dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"
 
-- name: 「system_vnc_server_install」をbinディレクトリに配置する
+- name: 「vnc_server_install」をbinディレクトリに配置する
   template:
-    src: system_vnc_server_install
+    src: vnc_server_install
     dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
     force: yes
   with_dict: "{{ ipv4 }}"

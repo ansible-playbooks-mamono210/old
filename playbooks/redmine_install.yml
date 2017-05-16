@@ -5,9 +5,9 @@
   become: yes 
 
   roles:
-    - system/httpd/install
-    - system/language/ruby/install/source
-    - system/rdb/pg/install
+    - httpd/install
+    - language/ruby/install/source
+    - rdb/pg/install
     - redmine/create_pg_account_and_database
     - redmine/install
-    - system/httpd/passenger/install
+    - httpd/passenger/install

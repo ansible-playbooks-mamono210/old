@@ -1,6 +1,6 @@
 ---
 - hosts: all
   become: yes 
-  
+ 
   roles:
-    - system/vim/install
+    - vnc/server/install

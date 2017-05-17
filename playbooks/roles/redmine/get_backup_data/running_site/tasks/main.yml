@@ -31,7 +31,8 @@
     owner: git
     group: git
     mode: 0755
-    remote_src: yes
+#    remote_src: yes
+    copy: no
 
 - name: リモートサーバからRedmineメディアファイルを取得する
   become: yes
@@ -41,4 +42,5 @@
     owner: apache
     group: apache
     mode: 0755
-    remote_src: yes
+#    remote_src: yes
+    copy: no

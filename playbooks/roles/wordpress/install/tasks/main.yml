@@ -55,3 +55,26 @@
     "sudo -u apache /usr/local/bin/wp core language activate ja"
   args:
     chdir: '{{ wp_install_path }}'
+
+- name: "{{ wp_httpd_conf }}を「/etc/httpd/conf.d/」へ配置する"
+  become: yes
+  file:
+    path: "/etc/httpd/conf.d/{{ wp_httpd_conf }}"
+    state: touch
+    mode: 0644
+
+- name: "{{ wp_install_path }}で「.htaccess」が有効になるように{{ wp_httpd_conf }}へ記述する"
+  become: yes
+  blockinfile:
+    path: "/etc/httpd/conf.d/{{ wp_httpd_conf }}"
+    block: |
+      <Directory "{{ wp_install_path }}">
+        AllowOverride All
+      </Directory> 
+
+- name: httpdを再起動する
+  become: yes
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

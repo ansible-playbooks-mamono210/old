@@ -25,6 +25,9 @@ usage() {
     echo "  --db_user ARGUMENT"
     echo "          WordPressが利用するRDBSMのデータベースユーザー名"
     echo
+    echo " --mariadb_root_password ARGUMENT"
+    echo "          MariaDBのrootパスワード（MariaDBインストール時に利用）"
+    echo
     echo "  --wp_admin_email ARGUMENT"
     echo "          WordPressのログインユーザーのメールアドレス"
     echo
@@ -104,6 +107,14 @@ do
                 exit 1
             fi
             EXTRA_VARS="${EXTRA_VARS} db_user=$2"
+            shift 1
+            ;;
+        '--mariadb_root_password' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+            EXTRA_VARS="${EXTRA_VARS} mariadb_root_password=$2"
             shift 1
             ;;
         '--wp_admin_email' )

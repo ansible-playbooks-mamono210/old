@@ -8,6 +8,7 @@
   template:
     src: jenkins_install
     dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
+    mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -100,5 +101,37 @@
   template:
     src: wordpress_install
     dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/'
+    mode: 0755
+    force: yes
+  with_dict: "{{ ipv4 }}"
+
+- name: テストスクリプトを配置するディレクトリを作成する
+  file:
+    path: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/tests'
+    state: directory
+  with_dict: "{{ ipv4 }}"
+
+- name: shunit2をGitリポジトリから取得する
+  git:
+    repo: https://github.com/kward/shunit2.git
+    dest: '{{ ansible_user_dir }}/ansible/bin/shunit2'
+
+- name: 「wordpress_install」のテストスクリプトを配置するディレクトリを作成する
+  file:
+    path: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/tests/wordpress_install'
+    state: directory
+  with_dict: "{{ ipv4 }}"
+
+- name: 「invalid-extra-vars-name-should-cause-stderr-and-return-false.sh」を配置する
+  template:
+    src: tests/wordpress_install/invalid-extra-vars-name-should-cause-stderr-and-return-false.sh 
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/tests/wordpress_install'
+    force: yes
+  with_dict: "{{ ipv4 }}"
+
+- name: 「no-extra-vars-argument-should-cause-stderr-and-return-false.sh 」を配置する
+  template:
+    src: tests/wordpress_install/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 
+    dest: '{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/tests/wordpress_install'
     force: yes
   with_dict: "{{ ipv4 }}"

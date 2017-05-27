@@ -65,34 +65,39 @@ do
             usage
             exit 1
             ;;
+
         '--version' )
             echo $VERSION
             exit 1
             ;;
+
         '--db_host' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
-            #    exit 1
+                exit 1
             fi
             EXTRA_VARS="${EXTRA_VARS} db_host=$2"
             shift 1 
             ;;
+
         '--db_name' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
-            #    exit 1
+                exit 1
             fi
             EXTRA_VARS="${EXTRA_VARS} db_name=$2"
             shift 1
             ;;
+
         '--db_password' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
-            #    exit 1
+                exit 1
             fi
             EXTRA_VARS="${EXTRA_VARS} db_password=$2"
             shift 1
             ;;
+
         '--db_prefix' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -101,6 +106,7 @@ do
             EXTRA_VARS="${EXTRA_VARS} db_prefix=$2"
             shift 1
             ;;
+
         '--db_user' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -109,6 +115,7 @@ do
             EXTRA_VARS="${EXTRA_VARS} db_user=$2"
             shift 1
             ;;
+
         '--mariadb_root_password' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -117,6 +124,7 @@ do
             EXTRA_VARS="${EXTRA_VARS} mariadb_root_password=$2"
             shift 1
             ;;
+
         '--wp_admin_email' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -125,6 +133,7 @@ do
             EXTRA_VARS="${EXTRA_VARS} wp_admin_email=$2"
             shift 1
             ;;
+
         '--wp_admin_password' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -133,6 +142,7 @@ do
             EXTRA_VARS="${EXTRA_VARS} wp_admin_password=$2"
             shift 1
             ;;
+
         '--wp_admin_user' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -141,6 +151,7 @@ do
             EXTRA_VARS="${EXTRA_VARS} wp_admin_user=$2"
             shift 1
             ;;
+
         '--wp_host' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -149,6 +160,7 @@ do
             EXTRA_VARS="${EXTRA_VARS} wp_host=$2"
             shift 1
             ;;
+
         '--wp_httpd_conf' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -157,6 +169,7 @@ do
             EXTRA_VARS="${EXTRA_VARS} wp_httpd_conf=$2"
             shift 1
             ;;
+
         '--wp_install_dir' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -165,6 +178,7 @@ do
             EXTRA_VARS="${EXTRA_VARS} wp_install_dir=$2"
             shift 1
             ;;
+
         '--wp_title' )
             if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
                 echo "RPROGRAM: option requires an argument -- $1"
@@ -173,15 +187,18 @@ do
             EXTRA_VARS="${EXTRA_VARS} wp_title=$2"
             shift 1
             ;;
+
         '--'|'-' )
             shift 1
             param+=( "$@" )
             break
             ;;
+
         -*)
             echo "$PROGNAME: illegal option -- '$(echo $1 | sed 's/^-*//')'" 1>&2
             exit 1
             ;;
+
         *)
             if [[ ! -z "$1" ]] && [[ ! "$1" =~ ^-x ]]; then
                 param+=( "$1" )

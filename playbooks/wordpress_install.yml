@@ -6,8 +6,13 @@
   become: yes 
   
   roles:
-    - httpd/install
-    - language/php70/install
-    - rdb/mariadb/install
-    - rdb/mariadb/create_database
-    - wordpress/install
+    - role: httpd/install
+      tags: httpd_install
+    - role: language/php70/install
+      tags: language_php70_install
+    - role: rdb/mariadb/install
+      tags: rdb_mariadb_install
+    - role: rdb/mariadb/create_database
+      tags: rdb_mariadb_create-database
+    - role: wordpress/install
+      tags: wordpress_install

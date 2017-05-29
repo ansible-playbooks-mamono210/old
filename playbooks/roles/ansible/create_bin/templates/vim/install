@@ -1,7 +1,7 @@
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 # ログファイルのパスを設定する
-LOG_PATH="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/vim_install.log" 
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/vim_install-{{ item.key }}.log" 
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 

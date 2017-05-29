@@ -1,7 +1,7 @@
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 # ログファイルのパスを設定する
-LOG_PATH="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/language_ruby_install_rbenv_2.3.3.log"
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/system_update_and_set-selinux-disabled-{{ item.key }}.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 
@@ -9,8 +9,8 @@ expect -c "
 
     set timeout -1
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/language_ruby_install_rbenv_2.3.3.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
-
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_update_and_set_seliux_disabled.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
+    
     expect "SU*"
 
     send -- \"{{ item.value.password }}\n\"

@@ -2,7 +2,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 
 
 # ログファイルのパスを設定する
-LOG_PATH="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/system_ssh_reset-sshd-config-and-firewall.log"
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/system_ssh_reset-sshd-config-and-firewall-{{ item.key }}.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 
@@ -34,7 +34,7 @@ if tail -n 1 ${LOG_PATH} | grep unreachable=1 ; then
 fi
 
 # ログファイルのパスを設定する
-LOG_PATH="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/system_ssh_reset-sshd-config-and-firewall_and_remove-users.log"
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/system_ssh_reset-sshd-config-and-firewall-{{ item.key }}.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 

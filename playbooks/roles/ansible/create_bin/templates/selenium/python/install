@@ -1,15 +1,15 @@
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 # ログファイルのパスを設定する
-LOG_PATH="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/vnc_server_install.log" 
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/selenium_python_install-{{ item.key }}.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 
 expect -c "
-
+   
     set timeout -1
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/vnc_server_install.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/selenium_python_install.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
 
     expect "SU*"
 

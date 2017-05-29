@@ -1,7 +1,7 @@
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 # ログファイルのパスを設定する
-LOG_PATH="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/redmine_restore.log"
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/redmine_create_backup-{{ item.key }}.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 
@@ -9,7 +9,7 @@ expect -c "
 
     set timeout -1
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/redmine_restore.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/redmine_create_backup.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
 
     expect "SU*"
 

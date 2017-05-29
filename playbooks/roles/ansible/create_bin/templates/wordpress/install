@@ -268,7 +268,7 @@ done
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 # ログファイルのパスを設定する
-LOG_PATH="/home/ansible/ansible/bin/160.16.202.227/wordpress_install.log"
+LOG_PATH="/home/ansible/ansible/bin/wordpress_install-{{ item.key }}.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 

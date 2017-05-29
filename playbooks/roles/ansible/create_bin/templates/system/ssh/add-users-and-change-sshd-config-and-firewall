@@ -3,7 +3,7 @@ export ANSIBLE_HOST_KEY_CHECKING=False
 rm -rf {{ ansible_user_dir }}/.ssh/known_hosts
 
 # ログファイルのパスを設定する
-LOG_PATH="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/system_ssh_add-users-and-change-sshd-config-and-firewall.log"
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/system_ssh_add-users-and-change-sshd-config-and-firewall-{{ item.key }}.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 

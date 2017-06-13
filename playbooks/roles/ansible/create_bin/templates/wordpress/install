@@ -291,15 +291,15 @@ expect -c "
 
     expect "SU*"
 
-    send -- \"r-J6ai+h35\n\"
+    send -- \"{{ item.value.password }}\n\"
 
     expect "Vault*password"
 
-    send \"yuchan55\n\"
+    send \"{{ vault_password }}\n\"
 
     expect "Enter*passphrase"
 
-    send \"yuchan55\n\"
+    send \"{{ vault_password }}\n\"
 
     expect eof
     exit

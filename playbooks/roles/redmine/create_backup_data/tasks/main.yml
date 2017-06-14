@@ -82,7 +82,7 @@
     owner: root
     group: root
     mode: 0440
-    line: "%ios ALL=(postgres) NOPASSWD: ALL"
+    line: "%{{ ansible_user_id}} ALL=(postgres) NOPASSWD: ALL"
     state: present
     create: yes
     validate: "visudo -cf %s"

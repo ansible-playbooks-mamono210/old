@@ -1,0 +1,70 @@
+- name: EPELリポジトリを追加する 
+  become: yes
+  yum:
+    name: epel-release
+    state: present
+
+- name: Remiリポジトリを追加する 
+  become: yes
+  yum:
+    name: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+    state: present 
+
+- name: Remi GPGキーを追加する
+  become: yes
+  rpm_key:
+    key: http://rpms.remirepo.net/RPM-GPG-KEY-remi
+    state: present
+
+- name: PHP7.1をインストールする 
+  become: yes
+  yum:
+    name: '{{ item }}'
+    enablerepo: remi-php71
+    state: latest
+  with_items:
+    - php
+    - php-gd
+    - php-gmp
+    - php-intl
+    - php-ldap
+    - php-mbstring
+    - php-mcrypt
+    - php-mysqlnd
+    - php-opcache
+    - php-pdo
+    - php-pear 
+    - php-pear-Net-Curl
+    - php-pecl-apcu-bc
+    - php-pecl-redis
+    - php-pecl-zip
+    - php-soap
+    - php-xml
+
+- name: PHPのバージョンを確認する
+  shell: php -v
+  register: RESULT
+
+- name: PHPがインストールされたか確認する
+  debug: var=RESULT.stdout_lines
+
+- name: タイムゾーンを「Asia/Tokyo」に設定する
+  become: yes
+  ini_file:
+    dest: /etc/php.ini
+    section: Date
+    option: date.timezone
+    value: "Asia/Tokyo"
+
+- name: httpdを再起動する
+  become: yes
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
+
+- name: PHPの設定確認用URLを作成する
+  become: yes
+  template:
+    src: phpinfo.php
+    dest: /var/www/html/

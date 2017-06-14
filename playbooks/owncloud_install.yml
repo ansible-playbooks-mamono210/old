@@ -7,7 +7,7 @@
   
   roles:
     - httpd/install
-    - language/php70/install
+    - language/php/71/install
     - rdb/mariadb/install
     - rdb/mariadb/create_database
     - owncloud/install

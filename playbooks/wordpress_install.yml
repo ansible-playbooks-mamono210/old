@@ -8,8 +8,8 @@
   roles:
     - role: httpd/install
       tags: httpd_install
-    - role: language/php70/install
-      tags: language_php70_install
+    - role: language/php/71/install
+      tags: language_php_71_install
     - role: rdb/mariadb/install
       tags: rdb_mariadb_install
     - role: rdb/mariadb/create_database

@@ -1,16 +1,56 @@
-- name: owncloudリポジトリを追加する
-  become: yes
-  yum_repository:
-    name: ce_stable 
-    description: ownCloud Server Version stable (CentOS_7) 
-    baseurl: http://download.owncloud.org/download/repositories/stable/CentOS_7
-    file: ce:stable 
-    gpgkey: https://download.owncloud.org/download/repositories/stable/CentOS_7/repodata/repomd.xml.key 
-    gpgcheck: yes
-    enabled: yes
-
-- name: owncloud-filesをインストールする
+- name: ownCloudのインストールに必要なライブラリをインストールする
   become: yes
   yum:
-    name: owncloud-files
-    state: present
+    name: npm
+
+- name: ownCloudをGitリポジトリから取得する
+  git:
+    repo: https://github.com/owncloud/core.git
+    dest: "{{ oc_install_dir }}"
+
+- name: ownCloudディレクトリの所有権と所有者を変更する
+  become: yes
+  file:
+    path: "{{ oc_install_dir }}"
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: 0755
+    recurse: yes
+
+- name: makeを実行する
+  become: no
+  shell: make
+  args:
+    chdir: "{{ oc_install_dir }}"
+
+- name: ownCloudディレクトリの所有権と所有者を変更する
+  become: yes
+  file:
+    path: "{{ oc_install_dir }}"
+    owner: apache
+    group: apache
+    mode: 0755
+    recurse: yes
+
+- name: "{{ oc_httpd_conf }}を「/etc/httpd/conf.d/」へ配置する"
+  become: yes
+  file:
+    path: "/etc/httpd/conf.d/{{ oc_httpd_conf }}"
+    state: touch
+    mode: 0644
+
+- name: "{{ oc_install_dir }}で「.htaccess」が有効になるように{{ oc_httpd_conf }}へ記述する"
+  become: yes
+  blockinfile:
+    path: "/etc/httpd/conf.d/{{ oc_httpd_conf }}"
+    block: |
+      <Directory "{{ oc_install_dir }}">
+        AllowOverride All
+      </Directory> 
+
+- name: httpdを再起動する
+  become: yes
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

@@ -34,7 +34,7 @@ usage() {
     echo 
     echo "                  指定可能なタグ"
     echo "                      -httpd_install "
-    echo "                      -langage_php70_install "
+    echo "                      -langage_php_71_install "
     echo "                      -rdb_mariadb_install "
     echo "                      -rdb_mariadib_create-database "
     echo "                      -wordpress_install "
@@ -45,7 +45,7 @@ usage() {
     echo 
     echo "                  指定可能なタグ"
     echo "                      -httpd_install "
-    echo "                      -langage_php70_install "
+    echo "                      -langage_php_71_install "
     echo "                      -rdb_mariadb_install "
     echo "                      -rdb_mariadib_create-database "
     echo "                      -wordpress_install "

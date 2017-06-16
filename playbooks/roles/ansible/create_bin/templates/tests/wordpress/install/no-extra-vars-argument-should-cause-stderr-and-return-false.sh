@@ -1,5 +1,5 @@
 test_db_host() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --db_host"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --db_host"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -7,7 +7,7 @@ test_db_host() {
 }
 
 test_db_name() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --db_name"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --db_name"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -15,7 +15,7 @@ test_db_name() {
 }
 
 test_db_password() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --db_password"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --db_password"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -23,7 +23,7 @@ test_db_password() {
 }
 
 test_db_prefix() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --db_prefix"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --db_prefix"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -31,7 +31,7 @@ test_db_prefix() {
 }
 
 test_db_user() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --db_user"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --db_user"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -39,7 +39,7 @@ test_db_user() {
 }
 
 test_mariadb_root_password() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --mariadb_root_password"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --mariadb_root_password"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -47,7 +47,7 @@ test_mariadb_root_password() {
 }
 
 test_wp_admin_email() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --wp_admin_email"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --wp_admin_email"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -55,7 +55,7 @@ test_wp_admin_email() {
 }
 
 test_wp_admin_password() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --wp_admin_password"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --wp_admin_password"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -63,7 +63,7 @@ test_wp_admin_password() {
 }
 
 test_wp_admin_user() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --wp_admin_user"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --wp_admin_user"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -71,7 +71,7 @@ test_wp_admin_user() {
 }
 
 test_wp_host() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --wp_host"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --wp_host"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -79,7 +79,7 @@ test_wp_host() {
 }
 
 test_wp_httpd_conf() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --wp_httpd_conf"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --wp_httpd_conf"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -87,7 +87,7 @@ test_wp_httpd_conf() {
 }
 
 test_wp_install_dir() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --wp_install_dir"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --wp_install_dir"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?
@@ -95,7 +95,7 @@ test_wp_install_dir() {
 }
 
 test_wp_title() {
-    command="{{ ansible_user_dir }}/ansible/bin/{{ item.key }}/wordpress_install --wp_title"
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --wp_title"
     result="$(${command} 2>&1)"
     
     assertEquals 1 $?

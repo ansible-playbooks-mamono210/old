@@ -62,6 +62,35 @@ usage() {
     echo "          redmine_installの作業用ディレクトリ"
     echo "          初期値は「/tmp/redmine-install-dir」"
     echo
+    echo
+    echo "  ###################################################################"
+    echo "  ###################################################################"
+    echo
+    echo
+    echo "  以下は設定出来ない変数。設定変更が必要な場合は"
+    echo "  「playbooks/vars/redmine/install」へ変更を加える"
+    echo
+    echo "  # Redmineのチェックアウト元URL"
+    echo "  redmine_svn_url: http://svn.redmine.org/redmine/branches/3.3-stable"
+    echo
+    echo "  # Redmineのデプロイ先ディレクトリのオーナー:グループ"
+    echo "  redmine_dir_owner: apache"
+    echo "  redmine_dir_group: apache"
+    echo
+    echo "  # Redmineで使用する日本語フォントファイル"
+    echo "  redmine_font_path: /usr/share/fonts/truetype/takao-gothic/TakaoPGothic.ttf"
+    echo
+    echo "  # pg_hba.confのパス"
+    echo "  pg_hba_conf_path: /var/lib/pgsql/data/pg_hba.conf"
+    echo
+    echo "  # ダウンロードするRubyのソースコード"
+    echo "  ruby_url_dir: https://cache.ruby-lang.org/pub/ruby/2.3"
+    echo "  ruby_archive_version: ruby-2.3.3"
+    echo "  ruby_archive_ext: tar.bz2"
+    echo "  ruby_archive_name: "\{\{ ruby_archive_version \}\}.\{\{ ruby_archive_ext \}\}" " 
+    echo
+    echo "  ruby_file_name: /usr/local/bin/ruby"
+    echo
     exit 1
 }
 

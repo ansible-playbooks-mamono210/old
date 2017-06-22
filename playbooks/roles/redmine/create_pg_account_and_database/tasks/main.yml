@@ -76,7 +76,7 @@
   become_method: sudo
   postgresql_user:
     name: redmine
-    password: '{{ db_passwd_redmine }}'
+    password: '{{ db_password }}'
 
 - name: PostgreSQL データベース作成
   become: yes

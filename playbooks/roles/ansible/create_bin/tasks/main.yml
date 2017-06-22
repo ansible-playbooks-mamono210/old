@@ -231,7 +231,38 @@
   template:
     src: tests/redmine/create-backup/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/create-backup/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}'
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/create-backup/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+    force: yes
+  with_dict: "{{ ipv4 }}"
+
+
+- name: 「tests/redmine/install/invalid-extra-vars-name-should-cause-stderr-and-return-false.sh」テストスクリプトを配置するディレクトリを作成する
+  file:
+    path:
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/install/invalid-extra-vars-name-should-cause-stderr-and-return-false/'
+    recurse: yes
+    state: directory
+
+- name: 「tests/redmine/install/invalid-extra-vars-name-should-cause-stderr-and-return-false.sh」を配置する
+  template:
+    src: tests/redmine/install/invalid-extra-vars-name-should-cause-stderr-and-return-false.sh 
+    dest:
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/install/invalid-extra-vars-name-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+    force: yes
+  with_dict: "{{ ipv4 }}"
+
+- name: 「tests/redmine/install/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 」をテストスクリプトを配置するディレクトリを作成する
+  file:
+    path:
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/install/no-extra-vars-argument-should-cause-stderr-and-return-false'
+    recurse: yes
+    state: directory
+
+- name: 「tests/redmine/install/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 」を配置する
+  template:
+    src: tests/redmine/install/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 
+    dest:
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/install/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -261,7 +292,7 @@
   template:
     src: tests/redmine/restore/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/restore/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}'
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/restore/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -291,6 +322,6 @@
   template:
     src: tests/wordpress/install/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/wordpress/install/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}'
+      '{{ ansible_user_dir }}/ansible/bin/tests/wordpress/install/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"

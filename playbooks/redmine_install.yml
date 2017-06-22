@@ -5,9 +5,15 @@
   become: yes 
 
   roles:
-    - httpd/install
-    - language/ruby/install/source
-    - rdb/pg/install
-    - redmine/create_pg_account_and_database
-    - redmine/install
-    - httpd/passenger/install
+    - role: httpd/install
+      tags: httpd_install
+    - role: language/ruby/install/source
+      tags: language_ruby_install_source
+    - role: rdb/pg/install
+      tags: rdb_pg_install
+    - role: redmine/create_pg_account_and_database
+      tags: redmine_create-pg-accound-and-database
+    - role: redmine/install
+      tags: redmine_install
+    - role: httpd/passenger/install
+      tags: httpd_passenger_install

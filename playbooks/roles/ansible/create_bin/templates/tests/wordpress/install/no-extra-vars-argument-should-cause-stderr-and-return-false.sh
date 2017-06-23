@@ -22,6 +22,14 @@ test_db_password() {
     assertEquals "RPROGRAM: option requires an argument -- --db_password" "${result}" 
 }
 
+test_db_port() {
+    command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --db_port"
+    result="$(${command} 2>&1)"
+    
+    assertEquals 1 $?
+    assertEquals "RPROGRAM: option requires an argument -- --db_port" "${result}" 
+}
+
 test_db_prefix() {
     command="{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }} --db_prefix"
     result="$(${command} 2>&1)"

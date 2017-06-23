@@ -1,0 +1,31 @@
+# WordPressインストール情報
+# 環境に応じて変更する事
+#----------------------------------------------------
+wp_install_dir: wordpress
+wp_install_path: "/var/www/html/{{ wp_install_dir }}"
+wp_host: '{{ ansible_default_ipv4.address }}'
+wp_url: "http://{{ wp_host }}/{{ wp_install_dir }}"
+#----------------------------------------------------
+
+# WordPressデータベース情報
+# 環境に応じて変更する事
+#----------------------------------------------------
+db_name: wordpress
+db_user: wordpress
+db_password: wordpress
+db_host: localhost
+db_port: 3306
+db_prefix: wp_
+#----------------------------------------------------
+
+# WordPressサイト情報
+# 環境に応じて変更する事
+#----------------------------------------------------
+wp_title: test
+wp_admin_user: test
+wp_admin_password: test
+wp_admin_email: mail@example.com 
+
+# Apacheの.htaccessを制御するファイル
+wp_httpd_conf: wordpress.conf
+#----------------------------------------------------

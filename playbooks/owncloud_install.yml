@@ -1,7 +1,7 @@
 ---
 - hosts: all
   vars_files:
-    - vars/rdb/mariadb/default.yml
+    - vars/rdb/mariadb/install/default.yml
     - vars/owncloud/default.yml
   become: yes 
   

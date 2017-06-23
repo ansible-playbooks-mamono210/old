@@ -1,8 +1,8 @@
 ---
 - hosts: all
   vars_files:
-    - vars/rdb/mariadb/default.yml
-    - vars/wordpress/default.yml
+    - vars/rdb/mariadb/install/default.yml
+    - vars/wordpress/install/default.yml
   become: yes 
   
   roles:

@@ -27,18 +27,20 @@
 - name: PostgreSQLダンプデータを削除する 
   become: yes
   file:
-    path: /tmp/redmine.psql
+    path: "/tmp/{{ redmine_media_archive_file }}"
     state: absent 
 
 - name: Gitリポジトリをアーカイブする
   become: yes
-  shell: "tar cfv {{ backup_work_dir }}/git.tar git"
+  shell:
+    "tar cfv {{ backup_work_dir }}/{{ git_archive_file}} {{ git_dir }}"
   args:
-    chdir: /var
+    chdir: '{{ git_parent_dir }}'
     
 - name: メディアファイルをアーカイブする
   become: yes
-  shell: "tar cfv {{ backup_work_dir }}/files.tar files"
+  shell:
+    "tar cfv {{ backup_work_dir }}/{{ redmine_media_archive_file }} files"
   args:
     chdir: '{{ redmine_dir }}'
   
@@ -94,13 +96,15 @@
   environment:
     PGPASSWORD: '{{ db_password }}'
   shell:
-    "pg_dump -h localhost -U {{ db_user }}  {{ db_name }} > /tmp/redmine.psql"
+    "pg_dump -h localhost -U {{ db_user }} {{ db_name }} > /tmp/{{ pg_dump_data_file }}"
 
 - name: Gitアーカイブスを公開ディレクトリへ移動する
   become: yes
   copy:
-    src: "{{ backup_work_dir }}/git.tar"
-    dest: "{{ backup_data_path }}/git.tar"
+    src:
+      "{{ backup_work_dir }}/{{ git_archive_file }}"
+    dest:
+      "{{ backup_data_path }}/{{ git_archive_file }}"
     owner: apache
     group: apache
     mode: 0755
@@ -109,8 +113,10 @@
 - name: メディアファイルアーカイブスを公開ディレクトリへ移動する
   become: yes
   copy:
-    src: "{{ backup_work_dir }}/files.tar"
-    dest: "{{ backup_data_path }}/files.tar"
+    src:
+      "{{ backup_work_dir }}/{{ redmine_media_archive_file }}"
+    dest:
+      "{{ backup_data_path }}/{{ redmine_media_archive_file }}"
     owner: apache
     group: apache
     mode: 0755
@@ -119,8 +125,10 @@
 - name: PostgreSQLダンプファイルを公開ディレクトリへ移動する
   become: yes
   copy:
-    src: /tmp/redmine.psql
-    dest: "{{ backup_data_path }}/redmine.psql" 
+    src:
+      "/tmp/{{ pg_dump_data_file }}"
+    dest:
+      "{{ backup_data_path }}/{{ pg_dump_data_file }}"
     owner: apache
     group: apache
     mode: 0755
@@ -141,5 +149,5 @@
 - name: PostgreSQLダンプデータを削除する 
   become: yes
   file:
-    path: /tmp/redmine.psql
+    path: "/tmp/{{ pg_dump_data_file }}"
     state: absent 

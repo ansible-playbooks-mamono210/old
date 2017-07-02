@@ -1,0 +1,29 @@
+- name: maria-devel、maria-serverをアンインストールする
+  become: yes
+  yum: 
+    name: '{{ item }}'
+    state: absent
+  with_items:
+    - MariaDB-devel
+    - MariaDB-server
+  
+- name: MySQL-pythonをアンインストールする (Ansibleが使用)
+  become: yes
+  yum: 
+    name: MySQL-python
+    state: absent
+
+- name: 「/etc/my.cnf」、「/etc/my.cnf.d」を削除する
+  become: yes
+  file: 
+    path: '{{ item }}'
+    state: absent
+  with_items:
+    - /etc/my.cnf
+    - /etc/my.cnf.d
+
+- name: 「/var/lib/mysql」を削除する
+  become: yes
+  file: 
+    path: /var/lib/mysql 
+    state: absent

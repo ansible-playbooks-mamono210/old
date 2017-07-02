@@ -9,17 +9,13 @@
     gpgcheck: yes
     state: present
 
-- name: MariaDB-common、MariaDB-devel、MariaDB-shared、MariaDB-compat、MariaDB-server、MariaDB-clientをインストールする
+- name: mariadb-devel、mariadb-serverをインストールする
   become: yes
   yum: 
     name: '{{ item }}'
   with_items:
-    - MariaDB-common
     - MariaDB-devel
-    - MariaDB-shared
-    - MariaDB-compat
     - MariaDB-server
-    - MariaDB-client
   
 - name: MySQL-pythonをインストールする (Ansibleが使用)
   become: yes

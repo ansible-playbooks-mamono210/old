@@ -1,0 +1,12 @@
+- name: PHP7.1をアンインストールする 
+  become: yes
+  yum:
+    name: php* 
+    enablerepo: remi-php71
+    state: absent
+
+- name: 「/etc/php.ini」を削除する
+  become: yes
+  file:
+    path: /etc/php.ini
+    state: absent

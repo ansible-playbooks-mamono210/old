@@ -194,6 +194,20 @@
     force: yes
   with_dict: "{{ ipv4 }}"
 
+- name: 「wordpress/uninstall」を配置するディレクトリを作成する
+  file:
+    path: '{{ ansible_user_dir }}/ansible/bin/wordpress/uninstall'
+    recurse: yes
+    state: directory
+
+- name: 「wordpress/uninstall」をbinディレクトリに配置する
+  template:
+    src: wordpress/uninstall
+    dest: '{{ ansible_user_dir }}/ansible/bin/wordpress/uninstall/{{ item.key }}'
+    mode: 0755
+    force: yes
+  with_dict: "{{ ipv4 }}"
+
 - name: テストスクリプトを配置するディレクトリを作成する
   file:
     path: '{{ ansible_user_dir }}/ansible/bin/tests'

@@ -7,7 +7,7 @@
 - name: 「jenkins/install」をbinディレクトリに配置する
   template:
     src: 'jenkins/install'
-    dest: '{{ ansible_user_dir }}/ansible/bin/jenkins/install/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/jenkins/install/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -21,7 +21,7 @@
 - name: 「language/ruby/install/rbenv_2.3.3」をbinディレクトリに配置する
   template:
     src: language/ruby/install/rbenv_2.3.3 
-    dest: '{{ ansible_user_dir }}/ansible/bin/language/ruby/install/rbenv_2.3.3/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/language/ruby/install/rbenv_2.3.3/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -34,7 +34,7 @@
 - name: 「owncloud/install」をbinディレクトリに配置する
   template:
     src: owncloud/install
-    dest: '{{ ansible_user_dir }}/ansible/bin/owncloud/install/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/owncloud/install/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -48,7 +48,7 @@
 - name: 「redmine/create_backup」をbinディレクトリに配置する
   template:
     src: redmine/create_backup
-    dest: '{{ ansible_user_dir }}/ansible/bin/redmine/create_backup/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/redmine/create_backup/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -62,7 +62,7 @@
 - name: 「redmine/install」をbinディレクトリに配置する
   template:
     src: redmine/install
-    dest: '{{ ansible_user_dir }}/ansible/bin/redmine/install/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/redmine/install/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -76,7 +76,7 @@
 - name: 「redmine/restore」をbinディレクトリに配置する
   template:
     src: redmine/restore
-    dest: '{{ ansible_user_dir }}/ansible/bin/redmine/restore/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/redmine/restore/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -90,7 +90,7 @@
 - name: 「selenium/python/install」をbinディレクトリに配置する 
   template:
     src: selenium/python/install
-    dest: '{{ ansible_user_dir }}/ansible/bin/selenium/python/install/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/selenium/python/install/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -106,7 +106,7 @@
   template:
     src: system/ssh/add-users-and-change-sshd-config-and-firewall 
     dest: 
-      '{{ ansible_user_dir }}/ansible/bin/system/ssh/add-users-and-change-sshd-config-and-firewall/{{ item.key }}'
+      '{{ ansible_user_dir }}/ansible/bin/system/ssh/add-users-and-change-sshd-config-and-firewall/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -121,7 +121,7 @@
 - name: 「system/ssh/reset-sshd-config-and-firewall_and_remove-users」をbinディレクトリに配置する 
   template:
     src: system/ssh/reset-sshd-config-and-firewall_and_remove-users
-    dest: '{{ ansible_user_dir }}/ansible/bin/system/ssh/reset-sshd-config-and-firewall_and_remove-users/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/system/ssh/reset-sshd-config-and-firewall_and_remove-users/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -135,7 +135,7 @@
 - name: 「system/update_and_set-selinux-disabled」をbinディレクトリに配置する 
   template:
     src: system/update_and_set-selinux-disabled 
-    dest: '{{ ansible_user_dir }}/ansible/bin/system/update_and_set-selinux-disabled/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/system/update_and_set-selinux-disabled/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -149,7 +149,7 @@
 - name: 「vim/install」をbinディレクトリに配置する 
   template:
     src: vim/install
-    dest: '{{ ansible_user_dir }}/ansible/bin/vim/install/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/vim/install/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -163,7 +163,7 @@
 - name: 「vnc/server/install」をbinディレクトリに配置する
   template:
     src: vnc/server/install
-    dest: '{{ ansible_user_dir }}/ansible/bin/vnc/server/install/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/vnc/server/install/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -176,7 +176,7 @@
 - name: 「wordpress/create_backup」をbinディレクトリに配置する
   template:
     src: wordpress/create_backup
-    dest: '{{ ansible_user_dir }}/ansible/bin/wordpress/create_backup/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/wordpress/create_backup/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -189,7 +189,7 @@
 - name: 「wordpress/install」をbinディレクトリに配置する
   template:
     src: wordpress/install
-    dest: '{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -203,7 +203,7 @@
 - name: 「wordpress/uninstall」をbinディレクトリに配置する
   template:
     src: wordpress/uninstall
-    dest: '{{ ansible_user_dir }}/ansible/bin/wordpress/uninstall/{{ item.key }}'
+    dest: '{{ ansible_user_dir }}/ansible/bin/wordpress/uninstall/{{item.value.name }}.sh'
     mode: 0755
     force: yes
   with_dict: "{{ ipv4 }}"
@@ -230,7 +230,7 @@
   template:
     src: tests/redmine/create-backup/invalid-extra-vars-name-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/create-backup/invalid-extra-vars-name-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/create-backup/invalid-extra-vars-name-should-cause-stderr-and-return-false/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -245,7 +245,7 @@
   template:
     src: tests/redmine/create-backup/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/create-backup/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/create-backup/no-extra-vars-argument-should-cause-stderr-and-return-false/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -261,7 +261,7 @@
   template:
     src: tests/redmine/install/invalid-extra-vars-name-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/install/invalid-extra-vars-name-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/install/invalid-extra-vars-name-should-cause-stderr-and-return-false/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -276,7 +276,7 @@
   template:
     src: tests/redmine/install/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/install/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/install/no-extra-vars-argument-should-cause-stderr-and-return-false/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -291,7 +291,7 @@
   template:
     src: tests/redmine/restore/invalid-extra-vars-name-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/restore/invalid-extra-vars-name-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/restore/invalid-extra-vars-name-should-cause-stderr-and-return-false/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -306,7 +306,7 @@
   template:
     src: tests/redmine/restore/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/restore/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+      '{{ ansible_user_dir }}/ansible/bin/tests/redmine/restore/no-extra-vars-argument-should-cause-stderr-and-return-false/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -321,7 +321,7 @@
   template:
     src: tests/wordpress/install/invalid-extra-vars-name-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/wordpress/install/invalid-extra-vars-name-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+      '{{ ansible_user_dir }}/ansible/bin/tests/wordpress/install/invalid-extra-vars-name-should-cause-stderr-and-return-false/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"
 
@@ -336,6 +336,6 @@
   template:
     src: tests/wordpress/install/no-extra-vars-argument-should-cause-stderr-and-return-false.sh 
     dest:
-      '{{ ansible_user_dir }}/ansible/bin/tests/wordpress/install/no-extra-vars-argument-should-cause-stderr-and-return-false/{{ item.key }}.sh'
+      '{{ ansible_user_dir }}/ansible/bin/tests/wordpress/install/no-extra-vars-argument-should-cause-stderr-and-return-false/{{item.value.name }}.sh'
     force: yes
   with_dict: "{{ ipv4 }}"

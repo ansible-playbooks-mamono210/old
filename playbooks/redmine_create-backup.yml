@@ -1,0 +1,8 @@
+---
+- hosts: all
+  vars_files:
+    - vars/redmine/create-backup-data/default.yml
+  become: yes 
+  
+  roles:
+    - redmine/create-backup-data

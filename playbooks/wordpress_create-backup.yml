@@ -1,0 +1,9 @@
+---
+- hosts: all
+  vars_files:
+    - vars/wordpress/create_backup_data/default.yml
+  become: yes 
+  
+  roles:
+    - wordpress/install-wp-cli
+    - wordpress/create-backup-data

@@ -5,5 +5,5 @@
   become: yes 
   
   roles:
-    - redmine/get_backup_data/running_site
-    - redmine/restore_database
+    - redmine/get-backup-data/running-site
+    - redmine/restore-database

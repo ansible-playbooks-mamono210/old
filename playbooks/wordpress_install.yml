@@ -12,7 +12,7 @@
       tags: language_php_71_install
     - role: rdb/mariadb/install
       tags: rdb_mariadb_install
-    - role: rdb/mariadb/create_database
+    - role: rdb/mariadb/create-database
       tags: rdb_mariadb_create-database
     - role: wordpress/install
       tags: wordpress_install

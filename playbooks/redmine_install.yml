@@ -11,7 +11,7 @@
       tags: language_ruby_install_source
     - role: rdb/pg/install
       tags: rdb_pg_install
-    - role: redmine/create_pg_account_and_database
+    - role: redmine/create-pg-account-and-database
       tags: redmine_create-pg-accound-and-database
     - role: redmine/install
       tags: redmine_install

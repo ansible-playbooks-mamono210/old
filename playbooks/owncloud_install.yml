@@ -9,5 +9,5 @@
     - httpd/install
     - language/php/71/install
     - rdb/mariadb/install
-    - rdb/mariadb/create_database
+    - rdb/mariadb/create-database
     - owncloud/install

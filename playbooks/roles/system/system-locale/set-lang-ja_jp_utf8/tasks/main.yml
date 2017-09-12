@@ -1,0 +1,15 @@
+- name: システムロケールの設定を調べる
+  become: yes
+  shell: localectl status
+  register: localectl_vars
+  changed_when: false
+
+- name: システムロケールを変更する
+  become: yes
+  shell: localectl set-locale LANG=ja_JP.utf8
+  when: "'ja_JP' not in localectl_vars.stdout"
+
+- name: 設定を反映させる
+  become: yes
+  shell: source /etc/locale.conf
+  when: "'ja_JP' not in localectl_vars.stdout"

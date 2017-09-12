@@ -3,6 +3,5 @@
   become: yes 
   
   roles:
+    - system/system-locale/set-lang-ja_jp_utf8
     - jenkins/install
-#    - selenium/python/install
-    - jenkins/initialize

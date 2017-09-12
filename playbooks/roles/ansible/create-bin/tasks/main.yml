@@ -1,3 +1,17 @@
+- name: 「jenkins/create-backup」を配置するディレクトリを作成する
+  file:
+    path: '{{ ansible_user_dir }}/ansible/bin/jenkins/create-backup'
+    recurse: yes
+    state: directory
+
+- name: 「jenkins/create-backup」をbinディレクトリに配置する
+  template:
+    src: 'jenkins/create-backup'
+    dest: '{{ ansible_user_dir }}/ansible/bin/jenkins/create-backup/{{ item.value.name }}.sh'
+    mode: 0755
+    force: yes
+  with_dict: "{{ ipv4 }}"
+
 - name: 「jenkins/install」を配置するディレクトリを作成する
   file:
     path: '{{ ansible_user_dir }}/ansible/bin/jenkins/install'

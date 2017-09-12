@@ -1,0 +1,10 @@
+jenkins_installed_dir: /var/lib/jenkins
+
+
+jenkins_backup_data_dir: jenkins-backup
+jenkins_backup_work_dir: /tmp/jenkins-backup
+jenkins_backup_data_path: "/var/www/html/{{ jenkins_backup_data_dir }}"
+
+
+jenkins_backup_script_download_url: https://github.com/sue445/jenkins-backup-script.git
+

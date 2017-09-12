@@ -1,0 +1,62 @@
+- name: Jenkinsバックアップデータを削除する
+  become: yes
+  file:
+    path: '{{ jenkins_backup_data_path }}'
+    state: absent
+
+- name: Jenkinsバックアップデータ格納ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ jenkins_backup_data_path }}'
+    state: directory
+
+- name: 作業用ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ jenkins_backup_work_dir }}'
+    state: absent
+
+- name: 作業用ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ jenkins_backup_work_dir }}'
+    state: directory
+    mode: 0755
+
+- name: Jenkinsを停止する
+  become: yes
+  service:
+    name: jenkins
+    state: stopped
+    enabled: yes
+
+- name: Jenkinsバックアップデータ作成スクリプトを取得する
+  become: yes
+  git:
+    repo: '{{ jenkins_backup_script_download_url }}'
+    dest: '{{ jenkins_backup_work_dir }}' 
+
+- name: Jenkinsバックアップデータをする
+  become: yes
+  shell: 
+    "bash jenkins-backup.sh {{ jenkins_installed_dir }} {{ jenkins_backup_work_dir }}/jenkins.tar.gz"
+  args:
+    chdir: '{{ jenkins_backup_work_dir }}'
+
+- name: Jenkinsバックアップデータアーカイブスを公開ディレクトリへ移動する
+  become: yes
+  copy:
+    src: "{{ jenkins_backup_work_dir }}/jenkins.tar.gz"
+    dest: "{{ jenkins_backup_data_path }}/jenkins.tar.gz"
+    owner: apache
+    group: apache
+    mode: 0755
+    remote_src: yes
+    
+
+- name: Jenkinsを起動する
+  become: yes
+  service:
+    name: jenkins
+    state: running
+    enabled: yes

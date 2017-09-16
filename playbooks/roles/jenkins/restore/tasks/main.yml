@@ -1,0 +1,43 @@
+- name: Jenkinsを停止する
+  become: yes
+  service:
+    name: jenkins
+    state: stopped
+
+- name: 稼働中のJenkinsのデータを削除する
+  become: yes
+  file:  
+    path: '{{ item }}'
+    state: absent
+  with_items:
+    - /var/cache/jenkins/*
+    - "{{ jenkins_installed_dir }}/jobs/"
+    - "{{ jenkins_installed_dir }}/plugins/"
+    - "{{ jenkins_installed_dir }}/users/"
+    - "{{ jenkins_installed_dir }}/secrets/"
+
+- name: Jenkinsバックアップデータを解凍する
+  shell: tar xfvz jenkins.tar.gz
+  args:
+    chdir: '{{ jenkins_restore_work_dir }}'
+
+- name: Jenkinsバックアップデータを配置する
+  become: yes
+  shell: "mv -f * {{ jenkins_installed_dir }}"
+  args:
+    chdir: "{{ jenkins_restore_work_dir }}/{{ jenkins_backup_data_dir }}"
+
+- name: Jenkinsのシステムファイルの所有権をrootからJenkinsへ変更する
+  become: yes
+  file:
+    path: '{{ jenkins_installed_dir }}'
+    owner: jenkins
+    group: jenkins
+    recurse: yes
+
+- name: Jenkinsを起動する
+  become: yes
+  service:
+    name: jenkins
+    state: started
+    enabled: yes

@@ -1,0 +1,19 @@
+- name: 作業用ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ jenkins_restore_work_dir }}'
+    state: absent 
+
+- name: 作業用ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ jenkins_restore_work_dir }}'
+    state: directory
+    mode: 0755
+
+- name: 作業用ディレクトリへ Jenkins バックアップファイルをダウンロードする
+  become: yes
+  get_url:
+    url: '{{ jenkins_backup_url }}'
+    dest: '{{ jenkins_restore_work_dir }}'
+    mode: 0755

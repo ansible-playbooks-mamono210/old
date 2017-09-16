@@ -1,0 +1,9 @@
+---
+- hosts: all
+  vars_files:
+    - vars/jenkins/restore/default.yml
+  become: yes 
+  
+  roles:
+    - jenkins/get-backup-data/running-site
+    - jenkins/restore

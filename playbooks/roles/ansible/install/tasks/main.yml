@@ -1,0 +1,41 @@
+- name: 開発ツールをインストールする
+  become: yes
+  yum:
+    name: '@Development Tools'
+    state: present 
+
+- name: 必要なパッケージをインストールする
+  become: yes
+  yum:
+    name: '{{ item }}'
+    state: present 
+  with_items:
+    - epel-release
+    - expect
+    - openssl-devel
+    - python-devel
+
+- name: pipをインストールする
+  become: yes
+  yum:
+    name: 'python-pip'
+    state: present
+
+- name: pipをアップグレードする
+  become: yes
+  shell: pip install --upgrade pip
+
+- name: setuptoolsをアップグレードする
+  become: yes
+  shell: pip install --upgrade setuptools
+
+- name: Ansibleをインストールする 
+  become: yes
+  shell: pip install git+git://github.com/ansible/ansible.git@devel
+
+- name: Ansibleがインストールされたか確認する
+  shell: ansible --version
+  register: RESULT
+
+- name: Ansibleのバージョンを確認する
+  debug: var=RESULT

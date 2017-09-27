@@ -1,0 +1,3 @@
+Host {{ git_server_ip }}
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null

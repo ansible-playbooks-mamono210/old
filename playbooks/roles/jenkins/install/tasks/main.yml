@@ -33,3 +33,21 @@
     permanent: yes 
     state: enabled
     immediate: yes
+
+- name: JenkinsがAnsible Playbookを実行できるようにsudoersに登録する
+  become: yes
+  environment:
+    PATH:
+      "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:{{ ansible_env.PATH }} " 
+  lineinfile: 
+    dest: /etc/sudoers.d/jenkins
+    owner: root
+    group: root
+    mode: 0440
+    line: "{{ item }}" 
+    state: present
+    create: yes
+    validate: "visudo -cf %s" 
+  with_items:
+    - "jenkins ALL=({{ ansible_user_id }}) NOPASSWD: ALL" 
+    - "Defaults:jenkins !requiretty" 

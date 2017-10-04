@@ -1,0 +1,14 @@
+- name: 「system/ssh/reset-sshd-config-and-firewall_and_remove-users」を配置するディレクトリを作成する
+  file:
+    path:
+      '{{ ansible_user_dir }}/ansible/bin/system/ssh/reset-sshd-config-and-firewall_and_remove-users'
+    recurse: yes
+    state: directory
+
+- name: 「system/ssh/reset-sshd-config-and-firewall_and_remove-users」をbinディレクトリに配置する 
+  template:
+    src: reset-sshd-config-and-firewall_and_remove-users
+    dest: '{{ ansible_user_dir }}/ansible/bin/system/ssh/reset-sshd-config-and-firewall_and_remove-users/{{ item.value.name }}.sh'
+    mode: 0755
+    force: yes
+  with_dict: "{{ ipv4 }}"

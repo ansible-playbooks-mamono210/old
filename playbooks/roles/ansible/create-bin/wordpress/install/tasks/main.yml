@@ -1,0 +1,13 @@
+- name: 「wordpress/install」を配置するディレクトリを作成する
+  file:
+    path: '{{ ansible_user_dir }}/ansible/bin/wordpress/install'
+    recurse: yes
+    state: directory
+
+- name: 「wordpress/install」をbinディレクトリに配置する
+  template:
+    src: install
+    dest: '{{ ansible_user_dir }}/ansible/bin/wordpress/install/{{ item.value.name }}.sh'
+    mode: 0755
+    force: yes
+  with_dict: "{{ ipv4 }}"

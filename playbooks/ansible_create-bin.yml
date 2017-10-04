@@ -1,5 +1,46 @@
 ---
 - hosts: all
-  
+
   roles:
-    - ansible/create-bin 
+    - role: ansible/create-bin/ansible/install
+      tags: ansible_install
+
+    - role: ansible/create-bin/jenkins/create-backup
+      tags: jenkins_create-backup
+    - role: ansible/create-bin/jenkins/install
+      tags: jenkins_install
+    - role: ansible/create-bin/jenkins/restore
+      tags: jenkins_restore
+
+    - role: ansible/create-bin/owncloud/install
+      tags: owncloud_install
+
+    - role: ansible/create-bin/redmine/create-backup
+      tags: redmine_create-backup
+    - role: ansible/create-bin/redmine/install
+      tags: redmine_install
+    - role: ansible/create-bin/redmine/restore
+      tags: redmine_restore
+
+    - role: ansible/create-bin/selenium/python/install
+      tags: selenium_python_install
+
+    - role: ansible/create-bin/system/ssh/add-users-and-change-sshd-config-and-firewall
+      tags: system_ssh_add-users-and-change-sshd-config-and-firewall
+    - role: ansible/create-bin/system/ssh/reset-sshd-config-and-firewall_and_remove-users
+      tags: system_ssh_reset-sshd-config-and-firewall_and_remove-users
+    - role: ansible/create-bin/system/update-and-set-selinux-disabled
+      tags: system_update-and-set-selinux-disabled
+
+    - role: ansible/create-bin/vim/install
+      tags: vim_install
+
+    - role: ansible/create-bin/vnc/server/install
+      tags: vnc_server_install
+
+    - role: ansible/create-bin/wordpress/create-backup
+      tags: wordpress_create-backup
+    - role: ansible/create-bin/wordpress/install
+      tags: wordpress_install
+    - role: ansible/create-bin/wordpress/uninstall
+      tags: wordpress_uninstall

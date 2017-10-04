@@ -1,0 +1,13 @@
+- name: 「redmine/create-backup」を配置するディレクトリを作成する
+  file:
+    path: '{{ ansible_user_dir }}/ansible/bin/redmine/create-backup'
+    recurse: yes
+    state: directory
+
+- name: 「redmine/create-backup」をbinディレクトリに配置する
+  template:
+    src: create-backup
+    dest: '{{ ansible_user_dir }}/ansible/bin/redmine/create-backup/{{ item.value.name }}.sh'
+    mode: 0755
+    force: yes
+  with_dict: "{{ ipv4 }}"

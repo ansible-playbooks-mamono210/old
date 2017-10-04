@@ -1,0 +1,13 @@
+- name: 「jenkins/restore」を配置するディレクトリを作成する
+  file:
+    path: '{{ ansible_user_dir }}/ansible/bin/jenkins/restore'
+    recurse: yes
+    state: directory
+
+- name: 「jenkins/restore」をbinディレクトリに配置する
+  template:
+    src: 'restore'
+    dest: '{{ ansible_user_dir }}/ansible/bin/jenkins/restore/{{ item.value.name }}.sh'
+    mode: 0755
+    force: yes
+  with_dict: "{{ ipv4 }}"

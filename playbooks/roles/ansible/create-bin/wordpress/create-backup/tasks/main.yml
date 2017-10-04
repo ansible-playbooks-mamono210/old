@@ -1,0 +1,12 @@
+- name: 「wordpress/create-backup」を配置するディレクトリを作成する
+  file:
+    path: '{{ ansible_user_dir }}/ansible/bin/wordpress/create-backup'
+    recurse: yes
+    state: directory
+
+- name: 「wordpress/create-backup」をbinディレクトリに配置する
+  template:
+    src: create-backup
+    dest: '{{ ansible_user_dir }}/ansible/bin/wordpress/create-backup/{{ item.value.name }}.sh'
+    force: yes
+  with_dict: "{{ ipv4 }}"

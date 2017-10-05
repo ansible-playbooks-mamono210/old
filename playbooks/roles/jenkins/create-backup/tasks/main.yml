@@ -58,5 +58,5 @@
   become: yes
   service:
     name: jenkins
-    state: running
+    state: started 
     enabled: yes

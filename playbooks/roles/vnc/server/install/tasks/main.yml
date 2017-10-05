@@ -92,23 +92,17 @@
     group: '{{ vnc_user }}'
     mode: 0600
 
-
-#- name: VNCユーザーの設定 / VNCパスワードを設定
-#  become: yes  
-#  become_user: "{{ vnc_user }}"
-#  become_method: su
-#  expect:
-#    command: vncpasswd 
-#    responses:
-#      "Password:" : "{{ vnc_password }}"
-#      "Verify:" : "{{ vnc_password }}"
+- name: vncサーバ接続時にポップアップが立ち上がらないように変更する
+  become: yes
+  lineinfile:
+    dest: /etc/xdg/autostart/abrt-applet.desktop
+    state: present
+    regexp: "X-GNOME-Autostart-enabled=true"
+    line: "X-GNOME-Autostart-enabled=false"
 
 - name: systemdに設定ファイルを再度読込みをさせる
   become: yes
   shell: systemctl daemon-reload
-
-# - name: VNCサービスの停止 (http://srobb.net/rhvnc.html)
-#   shell: pkill vnc
 
 - name: VNCサービスの起動
   become: yes

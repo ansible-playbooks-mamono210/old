@@ -9,7 +9,7 @@ expect -c "
 
     set timeout -1
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/jenkins_install.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/jenkins_install.yml --become-method=su --ask-become-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
 
     expect "SU*"
 

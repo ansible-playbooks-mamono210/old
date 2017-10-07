@@ -244,7 +244,7 @@ expect -c "
 
     set timeout -1
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/redmine_create-backup.yml -S --ask-su-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass `echo ${extra_vars}`
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/redmine_create-backup.yml --become-method=su --ask-become-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass `echo ${extra_vars}`
 
     expect "SU*"
 

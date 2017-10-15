@@ -295,16 +295,30 @@ LOG_PATH="/home/ansible/ansible/bin/wordpress_install-{{ item.key }}.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 
+
+# extra-varsとタグの設定をする
 EXTRA_VARS_AND_TAGS=""
 
-if [[ ! -z "${EXTRA_VARS}" ]]; then
+# extra-varsとタグが両方渡されている時
+if [ ! -z "${EXTRA_VARS}" ] && [ ! -z "${TAGS}" ]; then
     EXTRA_VARS_ARGS=`echo ${EXTRA_VARS} | sed -e 's/^<space>//'`
     EXTRA_VARS_AND_TAGS="--extra-vars \"${EXTRA_VARS_ARGS}\""
+    extra_vars_and_tags="${EXTRA_VARS_AND_TAGS} ${TAGS}"
+ 
+# extra-varsのみ設定されている場合
+elif [ ! -z "${EXTRA_VARS}" ] && [ -z "${TAGS}" ]; then
+    EXTRA_VARS_ARGS=`echo ${EXTRA_VARS} | sed -e 's/^<space>//'`
+    extra_vars_and_tags="--extra-vars \"${EXTRA_VARS_ARGS}\""
+
+# タグのみ設定されている場合
+elif [ -z "${EXTRA_VARS}" ] && [ ! -z "${TAGS}" ]; then
+    extra_vars_and_tags="${TAGS}"
+
+# extra-varsもタグも設定されていない場合
+else
+    extra_vars_and_tags=""
 fi
 
-if [[ ! -z "${TAGS}" ]]; then
-    extra_vars_and_tags="${EXTRA_VARS_AND_TAGS} ${TAGS}"
-fi
 
 expect -c "
 

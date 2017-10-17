@@ -34,7 +34,7 @@
   become: yes
   shell: "tar cfv {{ backup_work_dir }}/wp-content.tar wp-content"
   args:
-    chdir: '{{ wp_install_dir }}'
+    chdir: '{{ wp_installed_path }}'
   
 
 ############################################################
@@ -56,7 +56,7 @@
   shell:
     "wp db export /tmp/{{ db_dump_data_sql }} --allow-root"
   args:
-    chdir: '{{ wp_install_dir }}'
+    chdir: '{{ wp_installed_path }}'
   
 - name: 「wp-content」アーカイブスを公開ディレクトリへコピーする
   become: yes

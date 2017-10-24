@@ -1,0 +1,35 @@
+- name: 作業用ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ restore_work_dir }}'
+    state: absent 
+
+- name: 作業用ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ restore_work_dir }}'
+    state: directory
+    mode: 0755
+
+- name: 作業用ディレクトリへ WordPress RDBMS バックアップファイルをダウンロードする
+  become: yes
+  get_url:
+    url: '{{ sql_backup_url }}'
+    dest: '{{ restore_work_dir }}'
+    mode: 0755
+
+- name: wp-content ディレクトリを削除する
+  become: yes
+  file:
+    path: "{{ wp_installed_path }}/wp-content" 
+    state: absent
+
+- name: リモートサーバから wp-content アーカイブスファイルを取得し解凍する
+  become: yes
+  unarchive:
+    src: '{{ wp_content_backup_url }}'
+    dest: '{{ wp_installed_path }}'
+    owner: apache
+    group: apache
+    mode: 0755
+    copy: no

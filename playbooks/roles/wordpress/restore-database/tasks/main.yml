@@ -1,0 +1,20 @@
+- name: データベースを初期化する
+  become: yes
+  shell: 
+    "sudo -u apache /usr/local/bin/wp db reset --yes --allow-root"
+  args:
+    chdir: '{{ wp_installed_path }}'
+
+- name: データベースをリストアする
+  become: yes
+  shell: 
+    "sudo -u apache /usr/local/bin/wp db import {{ restore_work_dir }}/{{ sql_dump_file }} --allow-root"
+  args:
+    chdir: '{{ wp_installed_path }}'
+
+- name: 旧サイトのURLを新サイトに書き換える
+  become: yes
+  shell: 
+    "sudo -u apache /usr/local/bin/wp search-replace {{ wp_old_url }} {{ wp_new_url }} --allow-root"
+  args:
+    chdir: '{{ wp_installed_path }}' 

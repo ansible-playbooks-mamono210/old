@@ -1,0 +1,9 @@
+---
+- hosts: all
+  vars_files:
+    - vars/wordpress/restore/default.yml
+  become: yes 
+  
+  roles:
+    - wordpress/get-backup-data/running-site
+    - wordpress/restore-database

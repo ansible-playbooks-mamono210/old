@@ -1,4 +1,231 @@
+OGNAME=$(basename $0)
+VERSION="1.0"
+
+usage() {
+    echo "Usage: $PROGRAM [OPTIONS] FILE"
+    echo "  This script is ~."
+    echo
+    echo "Options:"
+    echo "  -h, --help"
+    echo
+    echo "  --version"
+    echo
+    echo "  --db_host ARGUMENT"
+    echo "          ownCloudが利用するRDBMSのデータベースホスト"
+    echo "          初期値は「localhost」" 
+    echo
+    echo "  --db_name ARGUMENT"
+    echo "          ownCloudが利用するRDBMSのデータベース名"
+    echo "          初期値は「owncloud」" 
+    echo
+    echo "  --db_password ARGUMENT"
+    echo "          ownCloudが利用するRDBMSのデータベースパスワード"
+    echo "          初期値は「owncloud」" 
+    echo
+    echo "  --db_user ARGUMENT"
+    echo "          ownCloudが利用するRDBMSのデータベースユーザー名"
+    echo "          初期値は「owncloud」" 
+    echo
+    echo "  --mariadb_root_password ARGUMENT"
+    echo "          MariaDBのrootパスワード（MariaDBインストール時に利用）"
+    echo "          初期値は「password」" 
+    echo
+    echo "  --oc_install_dir ARGUMENT"
+    echo "          owncloudをインストールするディレクトリ"
+    echo "          初期値は「/var/www/html/owncloud」" 
+    echo
+    echo "  --oc_httpd_conf ARGUMENT"
+    echo "          「/etc/httpd/conf.d/」へ配置する"
+    echo "          owncloudディレクトリで.htaccessを有効にする設定ファイル名"
+    echo "          例）「/etc/httpd/conf.d/owncloud.conf」のように配置される"
+    echo "          初期値は「owncloud.conf」" 
+    echo
+    echo "  --skip-tags ARGUMENT"
+    echo "          指定したタグのついたロールをスキップして実行する。タグの指定はコンマで区切る。"
+    echo "              例）bash someplaybook-bash --skip-tags "httpd_install,owncloud_install" "
+    echo 
+    echo "                  指定可能なタグ"
+    echo "                      -httpd_install "
+    echo "                      -langage_php_71_install "
+    echo "                      -rdb_mariadb_install "
+    echo "                      -rdb_mariadb_create-database "
+    echo "                      -owncloud_install "
+    echo
+    echo "  --tags ARGUMENT"
+    echo "          指定したタグのついたロールのみ実行する。タグの指定はコンマで区切る。"
+    echo "              例）bash someplaybook-bash --tags "httpd_install,owncloud_install" "
+    echo 
+    echo "                  指定可能なタグ"
+    echo "                      -httpd_install "
+    echo "                      -langage_php_71_install "
+    echo "                      -rdb_mariadb_install "
+    echo "                      -rdb_mariadb_create-database "
+    echo "                      -owncloud_install "
+    echo
+    exit 1
+}
+
+EXTRA_VARS=""
+TAGS=
+
+for OPT in "$@"
+do
+    case "$OPT" in
+        '-h'|'--help' )
+            usage
+            exit 1
+            ;;
+
+        '--version' )
+            echo $VERSION
+            exit 1
+            ;;
+
+        '--db_host' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+            EXTRA_VARS="${EXTRA_VARS} db_host=$2"
+            shift 1 
+            ;;
+
+        '--db_name' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+            EXTRA_VARS="${EXTRA_VARS} db_name=$2"
+            shift 1
+            ;;
+
+        '--db_password' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+            EXTRA_VARS="${EXTRA_VARS} db_password=$2"
+            shift 1
+            ;;
+
+        '--db_user' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+            EXTRA_VARS="${EXTRA_VARS} db_user=$2"
+            shift 1
+            ;;
+
+        '--mariadb_root_password' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+            EXTRA_VARS="${EXTRA_VARS} mariadb_root_password=$2"
+            shift 1
+            ;;
+
+        '--oc_httpd_conf' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+            EXTRA_VARS="${EXTRA_VARS} oc_httpd_conf=$2"
+            shift 1
+            ;;
+
+        '--oc_install_dir' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+            EXTRA_VARS="${EXTRA_VARS} oc_install_dir=$2"
+            shift 1
+            ;;
+
+        '--skip-tags' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+
+            if [[ ! -z ${TAGS} ]]; then
+                echo "PROGRAM: Only one of [--tags] and [--skip-tags] options should be used."
+                exit 1
+            fi
+
+            TAGS="--skip-tags \"$2\""
+            shift 1
+            ;;
+
+        '--tags' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+
+            if [[ ! -z ${TAGS} ]]; then
+                echo "PROGRAM: Only one of [--tags] and [--skip-tags] options should be used."
+                exit 1
+            fi
+
+            TAGS="--tags \"$2\""
+            shift 1
+            ;;
+
+        '--'|'-' )
+            shift 1
+            param+=( "$@" )
+            break
+            ;;
+
+        -*)
+            echo "$PROGNAME: illegal option -- '$(echo $1 | sed 's/^-*//')'" 1>&2
+            exit 1
+            ;;
+
+        *)
+            if [[ ! -z "$1" ]] && [[ ! "$1" =~ ^-x ]]; then
+                param+=( "$1" )
+                shift 1
+            fi
+            ;;
+    esac
+done
+
+
 export ANSIBLE_HOST_KEY_CHECKING=False
+
+# ログファイルのパスを設定する
+LOG_PATH="/home/ansible/ansible/bin/wordpress_install-{{ item.key }}.log"
+rm -rf ${LOG_PATH}
+export ANSIBLE_LOG_PATH=${LOG_PATH}
+
+
+# extra-varsとタグの設定をする
+EXTRA_VARS_AND_TAGS=""
+
+# extra-varsとタグが両方渡されている時
+if [ ! -z "${EXTRA_VARS}" ] && [ ! -z "${TAGS}" ]; then
+    EXTRA_VARS_ARGS=`echo ${EXTRA_VARS} | sed -e 's/^<space>//'`
+    EXTRA_VARS_AND_TAGS="--extra-vars \"${EXTRA_VARS_ARGS}\""
+    extra_vars_and_tags="${EXTRA_VARS_AND_TAGS} ${TAGS}"
+             
+# extra-varsのみ設定されている場合
+elif [ ! -z "${EXTRA_VARS}" ] && [ -z "${TAGS}" ]; then
+    EXTRA_VARS_ARGS=`echo ${EXTRA_VARS} | sed -e 's/^<space>//'`
+    extra_vars_and_tags="--extra-vars \"${EXTRA_VARS_ARGS}\""
+
+# タグのみ設定されている場合
+elif [ -z "${EXTRA_VARS}" ] && [ ! -z "${TAGS}" ]; then
+    extra_vars_and_tags="${TAGS}"
+
+# extra-varsもタグも設定されていない場合
+else
+    extra_vars_and_tags=""
+fi
+
 
 # ログファイルのパスを設定する
 LOG_PATH="{{ ansible_user_dir }}/ansible/bin/owncloud_install-{{ item.key }}.log"
@@ -9,7 +236,7 @@ expect -c "
 
     set timeout -1
     
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/owncloud_install.yml --become-method=su --ask-become-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/owncloud_install.yml --become-method=su --ask-become-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass `echo ${extra_vars_and_tags}` 
 
     expect "SU*"
 

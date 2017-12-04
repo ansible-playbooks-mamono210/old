@@ -6,8 +6,13 @@
   become: yes 
   
   roles:
-    - httpd/install
-    - language/php/71/install
-    - rdb/mariadb/install
-    - rdb/mariadb/create-database
-    - owncloud/install
+    - role: httpd/install
+      tags: httpd_install
+    - role: language/php/71/install
+      tags: language_php_71_install
+    - role: rdb/mariadb/install
+      tags: rdb_mariadb_install
+    - role: rdb/mariadb/create-database
+      tags: rdb_mariadb_create-database
+    - role: owncloud/install
+      tags: owncloud_install

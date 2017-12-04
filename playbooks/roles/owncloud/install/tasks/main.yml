@@ -7,6 +7,7 @@
   git:
     repo: https://github.com/owncloud/core.git
     dest: "{{ oc_install_dir }}"
+    force: yes
 
 - name: ownCloudディレクトリの所有権と所有者を変更する
   become: yes

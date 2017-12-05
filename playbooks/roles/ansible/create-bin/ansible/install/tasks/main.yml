@@ -1,13 +1,12 @@
 - name: 「ansible/install」を配置するディレクトリを作成する
   file:
-    path: '{{ ansible_user_dir }}/ansible/bin/ansible/install'
+    path: '{{ ansible_user_dir }}/ansible/bin/ansible'
     recurse: yes
     state: directory
 
 - name: 「ansible/install」をbinディレクトリに配置する
   template:
     src: 'install'
-    dest: '{{ ansible_user_dir }}/ansible/bin/ansible/install/{{ item.value.name }}.sh'
+    dest: '{{ ansible_user_dir }}/ansible/bin/ansible/install.sh'
     mode: 0755
     force: yes
-  with_dict: "{{ ipv4 }}"

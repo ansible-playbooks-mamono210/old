@@ -1,7 +1,7 @@
 - name: 「system/ssh/add-users-and-change-sshd-config-and-firewall」を配置するディレクトリを作成する
   file:
     path:
-      '{{ ansible_user_dir }}/ansible/bin/system/ssh/add-users-and-change-sshd-config-and-firewall'
+      '{{ ansible_user_dir }}/ansible/bin/system/ssh'
     recurse: yes
     state: directory
 
@@ -9,7 +9,6 @@
   template:
     src: add-users-and-change-sshd-config-and-firewall 
     dest: 
-      '{{ ansible_user_dir }}/ansible/bin/system/ssh/add-users-and-change-sshd-config-and-firewall/{{ item.value.name }}.sh'
+      '{{ ansible_user_dir }}/ansible/bin/system/ssh/add-users-and-change-sshd-config-and-firewall.sh'
     mode: 0755
     force: yes
-  with_dict: "{{ ipv4 }}"

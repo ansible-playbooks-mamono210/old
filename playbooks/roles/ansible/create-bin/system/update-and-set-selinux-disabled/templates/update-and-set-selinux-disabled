@@ -1,7 +1,159 @@
+PROGNAME=$(basename $0)
+
+usage() {
+    echo "Usage: $PROGRAM [OPTIONS] FILE"
+    echo "  This script is ~."
+    echo
+    echo "Options:"
+    echo "  -h, --help"
+    echo
+    echo "  --invetory ARGUMENT"
+    echo "          playbookのinventoryを指定する。"
+    echo "          この値は必ず指定する事。"
+    echo
+    echo "  --ssh_passphrase ARGUMENT"
+    echo "          接続対象ノードの鍵ファイルのパスワードを指定する。"
+    echo "          この値は必ず指定する事。"
+    echo
+    echo "  --ssh_port ARGUMENT"
+    echo "          接続対象ノードのSSHポート番号を指定する。"
+    echo "          sshdを再起動する際にansibleがSSHポート番号を必要とする。"
+    echo "          この値は必ず指定する事。"
+    echo
+    echo "  --su_password ARGUMENT"
+    echo "          接続対象ノードのansibleユーザーのsuパスワードを指定する。"
+    echo "          この値は必ず指定する事。"
+    echo
+    echo "  --vault_password ARGUMENT"
+    echo "          ansible vault パスワード "
+    echo "          この値は必ず指定する事。" 
+    echo
+    exit 1
+}
+
+# 変数を初期化する
+NVENTORY=
+SSH_PASSPHRASE=
+SSH_PORT=
+SU_PASSWORD=
+VAULT_PASSWORD=
+
+
+for OPT in "$@"
+do
+    case "$OPT" in
+        '-h'|'--help' )
+            usage
+            exit 1
+            ;;
+
+        '--inventory' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "$RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+
+            INVENTORY="$2"
+            shift 1
+            ;;
+
+        '--ssh_passphrase' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "$RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+
+            SSH_PASSPHRASE="$2"
+            shift 1
+            ;;
+
+        '--ssh_port' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "$RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+
+            SSH_PORT="$2"
+            shift 1
+            ;;
+
+        '--su_password' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "$RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+
+            SU_PASSWORD="$2"
+            shift 1
+            ;;
+
+        '--vault_password' )
+            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
+                echo "$RPROGRAM: option requires an argument -- $1"
+                exit 1
+            fi
+
+            VAULT_PASSWORD="$2"
+            shift 1
+            ;;
+
+        '--'|'-' )
+            shift 1
+            param+=( "$@" )
+            break
+            ;;
+
+        -*)
+            echo "$PROGNAME: illegal option -- '$(echo $1 | sed 's/^-*//')'" 1>&2
+            exit 1
+            ;;
+
+        *)
+            if [[ ! -z "$1" ]] && [[ ! "$1" =~ ^-x ]]; then
+                param+=( "$1" )
+                shift 1
+            fi
+            ;;
+    esac
+done
+
+
+# inventoryが引数で渡されていない場合は処理を終了する
+if [[ -z "${INVENTORY}" ]] || [[ "${INVENTORY}" =~ ^-+ ]]; then
+    echo "$RPROGRAM: inventory option requires"
+    exit 1
+fi
+
+# 鍵ファイルのパスワードが引数で渡されていない場合は処理を終了する
+if [[ -z "${SSH_PASSPHRASE}" ]] || [[ "${SSH_PASSPHRASE}" =~ ^-+ ]]; then
+    echo "$RPROGRAM: ssh_passphrase option requires"
+    exit 1
+fi
+
+# ssh ポート番号が引数で渡されていない場合は処理を終了する
+if [[ -z "${SSH_PORT}" ]] || [[ "${SSH_PORT}" =~ ^-+ ]]; then
+    echo "$RPROGRAM: ssh_port option requires"
+    exit 1
+fi
+
+# su パスワードが引数で渡されていない場合は処理を終了する
+if [[ -z "${SU_PASSWORD}" ]] || [[ "${SU_PASSWORD}" =~ ^-+ ]]; then
+    echo "$RPROGRAM: su_password option requires"
+    exit 1
+fi
+
+# ansible vault パスワードが引数で渡されていない場合は処理を終了する
+if [[ -z "${VAULT_PASSWORD}" ]] || [[ "${VAULT_PASSWORD}" =~ ^-+ ]]; then
+    echo "$RPROGRAM: vault_password option requires"
+    exit 1
+fi
+
+
+
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 # ログファイルのパスを設定する
-LOG_PATH="{{ ansible_user_dir }}/ansible/bin/system_update-and-set-selinux-disabled-{{ item.key }}.log"
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/system_update-and-set-selinux-disabled.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 
@@ -9,19 +161,19 @@ expect -c "
 
     set timeout -1
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_update-and-set-seliux-disabled.yml --become-method=su --ask-become-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/system_update-and-set-seliux-disabled.yml --become-method=su --ask-become-pass -i "${INVENTORY}" -u ansible --ask-vault-pass -e "ssh_port=${SSH_PORT}" 
     
     expect "SU*"
 
-    send -- \"{{ item.value.password }}\n\"
+    send -- \"${SU_PASSWORD}\n\"
 
     expect "Vault*password"
 
-    send \"{{ vault_password }}\n\"
+    send \"${VAULT_PASSWORD}\n\"
 
     expect "Enter*passphrase"
 
-    send \"{{ vault_password }}\n\"
+    send \"${SSH_PASSPHRASE}\n\"
 
     expect eof
     exit

@@ -1,0 +1,10 @@
+application server:
+  hosts:
+    my server:
+      ansible_become_method: su
+      ansible_become_pass: password
+      ansible_connection: paramiko
+      ansible_host: example.com
+      ansible_port: 22
+      ansible_ssh_pass: password 
+      ansible_user: root

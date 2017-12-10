@@ -1,131 +1,7 @@
-PROGNAME=$(basename $0)
-
-usage() {
-    echo "Usage: $PROGRAM [OPTIONS] FILE"
-    echo "  This script is ~."
-    echo
-    echo "Options:"
-    echo "  -h, --help"
-    echo
-    echo "  --invetory ARGUMENT"
-    echo "          playbookのinventoryを指定する。"
-    echo "          この値は必ず指定する事。"
-    echo
-    echo "  --ssh_passphrase ARGUMENT"
-    echo "          接続対象ノードの鍵ファイルのパスワードを指定する。"
-    echo "          この値は必ず指定する事。"
-    echo
-    echo "  --su_password ARGUMENT"
-    echo "          接続対象ノードのansibleユーザーのsuパスワードを指定する。"
-    echo "          この値は必ず指定する事。"
-    echo
-    echo "  --vault_password ARGUMENT"
-    echo "          ansible vault パスワード "
-    echo "          初期値は「password」" 
-    echo
-    exit 1
-}
-
-# 変数を初期化する
-INVENTORY=
-SSH_PASSPHRASE=
-SU_PASSWORD=
-VAULT_PASSWORD=password
-
-
-for OPT in "$@"
-do
-    case "$OPT" in
-        '-h'|'--help' )
-            usage
-            exit 1
-            ;;
-
-        '--inventory' )
-            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
-                echo "$RPROGRAM: option requires an argument -- $1"
-                exit 1
-            fi
-
-            INVENTORY="$2"
-            shift 1
-            ;;
-
-        '--ssh_passphrase' )
-            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
-                echo "$RPROGRAM: option requires an argument -- $1"
-                exit 1
-            fi
-
-            SSH_PASSPHRASE="$2"
-            shift 1
-            ;;
-
-        '--su_password' )
-            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
-                echo "$RPROGRAM: option requires an argument -- $1"
-                exit 1
-            fi
-
-            SU_PASSWORD="$2"
-            shift 1
-            ;;
-
-        '--vault_password' )
-            if [[ -z "$2" ]] || [[ "$2" =~ ^-+ ]]; then
-                echo "$RPROGRAM: option requires an argument -- $1"
-                exit 1
-            fi
-
-            VAULT_PASSWORD="$2"
-            shift 1
-            ;;
-
-        '--'|'-' )
-            shift 1
-            param+=( "$@" )
-            break
-            ;;
-
-        -*)
-            echo "$PROGNAME: illegal option -- '$(echo $1 | sed 's/^-*//')'" 1>&2
-            exit 1
-            ;;
-
-        *)
-            if [[ ! -z "$1" ]] && [[ ! "$1" =~ ^-x ]]; then
-                param+=( "$1" )
-                shift 1
-            fi
-            ;;
-    esac
-done
-
-
-# inventoryが引数で渡されていない場合は処理を終了する
-if [[ -z "${INVENTORY}" ]] || [[ "${INVENTORY}" =~ ^-+ ]]; then
-    echo "$RPROGRAM: inventory option requires"
-    exit 1
-fi
-
-# 鍵ファイルのパスワードが引数で渡されていない場合は処理を終了する
-if [[ -z "${SSH_PASSPHRASE}" ]] || [[ "${SSH_PASSPHRASE}" =~ ^-+ ]]; then
-    echo "$RPROGRAM: ssh_passphrase option requires"
-    exit 1
-fi
-
-# su パスワードが引数で渡されていない場合は処理を終了する
-if [[ -z "${SU_PASSWORD}" ]] || [[ "${SU_PASSWORD}" =~ ^-+ ]]; then
-    echo "$RPROGRAM: su_password option requires"
-    exit 1
-fi
-
-
-
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 # ログファイルのパスを設定する
-LOG_PATH="{{ ansible_user_dir }}/ansible/bin/ansible_install.log"
+LOG_PATH="{{ ansible_user_dir }}/ansible/bin/ansible_install-{{ item.key }}.log"
 rm -rf ${LOG_PATH}
 export ANSIBLE_LOG_PATH=${LOG_PATH}
 
@@ -133,23 +9,23 @@ expect -c "
 
     set timeout -1
 
-    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/ansible_install.yml --become-method=su --ask-become-pass -i "${INVENTORY}" -u ansible --ask-vault-pass 
+    spawn ansible-playbook {{ ansible_user_dir }}/ansible/playbooks/ansible_install.yml --become-method=su --ask-become-pass -i "{{ item.key }}:{{ ssh_port }}," -u ansible --ask-vault-pass 
 
     expect "SU*"
 
-    send -- \"${SU_PASSWORD}\n\"
+    send -- \"{{ item.value.password }}\n\"
 
     expect "Vault*password"
 
-    send \"${VAULT_PASSWORD}\n\"
+    send \"{{ vault_password }}\n\"
 
     expect "Enter*passphrase"
 
-    send \"${SSH_PASSPHRASE}\n\"
+    send \"{{ vault_password }}\n\"
 
     expect eof
     exit
-    "   
+    "    
 
 # SSH接続が失敗している場合はステータス「1」を返して終了する
 if tail -n 1 ${LOG_PATH} | grep unreachable=1 ; then

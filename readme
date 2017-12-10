@@ -1,9 +1,7 @@
 ###################################################
-# Ansible 2.4をインストールする
+# Ansibleをインストールする
 ###################################################
 
-2016年5月現在CentOS7においてyumコマンドでインストールされるAnsible 2.3は
-不具合が多い。そのためpipからAnsible 2.4をインストールする。
 
 1. Ansibleをインストールする
 
@@ -20,31 +18,32 @@
 
 2. 秘密鍵を「~/.ssh」へ配置する
 
-    i.   ユーザー「Ansible」を作成する。
+    i.   ユーザー「ansible」を作成する。
     ii.  ssh-keygenコマンドで鍵ファイルを作成する。
     iii. system_ssh_add-users-and-change-sshd-config-and-firewall で
          ユーザーを対象ノードへ作成する
-    iii. 公開鍵ファイルを対象ノードの /home/ios/.ssh へ配置する。
+    iii. 公開鍵ファイルを対象ノードの /home/ansible/.ssh へ配置する。
+
+
 
 ###############################################
 # playbookの利用方法
 ###############################################
 
+
 1. localhostでplaybookを実行する
 
-    ansible-playbook -i localhost example.yml --ask-vault-pass
+    cd /path/to/ansible/playbooks
+    
+    ansible-playbook -i /path/to/localhost example.yml \
+    --ask-vault-pass
 
 
-2. 「bin」ディレクトリ内にplaybook実行補助スクリプトを作成する
+
+2. ノードへplaybookを実行する
 
     cd /path/to/ansible/playbooks
-    ansible-playbook -i localhost ansible_create_bin.yml --ask-vault-pass
+    
+    ansible-playbook -i /path/to/inventory ansible_create_bin.yml \
+    --ask-vault-pass
 
-3. 「expect」をインストールする
-
-    bin ディレクトリのシェルスクリプトファイルを実行するには
-    expectが必要なのでインストールしておく。
-
-4.  「ANSIBLE_HOST_KEY_CHECKING=False」 でPlaybook実行前に環境変数をシェルに渡す
-
-    bin ディレクトリのシェルスクリプトファイルには全て記述済み

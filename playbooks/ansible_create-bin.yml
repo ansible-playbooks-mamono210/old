@@ -25,8 +25,6 @@
     - role: ansible/create-bin/selenium/python/install
       tags: selenium_python_install
 
-    - role: ansible/create-bin/system/ssh/add-users-and-change-sshd-config-and-firewall
-      tags: system_ssh_add-users-and-change-sshd-config-and-firewall
     - role: ansible/create-bin/system/ssh/reset-sshd-config-and-firewall_and_remove-users
       tags: system_ssh_reset-sshd-config-and-firewall_and_remove-users
     - role: ansible/create-bin/system/update-and-set-selinux-disabled

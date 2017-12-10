@@ -20,7 +20,7 @@
   args:
     host: "{{ inventory_hostname }}"
     state: stopped
-    port: '{{ ssh_port }}'
+    port: '{{ ansible_port }}'
   when: result.changed == true
 
 - name: システムが再起動するまで待機する 

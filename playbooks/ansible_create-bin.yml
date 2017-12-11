@@ -20,9 +20,6 @@
     - role: ansible/create-bin/selenium/python/install
       tags: selenium_python_install
 
-    - role: ansible/create-bin/vim/install
-      tags: vim_install
-
     - role: ansible/create-bin/vnc/server/install
       tags: vnc_server_install
 

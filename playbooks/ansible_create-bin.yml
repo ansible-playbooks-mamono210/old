@@ -2,9 +2,6 @@
 - hosts: all
 
   roles:
-    - role: ansible/create-bin/ansible/install
-      tags: ansible_install
-
     - role: ansible/create-bin/jenkins/create-backup
       tags: jenkins_create-backup
     - role: ansible/create-bin/jenkins/install

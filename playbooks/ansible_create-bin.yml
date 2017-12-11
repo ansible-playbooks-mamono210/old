@@ -4,8 +4,6 @@
   roles:
     - role: ansible/create-bin/jenkins/create-backup
       tags: jenkins_create-backup
-    - role: ansible/create-bin/jenkins/install
-      tags: jenkins_install
     - role: ansible/create-bin/jenkins/restore
       tags: jenkins_restore
 

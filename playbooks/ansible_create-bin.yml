@@ -22,9 +22,3 @@
 
     - role: ansible/create-bin/wordpress/create-backup
       tags: wordpress_create-backup
-    - role: ansible/create-bin/wordpress/install
-      tags: wordpress_install
-    - role: ansible/create-bin/wordpress/restore
-      tags: wordpress_restore
-    - role: ansible/create-bin/wordpress/uninstall
-      tags: wordpress_uninstall

@@ -14,8 +14,5 @@
     - role: ansible/create-bin/redmine/restore
       tags: redmine_restore
 
-    - role: ansible/create-bin/vnc/server/install
-      tags: vnc_server_install
-
     - role: ansible/create-bin/wordpress/create-backup
       tags: wordpress_create-backup

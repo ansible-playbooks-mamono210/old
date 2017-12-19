@@ -7,8 +7,6 @@
     - role: ansible/create-bin/jenkins/restore
       tags: jenkins_restore
 
-    - role: ansible/create-bin/redmine/create-backup
-      tags: redmine_create-backup
     - role: ansible/create-bin/redmine/install
       tags: redmine_install
     - role: ansible/create-bin/redmine/restore

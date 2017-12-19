@@ -44,55 +44,8 @@
   args:
     chdir: '{{ redmine_dir }}'
   
-
-############################################################
-# Ansible 2.3でarchiveモジュールが実装されたら以下の処理へ変更する
-############################################################
-#
-#- name: Gitリポジトリをアーカイブする
-#  become: yes
-#  archive:
-#    path: /var/git
-#    dest: "{{ backup_data_path }}/git.tar.gz"
-#    owner: apache
-#    group: apache
-#    mode: 0755
-#
-#- name: Redmineメディアファイルをアーカイブする
-#  become: yes
-#  archive:
-#    path: "{{ redmine_dir}}/files"
-#    dest: ""{{ backup_data_path }}/files.tar.gz"
-#    owner: apache
-#    group: apache
-#    mode: 0755
-
-- name: PostgreSQLを再起動する
-  become: yes
-  service:
-    name: postgresql
-    state: restarted
-    enabled: yes
-
-- name: ユーザー「postgres」を一時的にsudoersに追加する
-  become: yes
-  environment:
-    PATH:
-      "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:{{ ansible_env.PATH }} "
-  lineinfile: 
-    dest: /etc/sudoers.d/postgres
-    owner: root
-    group: root
-    mode: 0440
-    line: "%{{ ansible_user_id}} ALL=(postgres) NOPASSWD: ALL"
-    state: present
-    create: yes
-    validate: "visudo -cf %s"
-
 - name: PostgreSQL / データベース「redmine」をダンプする
   become: yes
-  become_user: postgres
-  become_method: sudo
   environment:
     PGPASSWORD: '{{ db_password }}'
   shell:
@@ -133,12 +86,6 @@
     group: apache
     mode: 0755
     remote_src: True
-
-- name: postgresをsudoersから削除する
-  become: yes
-  file:  
-    path: /etc/sudoers.d/postgres
-    state: absent
 
 - name: 作業用ディレクトリを初期化する
   become: yes

@@ -7,7 +7,5 @@
     - role: ansible/create-bin/jenkins/restore
       tags: jenkins_restore
 
-    - role: ansible/create-bin/redmine/install
-      tags: redmine_install
     - role: ansible/create-bin/redmine/restore
       tags: redmine_restore

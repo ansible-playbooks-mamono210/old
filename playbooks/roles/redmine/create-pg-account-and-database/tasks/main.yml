@@ -48,7 +48,7 @@
     patch -tNp0 {{ pg_hba_conf_path }} < {{ work_dir }}/pg_hba_conf.patch
   when: result_pg_hba.rc == 1
 
-- name: PostgreSQL起動
+- name: PostgreSQLを再起動する
   become: yes
   service:
     name: postgresql

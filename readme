@@ -4,17 +4,18 @@
 
 
 1. Ansibleをインストールする
-
-    yum groupinstall "Development Tools" 
-    yum install epel-release
-    yum install openssl-devel
-    yum install python-devel
-    yum install python-pip
+    
+    yum -y install epel-release
+    yum --enablerepo=epel -y install sshpass
+    yum -y groupinstall "Development Tools"
+    yum -y install openssl-devel
+    yum -y install python-devel
+    yum -y install python-pip
     pip install --upgrade pip
     pip install --upgrade setuptools
     pip install git+git://github.com/ansible/ansible.git@devel
+    yum -y install expect
     ansible --version
-
 
 2. 秘密鍵を「~/.ssh」へ配置する
 

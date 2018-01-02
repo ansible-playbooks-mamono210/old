@@ -32,10 +32,3 @@
 - name: Ansibleをインストールする 
   become: yes
   shell: pip install git+git://github.com/ansible/ansible.git@devel
-
-- name: Ansibleがインストールされたか確認する
-  shell: ansible --version
-  register: RESULT
-
-- name: Ansibleのバージョンを確認する
-  debug: var=RESULT

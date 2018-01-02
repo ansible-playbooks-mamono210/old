@@ -4,3 +4,4 @@
   
   roles:
     - ansible/install
+    - ansible/get-version

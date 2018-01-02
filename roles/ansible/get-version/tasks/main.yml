@@ -1,0 +1,6 @@
+- name: Ansibleがインストールされたか確認する
+  shell: ansible --version
+  register: RESULT
+
+- name: Ansibleのバージョンを確認する
+  debug: var=RESULT

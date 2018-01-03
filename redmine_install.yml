@@ -17,3 +17,5 @@
       tags: redmine_install
     - role: httpd/passenger/install
       tags: httpd_passenger_install
+    - role: httpd/get-version
+      tags: httpd_get-version

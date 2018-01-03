@@ -1,0 +1,8 @@
+- name: Apacheがインストールされたか確認する
+  shell: httpd -v
+  environment:
+     PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:{{ ansible_env.PATH }}"
+  register: RESULT
+
+- name: Apacheのバージョンを確認する
+  debug: var=RESULT

@@ -16,5 +16,7 @@
       tags: rdb_mariadb_create-database
     - role: owncloud/install
       tags: owncloud_install
+    - role: httpd/get-version
+      tags: httpd_get-version
     - role: language/php/get-version
       tags: language_php_get-version

@@ -41,13 +41,6 @@
     - php-soap
     - php-xml
 
-- name: PHPのバージョンを確認する
-  shell: php -v
-  register: RESULT
-
-- name: PHPがインストールされたか確認する
-  debug: var=RESULT.stdout_lines
-
 - name: タイムゾーンを「Asia/Tokyo」に設定する
   become: yes
   ini_file:
@@ -62,9 +55,3 @@
     name: httpd
     state: restarted
     enabled: yes
-
-- name: PHPの設定確認用URLを作成する
-  become: yes
-  template:
-    src: phpinfo.php
-    dest: /var/www/html/

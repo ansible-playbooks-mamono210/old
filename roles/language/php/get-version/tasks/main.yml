@@ -1,0 +1,6 @@
+- name: PHPがインストールされたか確認する
+  shell: php -i
+  register: RESULT
+
+- name: PHPのバージョンを確認する
+  debug: var=RESULT

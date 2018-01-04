@@ -1,7 +1,0 @@
-- name: ownCloudがインストールされたか確認する
-  become: yes
-  shell: "php {{ oc_install_dir }}/occ --version"
-  register: RESULT
-
-- name: ownCloudのバージョンを確認する
-  debug: var=RESULT.stdout

@@ -1,6 +1,0 @@
-- name: Jenkinsがインストールされたか確認する
-  shell: "curl -v --silent http://{{ ansible_host }}:8080 / 2>&1 | grep X-Jenkins:"
-  register: RESULT
-
-- name: Ansibleのバージョンを確認する
-  debug: var=RESULT

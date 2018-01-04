@@ -22,3 +22,5 @@
       tags: language_php_get-version
     - role: rdb/mariadb/get-version
       tags: rdb_mariadb_get-version
+    - role: owncloud/get-version
+      tags: owncloud_get-version

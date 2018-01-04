@@ -16,5 +16,3 @@
       tags: rdb_mariadb_create-database
     - role: wordpress/install
       tags: wordpress_install
-    - role: rdb/mariadb/get-version
-      tags: rdb_mariadb_get-version

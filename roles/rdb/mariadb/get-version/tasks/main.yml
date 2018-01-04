@@ -1,6 +1,0 @@
-- name: MariaDBのバージョンを確認する
-  shell: rpm -qa | grep -i mariadb
-  register: RESULT
-
-- name: MariaDBがインストールされたか確認する
-  debug: var=RESULT.stdout_lines

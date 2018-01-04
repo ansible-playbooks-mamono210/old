@@ -16,8 +16,6 @@
       tags: rdb_mariadb_create-database
     - role: owncloud/install
       tags: owncloud_install
-    - role: httpd/get-version
-      tags: httpd_get-version
     - role: rdb/mariadb/get-version
       tags: rdb_mariadb_get-version
     - role: owncloud/get-version

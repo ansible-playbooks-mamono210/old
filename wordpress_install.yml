@@ -18,7 +18,5 @@
       tags: wordpress_install
     - role: httpd/get-version
       tags: httpd_get-version
-    - role: language/php/get-version
-      tags: language_php_get-version
     - role: rdb/mariadb/get-version
       tags: rdb_mariadb_get-version

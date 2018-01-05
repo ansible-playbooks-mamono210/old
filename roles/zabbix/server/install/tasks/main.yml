@@ -11,9 +11,7 @@
     enablerepo: remi-php71
     state: present 
   with_items:
-    - zabbix-get
     - zabbix-server-mysql 
-    - zabbix-web-mysql 
 
 
 - name: httpdを再起動する

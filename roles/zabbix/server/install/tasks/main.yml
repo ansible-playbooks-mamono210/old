@@ -1,9 +1,13 @@
 - name: Zabbix Yum リポジトリを登録する
   become: yes 
   yum:
-    name: '{{ zabbix_rpm_url }}' 
+    name: '{{ item }}' 
     state: present 
-  
+  with_items:
+    - zabbix_release_rpm_url
+    - zabbix_web_rpm_url
+    - zabbix_web_mysql_rpm_url
+    - zabbix_web_japanese_rpm_url
 
 - name: Zabbix をインストールする 
   become: yes

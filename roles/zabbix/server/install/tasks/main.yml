@@ -1,0 +1,25 @@
+- name: Zabbix Yum リポジトリを登録する
+  become: yes 
+  yum:
+    name: '{{ zabbix_rpm_url }}' 
+    state: present 
+  
+
+- name: Zabbix をインストールする 
+  become: yes
+  yum:
+    name: '{{ item }}'
+    state: present 
+  with_items:
+    - zabbix-get
+    - zabbix-server-mysql 
+    - zabbix-web-mysql 
+
+
+
+- name: httpdを再起動する
+  become: yes
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

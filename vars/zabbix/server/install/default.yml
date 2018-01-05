@@ -11,7 +11,3 @@ db_port: 3306
 
 # Zabbix RPM URL
 zabbix_release_rpm_url: http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-2.el7.noarch.rpm 
-zabbix_web_rpm_url: http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-web-3.4.1-1.el7.noarch.rpm
-zabbix_web_mysql_rpm_url: http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-web-mysql-3.4.1-1.el7.noarch.rpm
-zabbix_web_japanese_rpm_url: http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-web-japanese-3.4.1-1.el7.noarch.rpm
-#----------------------------------------------------

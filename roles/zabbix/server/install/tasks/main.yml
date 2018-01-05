@@ -1,24 +1,19 @@
 - name: Zabbix Yum リポジトリを登録する
   become: yes 
   yum:
-    name: '{{ item }}' 
+    name: '{{ zabbix_release_rpm_url }}'
     state: present 
-  with_items:
-    - '{{ zabbix_release_rpm_url }}'
-    - '{{ zabbix_web_rpm_url }}'
-    - '{{ zabbix_web_mysql_rpm_url }}'
-    - '{{ zabbix_web_japanese_rpm_url }}'
 
 - name: Zabbix をインストールする 
   become: yes
   yum:
     name: '{{ item }}'
+    enablerepo: remi-php71
     state: present 
   with_items:
     - zabbix-get
     - zabbix-server-mysql 
     - zabbix-web-mysql 
-
 
 
 - name: httpdを再起動する

@@ -12,7 +12,7 @@
     state: present 
   with_items:
     - zabbix-server-mysql 
-    - zabbix-web-mysql
+#    - zabbix-web-mysql
     - zabbix-web-japanese
 
 - name: httpdを再起動する

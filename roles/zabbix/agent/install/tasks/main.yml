@@ -1,0 +1,25 @@
+- name: Zabbix Yum リポジトリを登録する
+  become: yes 
+  yum:
+    name: '{{ zabbix_release_rpm_url }}'
+    state: present 
+
+- name: Zabbix Agent をインストールする 
+  become: yes
+  yum:
+    name: zabbix-agent 
+    enablerepo: remi-php71
+    state: present 
+
+- name: Zabbix Agent を起動する
+  become: yes
+  service:
+    name: zabbix-agent
+    state: started
+    enabled: yes
+
+- name: "Zabbix Agent が利用するポート{{ zabbix_agent_port }} を開放する"
+  shell: firewall-cmd --add-port={{ zabbix_agent_port }}/tcp --zone=public --permanent
+
+- name: Firewallをリロードする
+  shell: firewall-cmd --reload

@@ -1,0 +1,10 @@
+---
+- hosts: all
+  vars_files:
+    - vars/rdb/mariadb/install/default.yml
+    - vars/zabbix/server/install/default.yml
+  become: yes 
+  
+  roles:
+    - role: zabbix/agent/install
+      tags: zabbix_agent_install

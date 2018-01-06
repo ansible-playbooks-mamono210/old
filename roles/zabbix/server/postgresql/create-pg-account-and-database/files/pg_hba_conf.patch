@@ -4,8 +4,8 @@
  # "host" records.  In that case you will also need to make PostgreSQL
  # listen on a non-local interface via the listen_addresses
  # configuration parameter, or via the -i or -h command line switches.
-+host    redmine         redmine         127.0.0.1/32            md5
-+host    redmine         redmine         ::1/128                 md5
++host    zabbix          zabbix          127.0.0.1/32            md5
++host    zabbix          zabbix          ::1/128                 md5
  
  
  

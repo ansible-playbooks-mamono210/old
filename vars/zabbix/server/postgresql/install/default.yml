@@ -1,11 +1,11 @@
 # Zabbixデータベース情報
 # 環境に応じて変更する事
 #----------------------------------------------------
-db_name: zabbix 
-db_user: zabbix
-db_password: zabbix
 db_host: localhost
-db_port: 3306
+db_name: zabbix 
+db_password: zabbix
+db_port: 5432 
+db_user: zabbix
 #----------------------------------------------------
 
 
@@ -14,3 +14,9 @@ zabbix_release_rpm_url: http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-r
 
 # Zabbix Server Port
 zabbix_server_port: 10050
+
+# pg_hba.confのパス
+pg_hba_conf_path: /var/lib/pgsql/data/pg_hba.conf
+
+# 作業用ディレクトリ
+work_dir: /tmp/zabbix-server-posgtresql-install-dir

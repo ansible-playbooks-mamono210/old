@@ -1,8 +1,7 @@
 ---
 - hosts: all
   vars_files:
-    - vars/rdb/mariadb/install/default.yml
-    - vars/zabbix/server/install/default.yml
+    - vars/zabbix/server/postgresql/install/default.yml
   become: yes 
   
   roles:

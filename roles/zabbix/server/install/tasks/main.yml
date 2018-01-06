@@ -12,8 +12,20 @@
     state: present 
   with_items:
     - zabbix-server-mysql 
-#    - zabbix-web-mysql
     - zabbix-web-japanese
+
+- name: Zabbix Server を起動する
+  become: yes
+  service:
+    name: zabbix-server
+    state: started
+    enabled: yes
+
+- name: "Zabbix Server が利用するポート{{ zabbix_server_port }} を開放する"
+  shell: firewall-cmd --add-port={{ zabbix_server_port }}/tcp --zone=public --permanent
+
+- name: Firewallをリロードする
+  shell: firewall-cmd --reload
 
 - name: httpdを再起動する
   become: yes

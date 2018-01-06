@@ -10,9 +10,7 @@
       tags: httpd_install
     - role: language/php/71/install
       tags: language_php_71_install
-    - role: rdb/mariadb/install
-      tags: rdb_mariadb_install
-    - role: rdb/mariadb/create-database
-      tags: rdb_mariadb_create-database
-    - role: zabbix/server/install
-      tags: zabbix_server_install
+    - role: rdb/pg/install
+      tags: rdb_pg_install
+    - role: zabbix/server/postgresql/install
+      tags: zabbix_server_postgresql_install

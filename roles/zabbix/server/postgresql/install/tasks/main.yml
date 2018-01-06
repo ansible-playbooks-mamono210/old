@@ -8,10 +8,10 @@
   become: yes
   yum:
     name: '{{ item }}'
-    enablerepo: remi-php71
     state: present 
   with_items:
-    - zabbix-server-mysql 
+    - zabbix-server-pgsql
+    - zabbix-web-pgsql 
     - zabbix-web-japanese
 
 - name: Zabbix Server を起動する

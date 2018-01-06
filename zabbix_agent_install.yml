@@ -2,7 +2,7 @@
 - hosts: all
   vars_files:
     - vars/rdb/mariadb/install/default.yml
-    - vars/zabbix/server/install/default.yml
+    - vars/zabbix/agent/install/default.yml
   become: yes 
   
   roles:

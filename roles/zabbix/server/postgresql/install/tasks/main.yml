@@ -9,6 +9,7 @@
   yum:
     name: '{{ item }}'
     state: present 
+    unablerepo: remi-php71
   with_items:
     - zabbix-server-pgsql
     - zabbix-web-pgsql 

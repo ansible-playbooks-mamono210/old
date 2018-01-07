@@ -11,5 +11,7 @@
       tags: language_php_71_install
     - role: rdb/pg/install
       tags: rdb_pg_install
+    - role: zabbix/server/postgresql/create-pg-account-and-database
+      tags: zabbix_server_postgresql_create-pg-account-and-database
     - role: zabbix/server/postgresql/install
       tags: zabbix_server_postgresql_install

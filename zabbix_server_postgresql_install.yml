@@ -5,6 +5,7 @@
   become: yes 
   
   roles:
+    - role: system/system-locale/set-lang-ja_jp_utf8
     - role: httpd/install
       tags: httpd_install
     - role: language/php/71/install

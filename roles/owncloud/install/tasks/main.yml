@@ -1,7 +1,11 @@
-- name: ownCloudのインストールに必要なライブラリをインストールする
+- name: npmをインストールする
   become: yes
   yum:
     name: npm
+
+- name: yarnをインストールする
+  become: yes
+  shell: npm install -g yarn
 
 - name: ownCloudをGitリポジトリから取得する
   git:

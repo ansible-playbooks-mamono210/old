@@ -1,0 +1,31 @@
+- name: Rustをインストールする
+  become: yes
+  shell: curl -L http://static.rust-lang.org/rustup.sh | sh
+
+- name: 必要なパッケージをインストールする
+  become: yes
+  yum:
+    name: '{{ item }}'
+    state: present 
+  with_items:
+    - libgit2
+    - cmake
+
+- name: exaをインストールする
+  become: yes
+  shell: cargo install --no-default-features exa
+ 
+- name: exaのバイナリファイルを/usr/local/binへコピーする
+  become: yes
+  shell: cp /root/.cargo/bin/exa /usr/local/bin
+
+- name: exaをlsと代替する
+  become: yes
+  lineinfile:
+    path: /etc/bashrc
+    line: alias ls=exa 
+    state: present
+
+- name: bashrcを再読み込みする 
+  become: yes
+  shell: source /etc/bashrc 

@@ -1,0 +1,26 @@
+- name: 必要なパッケージをインストールする
+  become: yes
+  yum:
+    name: '{{ item }}'
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: Docker CE安定版リポジトリをセットアップする
+  become: yes
+  shell:
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Docker CEをインストールする 
+  become: yes
+  yum:
+    name: docker-ce 
+    state: present
+
+- name: Dockerを起動する 
+  become: yes
+  systemd:
+    name: docker.service
+    state: started
+    enabled: yes

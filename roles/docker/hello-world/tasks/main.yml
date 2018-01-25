@@ -1,0 +1,8 @@
+- name: Dockerがインストールされたか確認する
+  become: yes
+  shell: docker run hello-world
+  register: DOCKER_VARS
+
+- name: 結果を表示する
+  debug:
+    var: DOCKER_VARS.stdout_lines

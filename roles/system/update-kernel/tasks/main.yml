@@ -1,0 +1,27 @@
+- name: ELRepoのGPGキーをインポートする
+  become: yes
+  rpm_key:
+    state: present
+    key: '{{ elrepo_gpg_url }}'
+
+- name: ELRepoをリモートリポジトリから取得しインストールする
+  become: yes
+  yum:
+    name: '{{ elrepo_rpm_url }}'
+    state: present
+
+- name: Kernelをインストールする
+  become: yes
+  yum:
+    name: kernel-ml
+    enablerepo: elrepo-kernel
+    state: latest
+
+- name: Kernelを切り換える
+  become: yes
+  environment:
+    PATH:
+      "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:{{ ansible_env.PATH }} "
+  shell: '{{ item }}' 
+  with_items:
+   - grub2-set-default 1 

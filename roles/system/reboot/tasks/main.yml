@@ -1,0 +1,22 @@
+- name: システムを再起動する
+  become: yes
+  become_method: su
+  shell: /sbin/shutdown -r
+  async: 1
+  poll: 0
+  ignore_errors: true
+
+- name: sshdが停止するまで待機する 
+  become: no 
+  local_action: wait_for
+  args:
+    host: "{{ inventory_hostname }}"
+    state: stopped
+    port: '{{ ansible_port }}'
+
+- name: システムが再起動するまで待機する 
+  become: no 
+  local_action: wait_for
+  args:
+    host: "{{ inventory_hostname }}"
+    state: started

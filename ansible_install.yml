@@ -4,3 +4,4 @@
   
   roles:
     - ansible/install
+    - ansible/set-ansible-cfg

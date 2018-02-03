@@ -37,17 +37,17 @@
     mode: 0755
     recurse: yes
 
-- name: "{{ oc_httpd_conf }}を「/etc/httpd/conf.d/」へ配置する"
+- name: "{{ httpd_conf_confd }}を「/etc/httpd/conf.d/」へ配置する"
   become: yes
   file:
-    path: "/etc/httpd/conf.d/{{ oc_httpd_conf }}"
+    path: "/etc/httpd/conf.d/{{ httpd_conf_confd }}"
     state: touch
     mode: 0644
 
-- name: "{{ oc_install_dir }}で「.htaccess」が有効になるように{{ oc_httpd_conf }}へ記述する"
+- name: "{{ oc_install_dir }}で「.htaccess」が有効になるように{{ httpd_conf_confd }}へ記述する"
   become: yes
   blockinfile:
-    path: "/etc/httpd/conf.d/{{ oc_httpd_conf }}"
+    path: "/etc/httpd/conf.d/{{ httpd_conf_confd }}"
     block: |
       <Directory "{{ oc_install_dir }}">
         AllowOverride All

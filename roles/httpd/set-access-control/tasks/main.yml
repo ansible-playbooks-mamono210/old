@@ -1,0 +1,14 @@
+- name: アクセス制限を設けるIPアドレスまたはドメイン名を指定する 
+  become: yes
+  lineinfile:
+    path: "/etc/httpd/conf.d/{{ httpd_conf_confd }}"
+    insertbefore: '</Directory>'
+    line: "  {{ item.value }}"
+  with_dict: '{{ requires }}'
+
+- name: httpdを再起動する
+  become: yes
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

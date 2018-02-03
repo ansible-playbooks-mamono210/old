@@ -6,8 +6,16 @@ db_user: owncloud
 db_password: owncloud 
 db_host: localhost                                                                           
 oc_install_dir: /var/www/html/owncloud
-#----------------------------------------------------                                        
 
+#----------------------------------------------------                                        
 # Apacheの.htaccessを制御するファイル
-oc_httpd_conf: owncloud.conf
+httpd_conf_confd: owncloud.conf
 #----------------------------------------------------
+
+#----------------------------------------------------                                        
+# アクセスをコントロールするIPアドレス／ドメイン
+#----------------------------------------------------                                        
+requires:
+  example.com: Require host example.com
+  127.0.0.1: Require ip 127.0.0.1
+  

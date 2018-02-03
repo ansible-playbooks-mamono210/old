@@ -2,7 +2,7 @@
 - hosts: all
   vars_files:
     - vars/rdb/mariadb/install/default.yml
-    - vars/owncloud/default.yml
+    - vars/owncloud/install/default.yml
   become: yes 
   
   roles:
@@ -16,3 +16,5 @@
       tags: rdb_mariadb_create-database
     - role: owncloud/install
       tags: owncloud_install
+    - role: httpd/set-access-control
+      tags: httpd_set-access-control

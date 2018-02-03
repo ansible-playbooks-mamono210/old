@@ -51,7 +51,7 @@
   become: yes
   template:
     src: redmine.conf
-    dest: /etc/httpd/conf.d/redmine.conf
+    dest: "/etc/httpd/conf.d/{{ httpd_conf_confd }}"
 
 - name: httpdの再起動
   become: yes

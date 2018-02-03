@@ -68,17 +68,17 @@
   args:
     chdir: '{{ wp_install_path }}'
 
-- name: "{{ wp_httpd_conf }}を「/etc/httpd/conf.d/」へ配置する"
+- name: "{{ httpd_conf_confd }}を「/etc/httpd/conf.d/」へ配置する"
   become: yes
   file:
-    path: "/etc/httpd/conf.d/{{ wp_httpd_conf }}"
+    path: "/etc/httpd/conf.d/{{ httpd_conf_confd }}"
     state: touch
     mode: 0644
 
-- name: "{{ wp_install_path }}で「.htaccess」が有効になるように{{ wp_httpd_conf }}へ記述する"
+- name: "{{ wp_install_path }}で「.htaccess」が有効になるように{{ httpd_conf_confd }}へ記述する"
   become: yes
   blockinfile:
-    path: "/etc/httpd/conf.d/{{ wp_httpd_conf }}"
+    path: "/etc/httpd/conf.d/{{ httpd_conf_confd }}"
     block: |
       <Directory "{{ wp_install_path }}">
         AllowOverride All

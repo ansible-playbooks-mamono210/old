@@ -16,3 +16,5 @@
       tags: rdb_mariadb_create-database
     - role: wordpress/install
       tags: wordpress_install
+    - role: httpd/set-access-control
+      tags: httpd_set-access-control

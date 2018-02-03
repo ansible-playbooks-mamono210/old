@@ -27,5 +27,13 @@ wp_admin_password: test
 wp_admin_email: mail@example.com 
 
 # Apacheの.htaccessを制御するファイル
-wp_httpd_conf: wordpress.conf
+httpd_conf_confd: wordpress.conf
 #----------------------------------------------------
+
+#----------------------------------------------------                                        
+# アクセスをコントロールするIPアドレス／ドメイン
+#----------------------------------------------------                                        
+requires:
+  example.com: Require host example.com
+  127.0.0.1: Require ip 127.0.0.1
+

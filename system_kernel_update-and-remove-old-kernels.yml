@@ -6,5 +6,6 @@
   
   roles:
     - system/selinux/disabled
-    - system/update-kernel
+    - system/kernel/update-by-ELRepo
     - system/reboot
+    - system/kernel/remove

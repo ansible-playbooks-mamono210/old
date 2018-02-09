@@ -1,7 +1,15 @@
 ---
 - hosts: all
+  vars_files:
+    - vars/jenkins/install/default.yml
   become: yes 
   
   roles:
-    - system/system-locale/set-lang-ja_jp_utf8
-    - jenkins/install
+    - role: system/system-locale/set-lang-ja_jp_utf8
+      tags: system_system-locale_set-lang-ja_jp_utf8
+    - role: jenkins/install
+      tags: jenkins_install
+    - role: httpd/install
+      tags: httpd_install
+    - role: jenkins/set-proxy-and-access-restriction
+      tags: jenkins_set-proxy-and-access-restriction

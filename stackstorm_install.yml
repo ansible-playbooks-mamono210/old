@@ -1,0 +1,8 @@
+---
+- hosts: all
+  vars_files:
+    - vars/stackstorm/install/default.yml
+  become: yes 
+  
+  roles:
+    - stackstorm/install

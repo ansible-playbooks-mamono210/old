@@ -1,0 +1,13 @@
+- name: 必要なパッケージをインストールする
+  become: yes
+  yum:
+    name: '{{ item }}'
+    state: present 
+  with_items:
+    - curl 
+    - nss
+
+- name: StackStormをインストールする
+  become: yes
+  shell:
+    "curl -sSL https://stackstorm.com/packages/install.sh | bash -s -- --user=st2admin --password='{{ password }}'" 

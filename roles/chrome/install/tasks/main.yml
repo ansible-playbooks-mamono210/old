@@ -1,0 +1,14 @@
+- name: Google Chrome リポジトリをシステムに追加する
+  become: yes
+  yum_repository:
+    name: google-chrome 
+    description: google-chrome
+    baseurl: http://dl.google.com/linux/chrome/rpm/stable/$basearch 
+    gpgcheck: yes
+    gpgkey: https://dl-ssl.google.com/linux/linux_signing_key.pub 
+
+- name: Google Chrome（安定板）をインストールする
+  become: yes
+  yum:
+    name: google-chrome-stable 
+    state: present

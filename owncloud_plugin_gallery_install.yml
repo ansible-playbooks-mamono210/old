@@ -1,0 +1,20 @@
+---
+- hosts: all
+  vars_files:
+    - vars/imagemagick/install/default.yml
+    - vars/owncloud/install/default.yml
+  become: yes 
+  
+  roles:
+    - role: redis/install 
+      tags: redis_install
+    - role: language/php/71/extention/redis/install
+      tags: language_php_71_extention_redis_install
+    - role: imagemagick/install 
+      tags: imagemagick_install
+    - role: language/php/71/extention/imagick/install
+      tags: languagei_php_71_extention_imagick_install
+    - role: owncloud/config/redis-enable
+      tags: owncloud_config_redis-enable
+    - role: owncloud/plugin/gallery/install 
+      tags: owncloud_plugin_gallery_install

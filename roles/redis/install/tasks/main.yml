@@ -1,0 +1,58 @@
+- name: EPELリポジトリを追加する 
+  become: yes
+  yum:
+    name: epel-release
+    state: present
+
+- name: Redisをインストールする 
+  become: yes
+  yum:
+    name: redis
+    state: present
+
+- name: メモリオーバーコミットの設定を変更する
+  become: yes
+  sysctl:
+    name: vm.overcommit_memory
+    value: 1
+    state: present
+    reload: yes
+
+- name: somaxconn の設定を変更する
+  become: yes
+  sysctl:
+    name: net.core.somaxconn 
+    value: 1024
+    state: present
+    reload: yes
+
+- name: Transparent Huge Pages (THP) を無効化する
+  become: yes
+  lineinfile:
+    path: /etc/rc.local
+    line: 'echo never > /sys/kernel/mm/transparent_hugepage/enabled'
+
+- name: 「/etc/rc.d/rc.local」へ実行権限を追加する
+  become: yes
+  file:
+    path: /etc/rc.d/rc.local
+    mode: 0755
+
+- name: rc.local が実行されてから Redis が起動するように変更する
+  become: yes
+  lineinfile:
+    path: /usr/lib/systemd/system/redis.service
+    regexp: "^After=network.target"
+    line: 'After=network.target rc-local.service'
+
+- name: システムを再起動する
+  become: yes
+  include_role:
+    name: system/reboot 
+    
+- name: Redisを起動する
+  become: yes
+  systemd:
+    name: redis
+    state: started
+    enabled: yes

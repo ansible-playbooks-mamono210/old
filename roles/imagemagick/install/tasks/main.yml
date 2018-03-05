@@ -1,0 +1,22 @@
+- name: Remiリポジトリを追加する 
+  become: yes
+  yum:
+    name: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+    state: present 
+
+- name: Remi GPGキーを追加する
+  become: yes
+  rpm_key:
+    key: http://rpms.remirepo.net/RPM-GPG-KEY-remi
+    state: present
+
+- name: ImageMagickとヘッダファイルをインストールする
+  become: yes
+  yum:
+    name: '{{ item }}'
+    enablerepo: remi
+    state: present 
+  loop:
+    - ImageMagick7
+    - ImageMagick7-devel
+    - ImageMagick7-libs

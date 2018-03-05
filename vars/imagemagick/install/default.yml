@@ -1,0 +1,6 @@
+#----------------------------------------------------                                        
+# binary source url
+# see https://www.imagemagick.org/script/download.php
+#----------------------------------------------------                                        
+imagemagick_rpm_url: https://www.imagemagick.org/download/linux/CentOS/x86_64/ImageMagick-7.0.7-23.x86_64.rpm
+imagemagick_libs_rpm_url: https://www.imagemagick.org/download/linux/CentOS/x86_64/ImageMagick-libs-7.0.7-23.x86_64.rpm

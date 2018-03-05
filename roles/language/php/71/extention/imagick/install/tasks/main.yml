@@ -1,0 +1,14 @@
+- name: php-develをインストールする 
+  become: yes
+  yum:
+    name: php-devel 
+    enablerepo: remi-php71
+    state: present
+
+- name: imagickをインストールする
+  become: yes
+  shell: pecl install imagick
+
+
+
+

@@ -1,0 +1,13 @@
+- name: config.phpでRedisを有効にする
+  become: yes
+  blockinfile:
+    dest: "{{ oc_install_dir }}/config/config.php"
+    insertbefore: \)\;
+    marker: "// {mark} ANSIBLE MANAGED BLOCK redis"
+    block: |2
+        'memcache.local' => '\OC\Memcache\Redis',
+        'redis' => [
+        'host' => 'localhost',
+        'port' => 6379,
+        ],
+        'memcache.locking' => '\OC\Memcache\Redis', // Add this for best performance

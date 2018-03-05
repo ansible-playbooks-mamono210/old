@@ -1,0 +1,33 @@
+- name: galleryを取得する 
+  become: yes
+  git:
+    repo: https://github.com/owncloud/gallery.git 
+    dest: "{{ oc_install_dir }}/apps/gallery"
+
+- name: ディレクトリの権限を変更する
+  become: yes
+  file:
+    path: "{{ oc_install_dir }}/apps/gallery"
+    owner: apache
+    group: apache
+    mode: 0755
+    recurse: yes
+
+- name: config.phpをgallery用に設定する
+  become: yes
+  blockinfile:
+    dest: "{{ oc_install_dir }}/config/config.php"
+    insertbefore: \)\;
+    marker: "// {mark} ANSIBLE MANAGED BLOCK"
+    block: |2
+        'preview_max_scale_factor' => 1,
+        'enabledPreviewProviders' =>
+        array (
+          0 => 'OC\\Preview\\PNG',
+          1 => 'OC\\Preview\\JPEG',
+          2 => 'OC\\Preview\\GIF',
+          11 => 'OC\\Preview\\Illustrator',
+          12 => 'OC\\Preview\\Postscript',
+          13 => 'OC\\Preview\\Photoshop',
+          14 => 'OC\\Preview\\TIFF'
+        ),

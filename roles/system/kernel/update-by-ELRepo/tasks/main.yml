@@ -10,18 +10,24 @@
     name: '{{ elrepo_rpm_url }}'
     state: present
 
-- name: Kernelをインストールする
+- name: Kernelをアップデートする
   become: yes
   yum:
     name: kernel-ml
     enablerepo: elrepo-kernel
     state: latest
+  register: KERNEL_UPDATED
 
 - name: Kernelを切り換える
   become: yes
   environment:
     PATH:
       "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:{{ ansible_env.PATH }} "
-  shell: '{{ item }}' 
-  with_items:
-   - grub2-set-default 1 
+  shell: grub2-set-default 1
+  when: KERNEL_UPDATED is changed
+
+- name: システムを再起動する
+  become: yes
+  include_role:
+    name: system/reboot
+  when: KERNEL_UPDATED is changed 

@@ -24,7 +24,6 @@
   become: yes
   gem:
     name: passenger
-    version: 5.1.12
     user_install: no
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"

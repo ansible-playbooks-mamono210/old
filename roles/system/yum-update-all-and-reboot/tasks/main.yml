@@ -3,30 +3,10 @@
   yum:
     name: "*"
     state: latest
-  register: result
+  register: SYSTEM_UPDATED 
 
 - name: システムを再起動する
   become: yes
-  become_method: su
-  shell: /sbin/shutdown -r
-  async: 1
-  poll: 0
-  ignore_errors: true
-  when: result.changed == true
-
-- name: sshdが停止するまで待機する 
-  become: no 
-  local_action: wait_for
-  args:
-    host: "{{ inventory_hostname }}"
-    state: stopped
-    port: '{{ ansible_port }}'
-  when: result.changed == true
-
-- name: システムが再起動するまで待機する 
-  become: no 
-  local_action: wait_for
-  args:
-    host: "{{ inventory_hostname }}"
-    state: started
-  when: result.changed == true
+  include_role:
+    name: system/reboot
+  when: SYSTEM_UPDATED is changed

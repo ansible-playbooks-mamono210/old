@@ -1,29 +1,7 @@
-- name: WP-CLIがインストールされているか調べる
-  command:
-    sudo -u apache /usr/local/bin/wp --version --allow-root
-  register:
-    wpcli_test_vars
-  ignore_errors: true
-
-- name: WP-CLIがインストールされているか結果を出力する
-  debug: var=wpcli_test_vars
-
-- name: WP-CLIをダウンロードする
+- name: WP-CLIをインストールする
   become: yes
-  get_url:
-    url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-    dest: /tmp
-    owner: root
-    group: root
-    mode: 0755
-  when: wpcli_test_vars.rc != 0
-
-- name: WP-CLIをコマンドに登録する
-  become: yes
-  shell: mv wp-cli.phar /usr/local/bin/wp
-  args:
-    chdir: /tmp
-  when: wpcli_test_vars.rc != 0
+  include_role:
+    name: wordpress/install-wp-cli
 
 - name: WordPressインストールディレクトリを作成する
   become: yes

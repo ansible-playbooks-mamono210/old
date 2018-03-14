@@ -9,7 +9,7 @@
   yum:
     name: '{{ item }}'
     state: present 
-  with_items:
+  loop:
     - epel-release
     - expect
     - openssl-devel
@@ -23,12 +23,17 @@
 
 - name: pipをアップグレードする
   become: yes
-  shell: pip install --upgrade pip
+  pip:
+    name: pip
+    extra_args: --upgrade
 
 - name: setuptoolsをアップグレードする
   become: yes
-  shell: pip install --upgrade setuptools
+  pip:
+    name: setuptools
+    extra_args: --upgrade
 
 - name: Ansibleをインストールする 
   become: yes
-  shell: pip install git+git://github.com/ansible/ansible.git@devel
+  pip:
+    name: git+git://github.com/ansible/ansible.git@devel

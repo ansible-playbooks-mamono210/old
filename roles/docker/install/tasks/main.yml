@@ -2,15 +2,17 @@
   become: yes
   yum:
     name: '{{ item }}'
-  with_items:
+  loop:
     - yum-utils
     - device-mapper-persistent-data
     - lvm2
 
 - name: Docker CE安定版リポジトリをセットアップする
   become: yes
-  shell:
-    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  command: >
+    yum-config-manager
+    --add-repo
+    https://download.docker.com/linux/centos/docker-ce.repo
 
 - name: Docker CEをインストールする 
   become: yes

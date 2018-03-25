@@ -1,0 +1,17 @@
+- name: pipをインストールする
+  become: yes
+  yum:
+    name: 'python-pip'
+    state: present
+
+- name: pipをアップグレードする
+  become: yes
+  pip:
+    name: pip
+    extra_args: --upgrade
+
+- name: setuptoolsをアップグレードする
+  become: yes
+  pip:
+    name: setuptools
+    extra_args: --upgrade

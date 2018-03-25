@@ -1,79 +1,35 @@
-- name: EPELをインストール
+- name: EPELをインストールする
   become: yes
-  yum:
-    name: 'epel-release'
-    state: present
+  include_role:
+    name: system/packages/epel/install
 
-- name: 日本語関連のパッケージをインストール
-  become: yes
-  yum:
-    name: ibus-kkc
-    state: present
-
-- name: 日本語関連のパッケージをインストール
-  become: yes
-  yum:
-    name: vlgothic-*
-    state: present
-
-- name: システムの文字セットをUTF-8へ変更
-  become: yes
-  shell: localectl set-locale LANG=ja_JP.UTF-8
-
-- name: システムの文字セットの変更を繁栄させる
-  become: yes
-  shell: source /etc/locale.conf
-
-- name: pipをインストール
-  become: yes
-  yum:
-    name: python-pip
-    state: present
-
-- name: pipをアップデート
-  become: yes
-  shell: pip install --upgrade pip
-
-- name: pexpectをインストール #Ansibleでexpectを利用するためのライブラリ
-  become: yes
-  shell: pip install pexpect
-
-- name: VNCサーバ構築に必要なツールのインストール
+- name: TigerVNC Serverをインストールする
   become: yes
   yum:
     name: 'tigervnc-server'
     state: present
 
-- name: GNOMEデスクトップをインストール
+- name: VNCサーバの設定 / 設定ファイルをコピーする
   become: yes
-  shell: yum -y groupinstall GNOME Desktop
+  copy:
+    src: /lib/systemd/system/vncserver@.service
+    dest: /etc/systemd/system/vncserver@:1.service
+    remote_src: yes
 
-- name: VNCサーバの設定 / 設定ファイルのコピー
-  become: yes
-  shell: cp /lib/systemd/system/vncserver@.service /etc/systemd/system/vncserver@:1.service
-
-- name: VNCサーバの設定 / 設定ファイルの書き換え
+- name: VNCサーバの設定 / 設定ファイルを変更する
   become: yes
   replace: 
     dest: /etc/systemd/system/vncserver@:1.service
     regexp: '<USER>'
     replace: "{{ vnc_user }}"
 
-- name: ファイアウォールの設定 / vnc-serverを追加
-  become: yes
-  shell: firewall-cmd --permanent --add-service vnc-server
-
-- name: ファイウォールの設定 / ファイアウォールを再スタート
-  become: yes
-  shell: systemctl restart firewalld.service
-
-- name: VNCユーザーの設定 / VNCユーザーを追加
+- name: VNCユーザーを追加する
   become: yes
   user: 
     name: "{{ vnc_user }}"
-    password: "{{ vnc_password }} |password_hash('sha512')"
+    password: "{{ vnc_password }} | password_hash('sha512')"
 
-- name: /.vncを作成する
+- name: 「$HOME/.vnc」を作成する
   file:
     path: "/home/{{ vnc_user }}/.vnc"
     state: directory
@@ -81,10 +37,10 @@
     group: '{{ vnc_user }}'
     mode: 0755
 
-- name: passwordファイルを作成する
+- name: 「$HOME/.vnc/passwd」を作成する
   shell: "echo {{ vnc_password }} | vncpasswd -f > /home/{{ vnc_user }}/.vnc/passwd"
 
-- name: /.vncの権限を変更する
+- name: 「$HOME/.vnc/passwd」の権限を変更する
   file:
     path: "/home/{{ vnc_user }}/.vnc/passwd"
     state: file
@@ -92,22 +48,18 @@
     group: '{{ vnc_user }}'
     mode: 0600
 
-- name: vncサーバ接続時にポップアップが立ち上がらないように変更する
+- name: TigerVNC Server を起動する
   become: yes
-  lineinfile:
-    dest: /etc/xdg/autostart/abrt-applet.desktop
-    state: present
-    regexp: "X-GNOME-Autostart-enabled=true"
-    line: "X-GNOME-Autostart-enabled=false"
+  systemd:
+    name: vncserver@:1.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
 
-- name: systemdに設定ファイルを再度読込みをさせる
+- name: Firewallを設定する
   become: yes
-  shell: systemctl daemon-reload
-
-- name: VNCサービスの起動
-  become: yes
-  shell: systemctl start vncserver@:1.service
-
-- name: VNCサービスの自動起動設定を行う
-  become: yes
-  shell: systemctl enable vncserver@:1.service
+  firewalld:
+    service: vnc-server
+    permanent: true
+    state: enabled
+    immediate: yes

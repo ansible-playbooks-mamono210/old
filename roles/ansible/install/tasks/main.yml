@@ -1,9 +1,3 @@
-- name: 開発ツールをインストールする
-  become: yes
-  yum:
-    name: '@Development Tools'
-    state: present 
-
 - name: EPELをインストールする
   become: yes
   include_role:

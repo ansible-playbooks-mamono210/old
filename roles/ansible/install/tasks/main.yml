@@ -4,13 +4,17 @@
     name: '@Development Tools'
     state: present 
 
+- name: EPELをインストールする
+  become: yes
+  include_role:
+    name: system/packages/epel/install
+
 - name: 必要なパッケージをインストールする
   become: yes
   yum:
     name: '{{ item }}'
     state: present 
   loop:
-    - epel-release
     - expect
     - openssl-devel
     - python-devel

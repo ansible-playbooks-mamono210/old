@@ -7,7 +7,7 @@
   yum:
     name: '{{ item }}'
     state: present 
-  with_items:
+  loop:
     - libgit2
     - cmake
 
@@ -15,17 +15,18 @@
   become: yes
   shell: cargo install --no-default-features exa
  
-- name: exaのバイナリファイルを/usr/local/binへコピーする
+- name: exaのバイナリファイルを「/usr/local/bin」へコピーする
   become: yes
-  shell: cp /root/.cargo/bin/exa /usr/local/bin
+  copy:
+    src: /root/.cargo/bin/exa 
+    dest: /usr/local/bin/exa
+    mode: 0755 
+    owner: root
+    group: root
+    remote_src: yes
 
-- name: exaをlsと代替する
+- name: 「/root/.cargo/bin/exa」のバイナリファイルを削除する
   become: yes
-  lineinfile:
-    path: /etc/bashrc
-    line: alias ls=exa 
-    state: present
-
-- name: bashrcを再読み込みする 
-  become: yes
-  shell: source /etc/bashrc 
+  file:
+    path: /root/.cargo/bin/exa 
+    state: absent 

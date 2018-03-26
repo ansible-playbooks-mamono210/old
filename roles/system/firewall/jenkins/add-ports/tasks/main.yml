@@ -1,0 +1,7 @@
+- name: Jenkinsポートを追加する
+  become: yes
+  firewalld:
+    port: 8080/tcp
+    state: enabled
+    permanent: yes 
+    immediate: yes

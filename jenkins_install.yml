@@ -9,7 +9,11 @@
       tags: system_system-locale_set-lang-ja_jp_utf8
     - role: jenkins/install
       tags: jenkins_install
+    - role: system/firewall/jenkins/add-ports/
+      tags: system_firewall_jenkins_add-ports/
     - role: httpd/install
       tags: httpd_install
+    - role: system/firewall/httpd/add-ports
+      tags: system_firewall_httpd_add-ports   
     - role: jenkins/set-proxy-and-access-restriction
       tags: jenkins_set-proxy-and-access-restriction

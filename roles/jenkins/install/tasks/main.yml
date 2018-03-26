@@ -26,14 +26,6 @@
     state: started 
     enabled: yes
 
-- name: Jenkinsが利用するポート（8080） を解放する
-  become: yes
-  firewalld:
-    port: 8080/tcp
-    permanent: yes 
-    state: enabled
-    immediate: yes
-
 - name: JenkinsがAnsible Playbookを実行できるようにsudoersに登録する
   become: yes
   environment:

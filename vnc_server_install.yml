@@ -11,3 +11,5 @@
       tags: system_desktop_gnome_install
     - role: vnc/server/install
       tags: vnc_server_install
+    - role: system/firewall/vnc-server/add-ports
+      tags: system_firewall_vnc-server_add-ports

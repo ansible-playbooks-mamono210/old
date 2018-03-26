@@ -55,11 +55,3 @@
     state: started
     enabled: yes
     daemon_reload: yes
-
-- name: Firewallを設定する
-  become: yes
-  firewalld:
-    service: vnc-server
-    permanent: true
-    state: enabled
-    immediate: yes

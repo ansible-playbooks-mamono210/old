@@ -1,0 +1,7 @@
+- name: VNC Serverポートを追加する
+  become: yes
+  firewalld:
+    service: vnc-server
+    permanent: true
+    state: enabled
+    immediate: yes

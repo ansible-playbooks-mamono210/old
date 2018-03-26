@@ -1,18 +1,12 @@
-- name: 必要なパッケージをインストールする
+- name: EPELをインストールする
   become: yes
-  yum:
-    name: 'epel-release'
-    state: latest
+  include_role:
+    name: system/packages/epel/install
 
 - name: pipをインストールする
   become: yes
-  yum:
-    name: 'python-pip'
-    state: latest
-
-- name: pipをアップグレードする
-  become: yes
-  shell: pip install --upgrade pip
+  include_role:
+    name: system/pip/install
 
 - name: Xvfbをインストールする
   become: yes
@@ -22,37 +16,10 @@
 
 - name: pyvirtualdisplayをインストールする
   become: yes
-  shell: pip install pyvirtualdisplay
-
-- name: Firefoxをインストールする
-  become: yes
-  yum:
-    name: firefox
-    state: latest
-
-- name: Geckodriverをダウンロードし解凍するパスへ配置する
-  become: yes
-  unarchive:
-    src: '{{ geckodriver_url }}'
-    dest: /usr/local/bin
-#    remote_src: True
-    copy: no
+  pip:
+    name: pyvirtualdisplay
 
 - name: Python Seleniumをインストールする
   become: yes
-  shell: pip install selenium
-
-- name: Seleniumテストスクリプトをデプロイサーバへアップロードする
-  become: yes
-  template:
-    src: install_test.py
-    dest: /tmp
-
-- name: Seleniumのインストールテストを実行する
-  become: yes
-  shell: python /tmp/install_test.py
-  register: RESULT
-
-- name: Seleniumがインストールされたか確認する
-  debug: var=RESULT
-
+  pip:
+    name: selenium

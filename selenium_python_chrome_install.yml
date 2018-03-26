@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: yes 
+  
+  roles:
+    - role: selenium/python/install
+      tags: selenium_python_install
+    - role: chrome/install
+      tags: chrome_install
+    - role: selenium/python/chrome/install
+      tags: selenium_python_chrome_install
+    - role: selenium/python/chrome/install-test
+      tags: selenium_python_chrome_install-test

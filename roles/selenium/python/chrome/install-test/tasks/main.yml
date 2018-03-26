@@ -1,0 +1,14 @@
+- name: Seleniumテストスクリプトを作成する
+  become: yes
+  template:
+    src: install_test.py
+    dest: /tmp
+    force: yes
+
+- name: Seleniumのインストールテストを実行する
+  become: yes
+  shell: python /tmp/install_test.py
+  register: RESULT
+
+- name: Seleniumがインストールされたか確認する
+  debug: var=RESULT

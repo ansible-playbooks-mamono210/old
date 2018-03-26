@@ -11,4 +11,4 @@
   become: yes
   yum:
     name: google-chrome-stable 
-    state: present
+    state: latest 

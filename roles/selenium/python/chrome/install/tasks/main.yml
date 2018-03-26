@@ -1,0 +1,28 @@
+- name: 必要なライブラリをインストールする
+  become: yes
+  yum:
+    name: '{{ item }}'
+    state: present
+  loop:
+    - libX11 
+    - GConf2
+    - fontconfig
+
+- name: 最新のChrome WebDriverのバージョンを取得する
+  shell: echo $(wget -qO- https://chromedriver.storage.googleapis.com/LATEST_RELEASE)
+  register: DRIVER_VERSION
+
+- name: インストールする Chrome WebDriver のバージョンを表示する
+  debug:
+    var: DRIVER_VERSION
+
+- name: Chrome WebDriverをインストールする 
+  become: yes
+  unarchive:
+    src:
+      "https://chromedriver.storage.googleapis.com/{{ DRIVER_VERSION.stdout }}/chromedriver_linux64.zip"
+    dest: /usr/local/bin
+    remote_src: yes
+    owner: root
+    group: root
+    mode: 0755

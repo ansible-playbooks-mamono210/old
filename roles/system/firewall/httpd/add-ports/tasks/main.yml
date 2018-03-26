@@ -1,0 +1,7 @@
+- name: httpd ポートを追加する
+  become: yes
+  firewalld: 
+    service: http
+    state: enabled 
+    permanent: yes 
+    immediate: yes

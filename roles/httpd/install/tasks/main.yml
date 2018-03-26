@@ -2,15 +2,7 @@
   become: yes
   yum: 
     name: httpd 
-    state: latest
-
-- name: firewalldでHTTPを許可する
-  become: yes
-  firewalld: 
-    service: http
-    state: enabled 
-    permanent: true
-    immediate: true
+    state: present 
 
 - name: httpdサービスを起動する
   become: yes

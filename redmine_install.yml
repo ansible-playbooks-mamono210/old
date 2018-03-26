@@ -7,6 +7,8 @@
   roles:
     - role: httpd/install
       tags: httpd_install
+    - role: system/firewall/httpd/add-ports
+      tags: system_firewall_httpd_add-ports
     - role: language/ruby/install/source
       tags: language_ruby_install_source
     - role: rdb/pg/install

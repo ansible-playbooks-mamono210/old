@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: yes 
+  vars_files:
+    - vars/vuls/install/default.yml 
+ 
+  roles:
+    - role: language/golang/install
+      tags: language_golang_install
+    - role: vuls/install
+      tags: vuls_install

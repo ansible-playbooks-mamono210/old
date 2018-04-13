@@ -1,20 +1,12 @@
-- name: EPELリポジトリを追加する 
+- name: EPELリポジトリをインストールする
   become: yes
-  yum:
-    name: epel-release
-    state: present
+  include_role:
+    name: system/packages/epel/install
 
-- name: Remiリポジトリを追加する 
+- name: Remiリポジトリをインストールする
   become: yes
-  yum:
-    name: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
-    state: present 
-
-- name: Remi GPGキーを追加する
-  become: yes
-  rpm_key:
-    key: http://rpms.remirepo.net/RPM-GPG-KEY-remi
-    state: present
+  include_role:
+    name: system/packages/remi/install
 
 - name: PHP7.1をインストールする 
   become: yes
@@ -22,7 +14,7 @@
     name: '{{ item }}'
     enablerepo: remi-php71
     state: latest
-  with_items:
+  loop:
     - php
     - php-gd
     - php-gmp
@@ -48,10 +40,3 @@
     section: Date
     option: date.timezone
     value: "Asia/Tokyo"
-
-- name: httpdを再起動する
-  become: yes
-  service:
-    name: httpd
-    state: restarted
-    enabled: yes

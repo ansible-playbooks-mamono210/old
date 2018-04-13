@@ -1,10 +1,10 @@
-- name: 作業ディレクトリを初期化する
+- name: 作業用ディレクトリを初期化する
   become: yes
   file:
     path: '{{ work_dir }}'
     state: absent
 
-- name: 作業ディレクトリ作成 
+- name: 作業用ディレクトリを作成する 
   become: yes
   file:
     path: '{{ work_dir }}'
@@ -16,7 +16,7 @@
   yum:
     name: '{{ item }}'
     state: latest
-  with_items:
+  loop:
     - bzip2
     - curl-devel
     - gcc
@@ -29,52 +29,39 @@
     - readline-devel
     - zlib-devel
 
-- name: Rubyがインストールされているか確認
-  command:
-    test -f {{ ruby_file_name }}
-  register:
-    ruby_test_vars
-  failed_when:
-    ruby_test_vars.rc not in [0, 1]
-  changed_when: false
+- name: Rubyがインストールされているか確認する
+  command: ruby --version
+  register: RUBY_INSTALLED
+  ignore_errors: yes
 
-- name: Rubyがダウンロード済みか確認
-  command:
-    test -f {{ work_dir }}/{{ ruby_archive_version }}
-  register:
-    ruby_src_test_vars
-  failed_when:
-    ruby_test_vars.rc not in [0, 1]
-  changed_when: false
-
-- name: Rubyのソースコードのダウンロード
+- name: Rubyのソースコードをダウンロードする
   get_url:
     url: "{{ ruby_url_dir }}/{{ ruby_archive_name }}"
     dest: '{{ work_dir }}'
-  when: ruby_test_vars.rc == 1 and ruby_src_test_vars.rc == 1
+  when: RUBY_INSTALLED is failed 
 
-- name: Rubyのソースコードを展開
+- name: Rubyのソースコードを展開する
   unarchive:
     src: "{{ work_dir }}/{{ ruby_archive_name }}"
     dest: '{{ work_dir }}'
     copy: no
-  when: ruby_test_vars.rc == 1 and ruby_src_test_vars.rc == 1
+  when: RUBY_INSTALLED is failed 
 
-- name: Rubyのビルド1 (configure)
+- name: Makefileを作成する (configure)
   command: ./configure --disable-install-doc
   args:
     chdir: "{{ work_dir }}/{{ ruby_archive_version }}"
-  when: ruby_test_vars.rc == 1
+  when: RUBY_INSTALLED is failed 
 
-- name: Rubyのビルド2 (make)
+- name: ソールファイルをコンパイルする (make)
   command: make
   args:
     chdir: "{{ work_dir }}/{{ ruby_archive_version }}"
-  when: ruby_test_vars.rc == 1
+  when: RUBY_INSTALLED is failed 
 
-- name: Rubyのインストール
+- name: Rubyをインストールする
   become: yes
   command: make install
   args:
     chdir: "{{ work_dir }}/{{ ruby_archive_version }}"
-  when: ruby_test_vars.rc == 1
+  when: RUBY_INSTALLED is failed 

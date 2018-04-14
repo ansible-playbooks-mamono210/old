@@ -1,60 +1,55 @@
-- name: Passengerのインストールに必要なApacheのヘッダファイルをインストールする
+- name: Passengerのインストールに必要なライブラリをインストールする
   become: yes
   yum:
-    name: httpd-devel
-    state: latest
+    name: '{{ item }}'
+    state: present
+  loop:
+    - curl-devel
+    - gcc
+    - gcc-c++
+    - httpd-devel
+    - openssl-devel
+    - zlib-devel
 
-- name: Redmineディレクトリ以下のオーナーを変更
-  become: yes
-  file:
-    path: '{{ redmine_dir }}'
-    owner: '{{ redmine_dir_owner }}'
-    group: '{{ redmine_dir_group }}'
-    recurse: yes
+- name: Passengerがインストールされているか調べる
+  command: test -f /usr/local/bin/passenger-install-apache2-module
+  register: PASSENGER_INSTALLED
+  ignore_errors: yes
 
-- name: Passengerがインストールされているか確認
-  command:
-    test -f /usr/local/bin/passenger-install-apache2-module
-  register:
-    result
-  failed_when: result.rc not in [0, 1]
-  changed_when: false
-
-- name: Passengerをインストール
+- name: Passengerをインストールする
   become: yes
   gem:
     name: passenger
     user_install: no
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
-  when: result.rc == 1
+  when: PASSENGER_INSTALLED is failed 
 
-- name: PassengerのApache用モジュールのインストール
+- name: PassengerのApache用モジュールをインストールする
   become: yes
-  command:
-    passenger-install-apache2-module --auto
+  command: passenger-install-apache2-module --auto
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
-  when: result.rc == 1
+  when: PASSENGER_INSTALLED is failed 
 
-- name: PassengerのApache用モジュールの設定を取得
-  command:
-    passenger-install-apache2-module --snippet
+- name: PassengerのApache用モジュールの設定を取得する
+  command: passenger-install-apache2-module --snippet
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
-  register:
-    passenger_snippet_vars
-  changed_when: false
+  register: PASSENGER_SNIPPET_VARS
+  when: PASSENGER_INSTALLED is failed 
 
-- name: redmine.confの作成
+- name: redmine.confを作成する
   become: yes
   template:
     src: redmine.conf
     dest: "/etc/httpd/conf.d/{{ httpd_conf_confd }}"
+  when: PASSENGER_INSTALLED is failed 
 
-- name: httpdの再起動
+- name: httpdを再起動する
   become: yes
   service:
     name: httpd
     state: restarted
     enabled: yes
+  when: PASSENGER_INSTALLED is failed 

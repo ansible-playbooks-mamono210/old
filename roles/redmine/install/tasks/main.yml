@@ -165,3 +165,11 @@
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
     RAILS_ENV: production
   when: result_database_yml|changed
+
+- name: Redmineディレクトリ以下のオーナーを変更
+  become: yes
+  file:
+    path: '{{ redmine_dir }}'
+    owner: '{{ redmine_dir_owner }}'
+    group: '{{ redmine_dir_group }}'
+    recurse: yes

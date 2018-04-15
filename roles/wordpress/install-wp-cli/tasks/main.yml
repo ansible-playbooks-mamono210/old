@@ -2,7 +2,7 @@
   become: yes
   become_method: sudo
   become_user: apache
-  command: wp --version --allow-root
+  shell: wp --version --allow-root
   environment:
     PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
   register: WPCLI_INSTALLED

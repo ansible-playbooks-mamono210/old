@@ -1,3 +1,6 @@
+# wp-cliがインストールされているか調べる時に利用
+wp_install_work_dir: /tmp/wp-install
+
 # Wordpress create backup data vars
 
 #----------------------------------------

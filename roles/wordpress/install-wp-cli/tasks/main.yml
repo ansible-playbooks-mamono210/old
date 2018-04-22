@@ -1,10 +1,5 @@
 - name: WP-CLIがインストールされているか調べる
-  become: yes
-  become_method: sudo
-  become_user: apache
-  shell: wp --version --allow-root
-  environment:
-    PATH: "/usr/local/bin:{{ ansible_env.PATH }}"
+  shell: sudo -u apache /usr/local/bin/wp --version --allow-root
   register: WPCLI_INSTALLED
   ignore_errors: yes 
 

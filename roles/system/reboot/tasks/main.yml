@@ -1,10 +1,9 @@
 - name: システムを再起動する
   become: yes
-  become_method: su
   shell: /sbin/shutdown -r
   async: 1
   poll: 0
-  ignore_errors: true
+  ignore_errors: yes 
 
 - name: sshdが停止するまで待機する 
   become: no 
@@ -20,3 +19,4 @@
   args:
     host: "{{ inventory_hostname }}"
     state: started
+    timeout: 60

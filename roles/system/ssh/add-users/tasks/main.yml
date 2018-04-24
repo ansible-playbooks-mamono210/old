@@ -1,13 +1,13 @@
 - name: ユーザーを追加する 
   user:
     name: '{{ item.key }}'
-  with_dict: '{{ users }}'
+  loop: "{{ lookup('dict', users) }}"
 
 - name: 公開鍵を登録する
   authorized_key:
     user: '{{ item.key }}'
     key: '{{ item.value.authorized_key }}'
-  with_dict: '{{ users }}'
+  loop: "{{ lookup('dict', users) }}"
 
 - name: ユーザー「Ansible」を追加する
   user:

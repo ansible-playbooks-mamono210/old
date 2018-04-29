@@ -4,7 +4,7 @@
     path: "/etc/httpd/conf.d/{{ httpd_conf_confd }}"
     insertbefore: '</Location>'
     line: "  {{ item.value }}"
-  with_dict: '{{ requires }}'
+  loop: "{{ lookup('dict', requires) }}"
 
 - name: httpdを再起動する
   become: yes

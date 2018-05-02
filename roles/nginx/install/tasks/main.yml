@@ -1,0 +1,22 @@
+- name: リポジトリをシステムに追加する | nginx repo
+  become: yes
+  yum_repository:
+    name: nginx 
+    description: nginx repo
+    baseurl: http://nginx.org/packages/mainline/centos/7/$basearch/
+    gpgcheck: yes
+    gpgkey: http://nginx.org/keys/nginx_signing.key
+    enabled: yes
+
+- name: nginxをインストールする
+  become: yes
+  yum: 
+    name: nginx 
+    state: present 
+
+- name: nginxを起動する
+  become: yes
+  service: 
+    name: nginx
+    state: started
+    enabled: yes

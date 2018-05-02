@@ -36,7 +36,7 @@
     repo: '{{ jenkins_backup_script_download_url }}'
     dest: '{{ jenkins_backup_work_dir }}' 
 
-- name: Jenkinsバックアップデータをする
+- name: Jenkinsバックアップデータを作成する
   become: yes
   shell: 
     "bash jenkins-backup.sh {{ jenkins_installed_dir }} {{ jenkins_backup_work_dir }}/jenkins.tar.gz"
@@ -53,7 +53,6 @@
     mode: 0755
     remote_src: yes
     
-
 - name: Jenkinsを起動する
   become: yes
   service:

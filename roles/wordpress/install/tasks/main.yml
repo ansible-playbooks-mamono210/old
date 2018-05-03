@@ -16,19 +16,31 @@
 - name: WordPressをダウンロードし解凍する
   become: yes
   shell:
-    "sudo -u apache /usr/local/bin/wp core download --path={{ wp_install_path }}" 
+    "sudo -u apache /usr/local/bin/wp core download
+     --path={{ wp_install_path }}"
 
 - name: 「wp-config.php」を作成する
   become: yes
   shell:
-    "sudo -u apache /usr/local/bin/wp core config --dbname={{ db_name }} --dbuser={{ db_user }} --dbpass={{ db_password }} --dbhost={{ db_host }} --dbprefix={{ db_prefix }}"
+    "sudo -u apache /usr/local/bin/wp core config
+     --dbname={{ db_name }}
+     --dbuser={{ db_user }}
+     --dbpass={{ db_password }}
+     --dbhost={{ db_host }}
+     --dbprefix={{ db_prefix }}"
   args:
     chdir: '{{ wp_install_path }}'
 
 - name: WordPressをインストールする
   become: yes
   shell: 
-    "sudo -u apache /usr/local/bin/wp core install  --url={{ wp_url }} --title={{ wp_title }} --admin_user={{ wp_admin_user }} --admin_password={{ wp_admin_password }} --admin_email={{ wp_admin_email }} --allow-root"
+    "sudo -u apache /usr/local/bin/wp core install
+     --url={{ wp_url }}
+     --title={{ wp_title }}
+     --admin_user={{ wp_admin_user }}
+     --admin_password={{ wp_admin_password }}
+     --admin_email={{ wp_admin_email }}
+     --allow-root"
   args:
     chdir: '{{ wp_install_path }}'
 

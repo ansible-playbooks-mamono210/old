@@ -1,0 +1,14 @@
+- name: Gitリポジトリのリストを取得する 
+  become: yes
+  shell: ls /var/git
+  register: GIT_REPOS
+
+- name: Gitリポジトリの設定を取得する 
+  become: yes
+  shell: "git config --list | grep 'receive.denydeletecurrent'"
+  args:
+    chdir: "/var/git/{{ item }}"
+  with_items:
+    - "{{ GIT_REPOS.stdout_lines }}"
+  register: GIT_CONFIGS
+  failed_when: "'receive.denydeletecurrent' in GIT_CONFIGS.stdout"

@@ -1,4 +1,4 @@
-- name: ユーザーを追加する 
+- name: ユーザーを追加する
   user:
     name: '{{ item.key }}'
   loop: "{{ lookup('dict', users) }}"

@@ -5,7 +5,7 @@
   vars_files:
     - vars/system/ssh/default.yml
     - vars/system/ssh/pub-key.yml
-  
+
   roles:
     - system/selinux/disabled
     - system/ssh/add-users

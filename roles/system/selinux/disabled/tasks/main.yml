@@ -9,6 +9,6 @@
 
 - name: 起動時にSELinuxを無効化する (/etc/sysconfig/selinux)
   become: yes
-  selinux: 
+  selinux:
     state: disabled
   when: result.rc == 0

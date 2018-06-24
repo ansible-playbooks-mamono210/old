@@ -3,7 +3,7 @@
   become: yes
   vars_files:
     - vars/system/update-kernel/default.yml
-  
+
   roles:
     - system/selinux/disabled
     - system/kernel/update-by-ELRepo

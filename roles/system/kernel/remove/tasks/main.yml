@@ -11,16 +11,16 @@
 - name: kernel-ml-tools をインストールする
   become: yes
   yum:
-    name: kernel-ml-tools 
+    name: kernel-ml-tools
     enablerepo: elrepo-kernel
-    state: latest
+    state: present
 
 - name: kernel-devel-* を切り換える
   become: yes
   shell:
     yum --enablerepo=elrepo-kernel -y swap kernel-devel -- kernel-ml-devel
 
-- name: 古いカーネルを削除する 
+- name: 古いカーネルを削除する
   become: yes
   yum:
     name: kernel

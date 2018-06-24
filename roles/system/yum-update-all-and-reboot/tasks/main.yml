@@ -3,7 +3,7 @@
   yum:
     name: "*"
     state: latest
-  register: SYSTEM_UPDATED 
+  register: SYSTEM_UPDATED
 
 - name: システムを再起動する
   become: yes

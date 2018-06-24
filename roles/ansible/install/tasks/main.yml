@@ -7,7 +7,7 @@
   become: yes
   yum:
     name: '{{ item }}'
-    state: present 
+    state: present
   loop:
     - expect
     - openssl-devel
@@ -18,7 +18,7 @@
   include_role:
     name: system/pip/install
 
-- name: Ansibleをインストールする 
+- name: Ansibleをインストールする
   become: yes
   pip:
     name: git+git://github.com/ansible/ansible.git@devel

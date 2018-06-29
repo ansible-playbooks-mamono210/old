@@ -1,13 +1,14 @@
-- name: Gitリポジトリのリストを取得する 
+- name: Gitリポジトリのリストを取得する
   become: yes
-  shell: ls /var/git
+  shell:
+    "find /var/git -name HEAD -execdir test -e refs -a -e objects -a -e config \\; -printf %h\\\\n | sort"
   register: GIT_REPOS
 
-- name: Gitリポジトリの設定を取得する 
+- name: Gitリポジトリの設定を取得する
   become: yes
   shell: "git config --list | grep 'receive.denydeletecurrent'"
   args:
-    chdir: "/var/git/{{ item }}"
+    chdir: '{{ item }}'
   with_items:
     - "{{ GIT_REPOS.stdout_lines }}"
   register: GIT_CONFIGS

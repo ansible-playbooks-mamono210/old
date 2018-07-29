@@ -1,19 +1,13 @@
 # Wordpress restore vars
 
-# 作業用ディレクトリ 
+# 作業用ディレクトリ
 restore_work_dir: /tmp/wordpress-backup
 
 #----------------------------------------
 # 適宜変更する
 #----------------------------------------
-# WordPress バックアップ SQL データが置かれているURL
-sql_backup_url: http://example.com/wp.sql
-
 # WordPress バックアップ SQL データファイル名
 sql_dump_file: wordpress.sql
-
-# WordPress wp-content ディレクトリのバックアップデータが置かれているURL
-wp_content_backup_url: http://example.com/wp-content.tar
 
 # WordPress がインストールされているパス
 wp_installed_path: /var/www/html/wordpress
@@ -23,4 +17,7 @@ wp_new_url: http://example.com/wp-new
 
 # バックアップデータを作成した WordPress の URL
 wp_old_url: http://example.com/wp-old
+
+# バックアップデータが置かれているGitリポジトリ
+wp_git_repo: https://github.com/example/git.git
 #----------------------------------------

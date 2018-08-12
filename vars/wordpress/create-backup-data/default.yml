@@ -13,14 +13,14 @@ db_dump_data_sql: wordpress.sql
 # Backup data dir
 backup_data_dir: wordpress-backup
 
+# Backup data group
+backup_data_group: root
+
+# Backup data owner
+backup_data_owner: root
+
 # Backup data path
 backup_data_path: "/var/www/html/{{ backup_data_dir }}"
 
-# Backup working directory
-backup_work_dir: /tmp/wordpress-backup
-
-#----------------------------------------
-# 適宜変更する
-#----------------------------------------
 # WordPress installed path
 wp_installed_path: /var/www/html/wordpress

@@ -1,79 +1,46 @@
-- name: バックアップデータ格納ディレクトリを初期化する 
+- name: バックアップデータ格納ディレクトリを初期化する / 初期化処理
   become: yes
   file:
-    path: '{{ backup_data_path }}' 
+    path: '{{ backup_data_path }}'
     state: absent
 
 - name: バックアップデータ格納ディレクトリを作成する
   become: yes
   file:
-    path: '{{ backup_data_path }}' 
+    path: '{{ backup_data_path }}'
     state: directory
     mode: 0755
 
-- name: 作業用ディレクトリを初期化する
-  become: yes
-  file:
-    path: '{{ backup_work_dir }}' 
-    state: absent 
-
-- name: 作業用ディレクトリを作成する
-  become: yes
-  file:
-    path: '{{ backup_work_dir }}' 
-    state: directory
-    mode: 0755
-
-- name: PostgreSQLダンプデータを削除する 
+- name: PostgreSQLダンプデータを削除する / 初期化処理
   become: yes
   file:
     path: "/tmp/{{ redmine_media_archive_file }}"
-    state: absent 
+    state: absent
 
 - name: Gitリポジトリをアーカイブする
   become: yes
-  shell:
-    "tar cfv {{ backup_work_dir }}/{{ git_archive_file}} {{ git_dir }}"
-  args:
-    chdir: '{{ git_parent_dir }}'
-    
+  archive:
+    path: '{{ git_dir }}'
+    dest: '{{ backup_data_path }}/git.tar.gz'
+    owner: '{{ backup_data_owner }}'
+    group: '{{ backup_data_group }}'
+    mode: 0755
+
 - name: メディアファイルをアーカイブする
   become: yes
-  shell:
-    "tar cfv {{ backup_work_dir }}/{{ redmine_media_archive_file }} files"
-  args:
-    chdir: '{{ redmine_dir }}'
-  
+  archive:
+    path: "{{ redmine_dir }}/files"
+    dest: '{{ backup_data_path }}/files.tar.gz'
+    owner: '{{ backup_data_owner }}'
+    group: '{{ backup_data_group }}'
+    mode: 0755
+
 - name: PostgreSQL / データベース「redmine」をダンプする
   become: yes
   environment:
     PGPASSWORD: '{{ db_password }}'
   shell:
     "pg_dump -h localhost -U {{ db_user }} {{ db_name }} > /tmp/{{ pg_dump_data_file }}"
-
-- name: Gitアーカイブスを公開ディレクトリへ移動する
-  become: yes
-  copy:
-    src:
-      "{{ backup_work_dir }}/{{ git_archive_file }}"
-    dest:
-      "{{ backup_data_path }}/{{ git_archive_file }}"
-    owner: apache
-    group: apache
-    mode: 0755
-    remote_src: True
-
-- name: メディアファイルアーカイブスを公開ディレクトリへ移動する
-  become: yes
-  copy:
-    src:
-      "{{ backup_work_dir }}/{{ redmine_media_archive_file }}"
-    dest:
-      "{{ backup_data_path }}/{{ redmine_media_archive_file }}"
-    owner: apache
-    group: apache
-    mode: 0755
-    remote_src: True
 
 - name: PostgreSQLダンプファイルを公開ディレクトリへ移動する
   become: yes
@@ -82,19 +49,13 @@
       "/tmp/{{ pg_dump_data_file }}"
     dest:
       "{{ backup_data_path }}/{{ pg_dump_data_file }}"
-    owner: apache
-    group: apache
+    owner: '{{ backup_data_owner }}'
+    group: '{{ backup_data_group }}'
     mode: 0755
-    remote_src: True
+    remote_src: yes
 
-- name: 作業用ディレクトリを初期化する
-  become: yes
-  file:
-    path: '{{ backup_work_dir }}' 
-    state: absent 
-
-- name: PostgreSQLダンプデータを削除する 
+- name: PostgreSQLダンプデータを削除する
   become: yes
   file:
     path: "/tmp/{{ pg_dump_data_file }}"
-    state: absent 
+    state: absent

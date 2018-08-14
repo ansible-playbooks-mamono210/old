@@ -8,8 +8,10 @@
   become: yes
   file:
     path: '{{ backup_data_path }}'
-    state: directory
+    owner: '{{ backup_data_owner }}'
+    group: '{{ backup_data_group }}'
     mode: 0755
+    state: directory
 
 - name: PostgreSQLダンプデータを削除する / 初期化処理
   become: yes
@@ -21,7 +23,7 @@
   become: yes
   archive:
     path: '{{ git_dir }}'
-    dest: '{{ backup_data_path }}/git.tar.gz'
+    dest: '{{ backup_data_path }}/{{ git_archive_file }}'
     owner: '{{ backup_data_owner }}'
     group: '{{ backup_data_group }}'
     mode: 0755
@@ -30,7 +32,7 @@
   become: yes
   archive:
     path: "{{ redmine_dir }}/files"
-    dest: '{{ backup_data_path }}/files.tar.gz'
+    dest: '{{ backup_data_path }}/{{ redmine_media_archive_file }}'
     owner: '{{ backup_data_owner }}'
     group: '{{ backup_data_group }}'
     mode: 0755

@@ -1,7 +1,7 @@
 # Redmine restore vars
 
 # Redmine backup data host
-# 
+#
 # 変数は適宜変更する
 #
 # または「--extra-vars "param1=value1 param2=value2"」と
@@ -11,7 +11,7 @@ backup_data_host: http://example.com
 # Db user
 db_user: redmine
 # Db password
-db_password: password                                                                      
+db_password: password
 # Db name:
 db_name: redmine
 #---------------------------------------------
@@ -24,14 +24,12 @@ backup_data_dir: redmine-backup
 # Restore working directory
 restore_work_dir: /tmp/redmine-restore
 
-# Redmine backup data url and dir
-backup_url_dir: "{{ backup_data_host }}/{{ backup_data_dir }}"
+# Redmine database dump data file name
+pg_dump_file: redmine.psql
 
-# RedmineメディアファイルのアーカイブスファイルのURL
-file_backup_url: "{{ backup_url_dir }}/files.tar"
+# Redmine media files archive file name
+redmine_files_archive_file: files.tar.gz
 
-# GitリポジトリのアーカイブスファイルのURL
-git_backup_url: "{{ backup_url_dir }}/git.tar"
+# Git repository archive file name
+git_archive_file: git.tar.gz
 
-# Redmine PosgreSQLダンプファイルのURL
-psql_backup_url: "{{ backup_url_dir }}/redmine.psql"

@@ -1,3 +1,23 @@
+- name: 作業用ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ restore_work_dir }}'
+    state: absent
+
+- name: 作業用ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ restore_work_dir }}'
+    state: directory
+    mode: 0755
+
+- name: 作業用ディレクトリへ Redmine PostgreSQL バックアップファイルをダウンロードする
+  become: yes
+  copy:
+    src: '{{ backup_data_dir }}/{{ pg_dump_file }}'
+    dest: '{{ restore_work_dir }}'
+    mode: 0755
+
 - name: PostgreSQLを再起動する
   become: yes
   service:
@@ -10,7 +30,7 @@
   environment:
     PATH:
       "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:{{ ansible_env.PATH }} "
-  lineinfile: 
+  lineinfile:
     dest: /etc/sudoers.d/postgres
     owner: root
     group: root
@@ -26,7 +46,7 @@
   become_method: sudo
   postgresql_db:
     name: '{{ db_name }}'
-    state: absent 
+    state: absent
 
 - name: PostgreSQL / Redmineデータベースを作成する
   become: yes
@@ -46,7 +66,7 @@
   environment:
     PGPASSWORD: '{{ db_password }}'
   shell:
-    "psql -h localhost -U {{ db_user }} {{ db_name }} < {{ restore_work_dir }}/redmine.psql"
+    "psql -h localhost -U {{ db_user }} {{ db_name }} < {{ restore_work_dir }}/{{ pg_dump_file }}"
 
 - name: データベースのマイグレーションを実行する
   become: yes
@@ -59,7 +79,7 @@
 
 - name: キャッシュとセッションデータをクリアする
   become: yes
-  command: bundle exec rake tmp:cache:clear tmp:sessions:clear 
+  command: bundle exec rake tmp:cache:clear tmp:sessions:clear
   args:
     chdir: '{{ redmine_dir }}'
   environment:
@@ -69,12 +89,12 @@
 - name: Apacheを再起動する
   become: yes
   service:
-    name: httpd 
+    name: httpd
     state: restarted
     enabled: yes
 
 - name: postgresをsudoersから削除する
   become: yes
-  file:  
+  file:
     path: /etc/sudoers.d/postgres
     state: absent

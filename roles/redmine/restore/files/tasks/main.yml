@@ -1,0 +1,14 @@
+- name: Redmineメディアファイルディレクトリを削除する
+  become: yes
+  file:
+    path: "{{ redmine_dir }}/files"
+    state: absent
+
+- name: リモートサーバからRedmineメディアファイルを取得する
+  become: yes
+  unarchive:
+    src: "{{ backup_data_dir }}/{{ redmine_files_archive_file }}"
+    dest: '{{ redmine_dir }}'
+    owner: apache
+    group: apache
+    mode: 0755

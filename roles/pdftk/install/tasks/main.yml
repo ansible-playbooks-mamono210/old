@@ -1,0 +1,23 @@
+- namen: robert-gcj-epel-7 リポジトリをシステムに追加する
+  become: yes
+  yum_repository:
+    name: robert-gcj-epel-7
+    description: Copr repo for gcj owned by robert
+    baseurl: https://copr-be.cloud.fedoraproject.org/results/robert/gcj/epel-7-$basearch/
+    gpgcheck: yes
+    gpgkey: https://copr-be.cloud.fedoraproject.org/results/robert/gcj/pubkey.gpg
+
+- namen: robert-pdftk-epel-7 リポジトリをシステムに追加する
+  become: yes
+  yum_repository:
+    name: robert-pdftk-epel-7
+    description: Copr repo for pdftk owned by robert
+    baseurl: https://copr-be.cloud.fedoraproject.org/results/robert/pdftk/epel-7-$basearch/
+    gpgcheck: yes
+    gpgkey: https://copr-be.cloud.fedoraproject.org/results/robert/pdftk/pubkey.gpg
+
+- name: PDFtkをインストールする
+  become: yes
+  yum:
+    name: pdftk
+    state: present

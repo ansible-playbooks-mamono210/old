@@ -1,0 +1,9 @@
+github_code_to_pdf_work_dir: github_code_to_pdf
+github_code_to_pdf_public_dir: /var/www/html/github
+github_code_to_pdf_path: "{{ github_code_to_pdf_public_dir }}/{{ github_code_to_pdf_work_dir }}"
+
+github_repository_url: https://github.com/
+github_repository_version: master
+
+work_dir_owner: apache
+work_dir_group: apache

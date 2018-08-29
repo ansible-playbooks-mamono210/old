@@ -1,0 +1,20 @@
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(function() {
+  $.ajax({
+    url:'{{ item | regex_replace('.+/','') }}',
+    async: false,
+    success: function(data){
+      $("#code-file").text(data);
+    }
+  });
+});
+</script>
+</head>
+<body>
+  <pre id="code-file" style="word-wrap: break-word; white-space: pre-wrap;">
+  </pre>
+</body>
+</html>

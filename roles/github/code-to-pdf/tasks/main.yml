@@ -1,0 +1,66 @@
+- name: 作業用ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ github_code_to_pdf_public_dir }}'
+    state: absent
+
+- name: 作業用ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ github_code_to_pdf_path }}'
+    state: directory
+    owner: '{{ work_dir_owner }}'
+    group: '{{ work_dir_group }}'
+    mode: 0755
+    recurse: yes
+
+- name: GitHubから作業用ディレクトリへリポジトリを取得する
+  become: yes
+  git:
+    repo: '{{ github_repository_url }}'
+    dest: '{{ github_code_to_pdf_path }}'
+    version: '{{ github_repository_version }}'
+
+- name: 「.git」ディレクトリを削除する
+  become: yes
+  file:
+    path: '{{ github_code_to_pdf_path }}/.git'
+    state: absent
+
+- name: ファイルのリストを取得する
+  become: yes
+  shell: "find . -type f | sed -e 's#^./##g'"
+  args:
+    chdir: '{{ github_code_to_pdf_path }}'
+  ignore_errors: yes
+  register: FILE_LIST
+
+- name: ファイルをHTMLへ変換する
+  become: yes
+  template:
+    src: template.html
+    dest: "{{ github_code_to_pdf_path }}/{{ item }}.html"
+  with_items: '{{ FILE_LIST.stdout_lines }}'
+  ignore_errors: yes
+
+- name: ディレクトリの権限を変更する
+  become: yes
+  file:
+    path: '{{ github_code_to_pdf_path }}'
+    owner: '{{ work_dir_owner }}'
+    group: '{{ work_dir_group }}'
+    mode: 0755
+    recurse: yes
+
+- name: ファイルをPDFへ変換する
+  become: yes
+  shell: "sudo -u {{ work_dir_owner }} google-chrome --headless --print-to-pdf={{ item }}.pdf http://localhost/github/{{ github_code_to_pdf_work_dir }}/{{ item }}.html"
+  args:
+    chdir: '{{ github_code_to_pdf_path }}'
+  with_items: '{{ FILE_LIST.stdout_lines }}'
+
+- name: PDFを結合する
+  become: yes
+  shell: "sudo -u {{ work_dir_owner }} pdftk $( find . -type f -name '*.pdf' | paste -s) cat output ouptput.dpf" 
+  args:
+    chdir: '{{ github_code_to_pdf_path }}'

@@ -24,3 +24,7 @@ backup_data_path: "/var/www/html/{{ backup_data_dir }}"
 
 # WordPress installed path
 wp_installed_path: /var/www/html/wordpress
+
+wp_url: http://example.com
+
+replace_url: http://exmample2.com

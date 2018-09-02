@@ -35,7 +35,7 @@
   args:
     chdir: '{{ wp_installed_path }}'
 
-- name: MariaDB / ダンプファイルをバックアップデータ格納へコピーする
+- name: MariaDBダンプファイルをバックアップデータ格納へコピーする
   become: yes
   copy:
     src: "/tmp/{{ db_dump_data_sql }}"
@@ -44,6 +44,13 @@
     group: '{{ backup_data_group }}'
     mode: 0755
     remote_src: yes
+
+- name: MariaDBダンプファイルのWordPressのURLを変更する
+  become: yes
+  replace:
+    path: "{{ backup_data_path }}/{{ db_dump_data_sql }}"
+    regexp: '{{ wp_url }}'
+    replace: '{{ replace_url }}'
 
 - name: MariaDBダンプデータを削除する / 初期化処理
   become: yes

@@ -20,4 +20,8 @@ wp_old_url: http://example.com/wp-old
 
 # バックアップデータが置かれているGitリポジトリ
 wp_git_repo: https://github.com/example/git.git
+
+# CloneするGitリポジトリのブランチ名もしくはtag名もしくはSHA1
+# SHA1を指定した場合エラーが出る恐れあり
+wp_git_repo_version: master
 #----------------------------------------

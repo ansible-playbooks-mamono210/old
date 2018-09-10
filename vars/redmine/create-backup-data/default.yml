@@ -36,6 +36,18 @@ git_dir: /var/git
 # Git archive data file
 git_archive_file: git.tar.gz
 
+# WordPress solution-log backup git Directory
+wp_backup_solution_log_git_dir: /home/wpbackup/git/solution-log
+
+# WordPress solution-log backup git archive data file
+wp_backup_solution_log_git_archive_file: solution-log-backup.tar.gz
+
+# Jenkins backup git Directory
+jenkins_backup_git_dir: /home/jenkinsbackup/git/backup
+
+# Jenkins backup git archive data file
+jenkins_backup_git_archive_file: jenkins-backup.tar.gz
+
 # Redmine media archie data file
 redmine_media_archive_file: files.tar.gz
 

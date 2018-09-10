@@ -28,6 +28,24 @@
     group: '{{ backup_data_group }}'
     mode: 0755
 
+- name: WordPress Solution log バックアップ Gitリポジトリをアーカイブする
+  become: yes
+  archive:
+    path: '{{ wp_backup_solution_log_git_dir }}'
+    dest: '{{ backup_data_path }}/{{ wp_backup_solution_log_git_archive_file }}'
+    owner: '{{ backup_data_owner }}'
+    group: '{{ backup_data_group }}'
+    mode: 0755
+
+- name: Jenkins バックアップ Gitリポジトリをアーカイブする
+  become: yes
+  archive:
+    path: '{{ jenkins_backup_git_dir }}'
+    dest: '{{ backup_data_path }}/{{ jenkins_backup_git_archive_file }}'
+    owner: '{{ backup_data_owner }}'
+    group: '{{ backup_data_group }}'
+    mode: 0755
+
 - name: メディアファイルをアーカイブする
   become: yes
   archive:

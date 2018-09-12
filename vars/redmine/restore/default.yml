@@ -30,6 +30,21 @@ pg_dump_file: redmine.psql
 # Redmine media files archive file name
 redmine_files_archive_file: files.tar.gz
 
-# Git repository archive file name
+#########################################
+# Git repository
+#########################################
+# Git
 git_archive_file: git.tar.gz
 
+# Jenkins
+jenkins_git_user: jenkinsbackup
+jenkins_git_dir: /home/{{ jenkins_git_user }}/git
+jenkins_git_archive_file: jenkins-backup.tar.gz
+
+# wordpress
+wp_git_user: wpbackup
+wp_git_dir: /home/{{ wp_git_user }}/git
+
+wp_git_repos:
+  solution-log:
+    archive_file: solution-log-backup.tar.gz

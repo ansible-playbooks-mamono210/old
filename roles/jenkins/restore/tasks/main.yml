@@ -1,3 +1,22 @@
+- name: 作業用ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ work_dir }}'
+    state: absent
+
+- name: 作業用ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ work_dir }}'
+    state: directory
+    mode: 0755
+
+- name: 作業用ディレクトリへ Jenkins バックアップファイルをダウンロードする (Ansible クライアントからアップロードする）
+  become: yes
+  unarchive:
+    src: '{{ local_data_dir }}/{{ data_file }}'
+    dest: '{{ work_dir }}'
+
 - name: Jenkinsを停止する
   become: yes
   service:
@@ -6,26 +25,22 @@
 
 - name: 稼働中のJenkinsのデータを削除する
   become: yes
-  file:  
+  file:
     path: '{{ item }}'
     state: absent
-  with_items:
+  loop:
     - /var/cache/jenkins/*
     - "{{ jenkins_installed_dir }}/jobs/"
+    - "{{ jenkins_installed_dir }}/nodes/"
     - "{{ jenkins_installed_dir }}/plugins/"
     - "{{ jenkins_installed_dir }}/users/"
     - "{{ jenkins_installed_dir }}/secrets/"
-
-- name: Jenkinsバックアップデータを解凍する
-  shell: tar xfvz jenkins.tar.gz
-  args:
-    chdir: '{{ jenkins_restore_work_dir }}'
 
 - name: Jenkinsバックアップデータを配置する
   become: yes
   shell: "mv -f * {{ jenkins_installed_dir }}"
   args:
-    chdir: "{{ jenkins_restore_work_dir }}/{{ jenkins_backup_data_dir }}"
+    chdir: '{{ work_dir }}'
 
 - name: Jenkinsのシステムファイルの所有権をrootからJenkinsへ変更する
   become: yes

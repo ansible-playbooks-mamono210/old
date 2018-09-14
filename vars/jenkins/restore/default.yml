@@ -1,23 +1,13 @@
 # jenkins restore vars
 
-# jenkins backup data host
-# 
-# 変数は適宜変更する
-#
-# または「--extra-vars "param1=value1 param2=value2"」と
-# ansible-playbookコマンド実行時にパラメーターとして渡す
-#---------------------------------------------
-jenkins_backup_data_host: http://example.com
-#---------------------------------------------
+# Ansibleクライアントが所有するJenkinsバックアップデータファイルのディレクトリ（フルパスで指定する）
+local_data_dir: /tmp/jenkins-backup-data
 
-# Restore working directory
-jenkins_restore_work_dir: /tmp/jenkins-restore
+# 作業用ディレクトリ
+work_dir: /tmp/jenkins-restore
 
-# jenkins backup data dir
-jenkins_backup_data_dir: jenkins-backup
-
-# jenkinsバックアップファイルのアーカイブスファイルのURL
-jenkins_backup_url: "{{ jenkins_backup_data_host }}/{{ jenkins_backup_data_dir }}/jenkins.tar.gz"
+# jenkinsバックアップデータファイルのアーカイブスファイル
+data_file: jenkins.tar.gz
 
 # Jenkinsがインストールされているディレクトリ
 jenkins_installed_dir: /var/lib/jenkins

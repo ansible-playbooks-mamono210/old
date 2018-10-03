@@ -1,0 +1,7 @@
+- name: Jenkinsポートを削除する
+  become: yes
+  firewalld:
+    port: 8080/tcp
+    state: disabled
+    permanent: yes
+    immediate: yes

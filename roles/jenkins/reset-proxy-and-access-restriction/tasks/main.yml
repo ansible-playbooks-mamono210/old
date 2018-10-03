@@ -1,0 +1,12 @@
+- name: "{{ httpd_conf_confd }}を削除する"
+  become: yes
+  file:
+    path: "/etc/httpd/conf.d/{{ httpd_conf_confd }}"
+    state: absent
+
+- name: httpdを再起動する
+  become: yes
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes

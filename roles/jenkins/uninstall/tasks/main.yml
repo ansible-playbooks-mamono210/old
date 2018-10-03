@@ -1,0 +1,15 @@
+- name: Jenkinsをアンインストールする
+  become: yes
+  yum:
+    name: jenkins
+    state: absent
+
+- name: 関連ディレクトリを削除する
+  become: yes
+  file:
+    path: '{{ item }}'
+    state: absent
+  loop:
+    - /var/cache/jenkins
+    - /var/lib/jenkins
+    - /var/log/jenkins

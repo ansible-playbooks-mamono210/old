@@ -11,3 +11,9 @@ data_file: jenkins.tar.gz
 
 # Jenkinsがインストールされているディレクトリ
 jenkins_installed_dir: /var/lib/jenkins
+
+# Jenkinsを実行するユーザー名
+jenkins_excute_user: jenkins
+
+# Jenkinsのシステム管理者名
+jenkins_admin_user: admin

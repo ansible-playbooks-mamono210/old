@@ -29,6 +29,7 @@
     path: '{{ item }}'
     state: absent
   loop:
+    - /var/log/jenkins/*
     - /var/cache/jenkins/*
     - "{{ jenkins_installed_dir }}/jobs/"
     - "{{ jenkins_installed_dir }}/nodes/"
@@ -42,17 +43,88 @@
   args:
     chdir: '{{ work_dir }}'
 
-- name: Jenkinsのシステムファイルの所有権をrootからJenkinsへ変更する
+- name: Jenkins Admin User の公開鍵を作成する
+  become: yes
+  user:
+    name: '{{ jenkins_admin_user }}'
+    generate_ssh_key: yes
+
+- name: Jenkins Admin User の公開鍵を取得する
+  become: yes
+  shell: "cat /home/{{ jenkins_admin_user }}/.ssh/id_rsa.pub"
+  register: PUBKEY
+
+- name: Jenkins Admin User の設定ファイルの公開鍵の登録の箇所を削除する
+  become: yes
+  lineinfile:
+    path: "{{ jenkins_installed_dir }}/users/{{ jenkins_admin_user }}/config.xml"
+    state: absent
+    regexp: <authorizedKeys>
+
+- name: 作成した公開鍵を Jenkins Admin User の設定ファイルに書き込む
+  become: yes
+  lineinfile:
+    path: "{{ jenkins_installed_dir }}/users/{{ jenkins_admin_user }}/config.xml"
+    state: present
+    insertafter: <org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl>
+    line: "      <authorizedKeys>{{ PUBKEY.stdout }}</authorizedKeys>"
+
+- name: Jenkinsの実行ユーザーを変更する
+  become: yes
+  lineinfile:
+    path: /etc/sysconfig/jenkins
+    state: present
+    regexp: "^JENKINS_USER"
+    line: "JENKINS_USER=\"{{ jenkins_excute_user }}\""
+
+- name: Jenkinsのシステムファイルの所有者をJenkins実行ユーザーへ変更する
   become: yes
   file:
-    path: '{{ jenkins_installed_dir }}'
-    owner: jenkins
-    group: jenkins
+    path: '{{ item }}'
+    owner: '{{ jenkins_excute_user }}'
+    group: '{{ jenkins_excute_user }}'
     recurse: yes
+  loop:
+    - '{{ jenkins_installed_dir }}'
+    - /var/log/jenkins
+    - /var/cache/jenkins
 
 - name: Jenkinsを起動する
   become: yes
   service:
     name: jenkins
     state: started
+    enabled: yes
+
+- name: Jenkinsが起動するまで待機する
+  wait_for:
+    timeout: 30
+
+- name: Jenkinsが利用するSSHDポートを取得する
+  shell: curl -v http://localhost:8080/jenkins/login 2>&1 | grep SSH-Endpoint | cut -d':' -f3
+  args:
+    warn: false
+  register: JENKINS_SSHD_PORT
+
+- name: JenkinsへインストールするPluginのリストを取得する
+  shell: "cat {{ jenkins_installed_dir }}/plugins/plugin.list"
+  register: PLUGIN_LIST
+
+- name: JenkinsへPluginをインストールする
+  shell: "sudo -u {{ jenkins_admin_user }}
+          ssh
+          -o StrictHostKeyChecking=no
+          -l {{ jenkins_admin_user }}
+          -p {{ JENKINS_SSHD_PORT.stdout }}
+          localhost
+          install-plugin
+          http://updates.jenkins-ci.org/download/plugins/`echo {{ item }} | awk '{print $1}'`/`echo {{ item }} | awk '{print $NF}'`/`echo {{ item }} | awk '{print $1}'`.hpi"
+  ignore_errors: yes
+  with_items: '{{ PLUGIN_LIST.stdout_lines }}'
+
+- name: Jenkinsを再起動する
+  become: yes
+  service:
+    name: jenkins
+    state: restarted
     enabled: yes

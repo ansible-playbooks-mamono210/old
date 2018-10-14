@@ -120,7 +120,7 @@
           install-plugin
           http://updates.jenkins-ci.org/download/plugins/`echo {{ item }} | awk '{print $1}'`/`echo {{ item }} | awk '{print $NF}'`/`echo {{ item }} | awk '{print $1}'`.hpi"
   ignore_errors: yes
-  with_items: '{{ PLUGIN_LIST.stdout_lines }}'
+  with_items: "{{ PLUGIN_LIST.stdout_lines | regex_replace('\\(.*?\\)') }}"
 
 - name: Jenkinsを再起動する
   become: yes

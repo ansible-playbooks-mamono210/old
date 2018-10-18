@@ -1,0 +1,5 @@
+jenkinsfiles:
+    url: https//github.com/example
+    jobs:
+      - job/some/test
+      - job/some/test

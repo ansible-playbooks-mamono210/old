@@ -1,5 +1,7 @@
 jenkinsfiles:
+  group_name:
     url: https//github.com/example
+    branches: master
     jobs:
       - job/some/test
       - job/some/test

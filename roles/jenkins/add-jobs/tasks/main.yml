@@ -39,14 +39,25 @@
 - name: インストールするJobのリポジトリからJenkinsfileを取得する
   become: yes
   git:
-    url: 
-    branches:
+    url: {{ name.url }}
+    branches: {{ name.branches }}
+
+- name: 登録するJobのリストを作成する
+  become: yes
+  shell: "ls {{ item }}"
+  args:
+    chdir: '{{ work_dir }}'
+  register: JOB_LIST
 
 - name: ディレクトリへJob DLS用の定義ファイルを作成する
   become: yes
-  shell: create-seed-jobs.sh 
+  shell: "create-seed-jobs.sh {{ item }}"
+  args:
+    chdir: '{{ work_dir }}'
+  with_items: JOB_LIST.stdout
 
+- name: JenkinsへJob登録用Jobを登録する
+  become: yes
+  shell:
+  with_times:
 
-#- name: JenkinsへJob登録用Jobを登録する
-#
-#- name: JenkinsへJobを登録する

@@ -48,7 +48,7 @@
   include_vars:
     dir: "{{ work_dir }}/joblist"
     extentions:
-      - list
+      - yaml 
 
 - name: インストールするJobのリポジトリからJenkinsfileを取得する
   become: yes

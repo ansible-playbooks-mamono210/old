@@ -47,6 +47,7 @@
   fetch:
     src: "{{ work_dir }}/joblist/job-list.yaml"
     dest: /tmp/job-list.yaml
+    flat: yes
 
 - name: Jobリスト定義ファイルを動的にAnsibleの変数ファイルとして読み込む
   include_vars:

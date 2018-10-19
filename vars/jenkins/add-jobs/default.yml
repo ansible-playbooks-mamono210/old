@@ -1,7 +1,3 @@
-jenkinsfiles:
-  group_name:
-    url: https//github.com/example
-    branches: master
-    jobs:
-      - job/some/test
-      - job/some/test
+joblist_definition_file_url: https://github.com/TomonoriMatsumura/jenkins_joblist_test
+joblist_repo_version: master
+joblist_definition_file_name: jenkins.job.list

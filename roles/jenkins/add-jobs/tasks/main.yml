@@ -46,7 +46,9 @@
 - name: Jobリスト定義ファイルを動的にAnsibleの変数ファイルとして読み込む
   become: yes
   include_vars:
-    file: "{{ work_dir }}/joblist/jenkins.job.list"
+    dir: "{{ work_dir }}/joblist"
+    extentions:
+      - list
 
 - name: インストールするJobのリポジトリからJenkinsfileを取得する
   become: yes

@@ -2,6 +2,7 @@
 - hosts: all
   vars_files:
     - vars/jenkins/restore/default.yml
+    - vars/jenkins/add-jobs//default.yml
   become: yes
 
   roles:

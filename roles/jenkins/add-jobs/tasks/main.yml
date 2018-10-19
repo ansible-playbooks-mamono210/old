@@ -45,12 +45,12 @@
 
 - name: Jobリスト定義ファイルをAnsibleコントロールマシーンへ取得する
   fetch:
-    src: "{{ work_dir }}/joblist/joblist.yaml"
-    dest: /tmp/joblist.yaml
+    src: "{{ work_dir }}/joblist/job-list.yaml"
+    dest: /tmp/job-list.yaml
 
 - name: Jobリスト定義ファイルを動的にAnsibleの変数ファイルとして読み込む
   include_vars:
-    file: /tmp/joblist.yaml
+    file: /tmp/job-list.yaml
 
 - name: インストールするJobのリポジトリからJenkinsfileを取得する
   become: yes

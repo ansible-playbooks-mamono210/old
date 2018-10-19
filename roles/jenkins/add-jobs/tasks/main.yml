@@ -48,8 +48,6 @@
     src: "{{ work_dir }}/joblist/joblist.yaml"
     dest: /tmp/joblist.yaml
 
-- name: 
-
 - name: Jobリスト定義ファイルを動的にAnsibleの変数ファイルとして読み込む
   include_vars:
     file: /tmp/joblist.yaml

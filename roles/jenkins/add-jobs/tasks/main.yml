@@ -46,7 +46,7 @@
 - name: Jobリスト定義ファイルをAnsibleコントロールマシーンへ取得する
   fetch:
     src: "{{ work_dir }}/joblist/job-list.yaml"
-    dest: /tmp/job-list.yaml
+    dest: /tmp/
     flat: yes
 
 - name: Jobリスト定義ファイルを動的にAnsibleの変数ファイルとして読み込む

@@ -36,11 +36,24 @@
   wait_for:
     timeout: 30
 
+- name: Jobリストの定義ファイルを取得する
+  become: yes
+  git:
+    repo: '{{ joblist_definition_file_url }}'
+    dest: "{{ work_dir }}/joblist"
+    version: '{{ joblist_repo_version }}'
+
+- name: Jobリスト定義ファイルを動的にAnsibleの変数ファイルとして読み込む
+  become: yes
+  include_vars:
+    file: "{{ work_dir }}/joblist/{{ joblist_definition_file_name }}"
+
 - name: インストールするJobのリポジトリからJenkinsfileを取得する
   become: yes
   git:
-    url: {{ name.url }}
-    branches: {{ name.branches }}
+    repo: '{{ name.url }}'
+    dest: '{{ name.branches }}'
+    version: '{{ name.version }}'
 
 - name: 登録するJobのリストを作成する
   become: yes

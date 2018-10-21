@@ -57,7 +57,7 @@
   become: yes
   git:
     repo: '{{ item.value.url }}'
-    dest: "{{ work_dir }}/{{ item.key }}"
+    dest: "{{ work_dir }}/{{ item.value.name }}"
     version: '{{ item.value.version }}'
   loop: "{{ lookup('dict', jenkins_joblists, wantlist=True) }}"
 

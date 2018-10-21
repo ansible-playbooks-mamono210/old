@@ -63,7 +63,7 @@
 
 - name: 登録するJobのリストを作成する
   become: yes
-  shell: "ls {{ item.key }}/{{ item.lists }}"
+  shell: "ls {{ item.key }}/{{ item.value.lists }}"
   args:
     chdir: '{{ work_dir }}'
   register: JOB_LISTS

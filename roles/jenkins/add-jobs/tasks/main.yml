@@ -60,14 +60,19 @@
     dest: "{{ work_dir }}/{{ item.key }}"
     version: '{{ item.value.version }}'
   loop: "{{ lookup('dict', jenkins_joblists, wantlist=True) }}"
-#
-#- name: 登録するJobのリストを作成する
-#  become: yes
-#  shell: "ls {{ item }}"
-#  args:
-#    chdir: '{{ work_dir }}'
-#  register: JOB_LIST
-#
+
+- name: 登録するJobのリストを作成する
+  become: yes
+  shell: "ls {{ item.key }}/{{ item.lists }}"
+  args:
+    chdir: '{{ work_dir }}'
+  register: JOB_LISTS
+  loop: "{{ lookup('dict', jenkins_joblists, wantlist=True) }}"
+
+- name: var_dump
+  dubug:
+    var: JOB_LISTS
+
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes
 #  shell: "create-seed-jobs.sh {{ item }}"

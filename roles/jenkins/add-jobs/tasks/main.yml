@@ -65,14 +65,14 @@
   become: yes
   shell: "find {{ item.1 }} -type f -name Jenkinsfile"
   args:
-    chdir: "{{ work_dir }}/servers"
+    chdir: "{{ work_dir }}/{{ item.0 }}"
   register: JOB_LISTS
   with_subelements:
     - "{{ jenkins_joblists }}"
     - lists
 
 - name: vardump
-  debug: var=JOB_LISTS.results.stdout
+  debug: var=JOB_LISTS
 
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes

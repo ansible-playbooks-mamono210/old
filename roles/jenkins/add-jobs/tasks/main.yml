@@ -56,10 +56,12 @@
 - name: インストールするJobのリポジトリからJenkinsfileを取得する
   become: yes
   git:
-    repo: '{{ item.value.url }}'
-    dest: "{{ work_dir }}/{{ item.key }}"
-    version: '{{ item.value.version }}'
-  loop: "{{ lookup('dict', jenkins_joblists, wantlist=True) }}"
+    repo: '{{ item.0.url }}'
+    dest: "{{ work_dir }}/{{ item.1 }}"
+    version: '{{ item.0.version }}'
+  with_subelements:
+    - "{{ jenkins_joblists }}"
+    - lists
 
 - name: 登録するJobのリストを作成する
   become: yes

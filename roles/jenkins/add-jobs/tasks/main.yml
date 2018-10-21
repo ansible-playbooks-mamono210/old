@@ -65,7 +65,7 @@
   become: yes
   shell: "find {{ item.1 }} -type f -name Jenkinsfile"
   args:
-    chdir: "{{ work_dir }}/{{ item }}"
+    chdir: "{{ work_dir }}/servers"
   register: JOB_LISTS
   with_subelements:
     - "{{ jenkins_joblists }}"

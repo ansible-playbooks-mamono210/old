@@ -67,7 +67,9 @@
   args:
     chdir: "{{ work_dir }}/{{ item.key }}"
   register: JOB_LISTS
-  loop: "{{ lookup('dict', jenkins_joblists, wantlist=True) }}"
+  with_subelements:
+    - '{{ jenkins_joblists }}'
+    - lists
 
 - name: vardump
   debug: var=JOB_LISTS

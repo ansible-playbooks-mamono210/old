@@ -69,8 +69,8 @@
   register: JOB_LISTS
   loop: "{{ lookup('dict', jenkins_joblists, wantlist=True) }}"
 
-- name: var_dump
-  dubug: var=JOB_LISTS
+- name: vardump
+  debug: var=JOB_LISTS
 
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes

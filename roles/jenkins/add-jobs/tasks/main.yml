@@ -70,8 +70,7 @@
   loop: "{{ lookup('dict', jenkins_joblists, wantlist=True) }}"
 
 - name: var_dump
-  dubug:
-    var: JOB_LISTS
+  dubug: var=JOB_LISTS
 
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes

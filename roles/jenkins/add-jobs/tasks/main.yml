@@ -72,7 +72,7 @@
     - lists
 
 - name: vardump
-  debug: var=JOB_LISTS
+  debug: var=JOB_LISTS.stdout
 
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes

@@ -59,7 +59,7 @@
     repo: '{{ item.value.url }}'
     dest: '{{ item.key }}'
     version: '{{ item.value.version }}'
-  loop: "{{ lookup('dict', jenkins_joblists) }}"
+  loop: "{{ lookup('dict', jenkins_joblists, wantlist=True) }}"
 #
 #- name: 登録するJobのリストを作成する
 #  become: yes

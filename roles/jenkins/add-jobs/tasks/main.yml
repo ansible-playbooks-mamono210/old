@@ -63,9 +63,9 @@
 
 - name: 登録するJobのリストを作成する
   become: yes
-  shell: "find {{ item.value.lists }} -type f -name Jenkinsfile"
+  shell: "find {{ item.1 }} -type f -name Jenkinsfile"
   args:
-    chdir: "{{ work_dir }}/{{ item.key }}"
+    chdir: "{{ work_dir }}/{{ item.0 }}"
   register: JOB_LISTS
   with_subelements:
     - '{{ jenkins_joblists }}'

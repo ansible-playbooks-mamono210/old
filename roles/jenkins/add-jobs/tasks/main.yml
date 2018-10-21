@@ -68,7 +68,7 @@
     chdir: "{{ work_dir }}/{{ item.0 }}"
   register: JOB_LISTS
   with_subelements:
-    - '{{ jenkins_joblists }}'
+    - "{{ jenkins_joblists }}"
     - lists
 
 - name: vardump

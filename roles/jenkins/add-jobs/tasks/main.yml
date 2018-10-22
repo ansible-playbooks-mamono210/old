@@ -80,7 +80,9 @@
 - name: vardump
   debug:
     var: "{{ item }}"
-  with_items: "{{ JOB_LISTS.results.stdout }}"
+  with_subelements:
+    -  "{{ JOB_LISTS.results.stdout }}"
+    - stdout_lines
 
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes

@@ -81,7 +81,7 @@
   debug:
     var: "{{ item }}"
   with_subelements:
-    -  "{{ JOB_LISTS.results.stdout }}"
+    -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する

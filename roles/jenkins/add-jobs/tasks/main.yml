@@ -86,7 +86,14 @@
 
 - name: vardump
   debug:
-    var: "{{ item.1 }}"
+    var: "{{ item.0.stdout }}"
+  with_subelements:
+    -  "{{ JOB_LISTS.results }}"
+    - stdout_lines
+
+- name: vardump
+  debug:
+    var: "{{ item.1.stdout }}"
   with_subelements:
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines

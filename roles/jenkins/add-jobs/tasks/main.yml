@@ -1,16 +1,16 @@
-- name: 作業用ディレクトリを初期化する
-  become: yes
-  file:
-    path: '{{ work_dir }}'
-    state: absent
-
-- name: 作業用ディレクトリを作成する
-  become: yes
-  file:
-    path: '{{ work_dir }}'
-    state: directory
-    mode: 0755
-
+#- name: 作業用ディレクトリを初期化する
+#  become: yes
+#  file:
+#    path: '{{ work_dir }}'
+#    state: absent
+#
+#- name: 作業用ディレクトリを作成する
+#  become: yes
+#  file:
+#    path: '{{ work_dir }}'
+#    state: directory
+#    mode: 0755
+#
 #- name: Jenkinsが利用するSSHDポートを取得する
 #  shell: curl -v http://localhost:8080/jenkins/login 2>&1 | grep SSH-Endpoint | cut -d':' -f3
 #  args:
@@ -36,19 +36,19 @@
 #  wait_for:
 #    timeout: 30
 #
-- name: Jobリストの定義ファイルを取得する
-  become: yes
-  git:
-    repo: '{{ joblist_definition_file_url }}'
-    dest: "{{ work_dir }}/joblist"
-    version: '{{ joblist_repo_version }}'
-
-- name: Jobリスト定義ファイルをAnsibleコントロールマシーンへ取得する
-  fetch:
-    src: "{{ work_dir }}/joblist/job-list.yaml"
-    dest: /tmp/
-    flat: yes
-
+#- name: Jobリストの定義ファイルを取得する
+#  become: yes
+#  git:
+#    repo: '{{ joblist_definition_file_url }}'
+#    dest: "{{ work_dir }}/joblist"
+#    version: '{{ joblist_repo_version }}'
+#
+#- name: Jobリスト定義ファイルをAnsibleコントロールマシーンへ取得する
+#  fetch:
+#    src: "{{ work_dir }}/joblist/job-list.yaml"
+#    dest: /tmp/
+#    flat: yes
+#
 - name: Jobリスト定義ファイルを動的にAnsibleの変数ファイルとして読み込む
   include_vars:
     file: /tmp/job-list.yaml
@@ -75,8 +75,9 @@
 
 - name: vardump
   debug:
-    var: "{{ item.stdout_lines }}"
-  with_items: JOB_LIST.results
+    var: JOB_LIST
+#    var: "{{ item.stdout_lines }}"
+#  with_items: JOB_LIST.results
 
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes

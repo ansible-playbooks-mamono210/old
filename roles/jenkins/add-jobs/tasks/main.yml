@@ -84,6 +84,13 @@
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
+- name: vardump
+  debug:
+    var: "{{ item.1 }}"
+  with_subelements:
+    -  "{{ JOB_LISTS.results }}"
+    - stdout_lines
+
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes
 #  shell: "create-seed-jobs.sh {{ item }}"

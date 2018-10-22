@@ -84,6 +84,13 @@
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
+- name: var_dump item.0
+  debug:
+    var: "{{ item.0 }}"
+  with_subelements:
+    -  "{{ JOB_LISTS.results }}"
+    - stdout_lines
+
 - name: var_dump item.0.stdout
   debug:
     var: "{{ item.0.stdout }}"

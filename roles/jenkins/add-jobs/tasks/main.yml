@@ -75,7 +75,7 @@
 
 - name: vardump
   debug:
-    var: "{{ JOB_LISTS.results | map(attribute='stdout_lines') | list }}"
+    var: "{{ JOB_LISTS.results | map(attribute='stdout_lines') }}"
 
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes

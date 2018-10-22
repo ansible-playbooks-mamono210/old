@@ -57,7 +57,7 @@
   become: yes
   git:
     repo: '{{ item.0.url }}'
-    dest: "{{ work_dir }}/{{ item.1 }}"
+    dest: "{{ work_dir }}/{{ item.0.name }}"
     version: '{{ item.0.version }}'
   with_subelements:
     - "{{ jenkins_joblists }}"

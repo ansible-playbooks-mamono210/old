@@ -77,21 +77,21 @@
   debug:
     var: JOB_LISTS
 
-- name: vardump
+- name: var_dump item
   debug:
     var: "{{ item }}"
   with_subelements:
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
-- name: vardump
+- name: var_dump item.0.stdout
   debug:
     var: "{{ item.0.stdout }}"
   with_subelements:
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
-- name: vardump
+- name: var_dump item.1.stdout
   debug:
     var: "{{ item.1.stdout }}"
   with_subelements:

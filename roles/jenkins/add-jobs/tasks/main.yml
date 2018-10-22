@@ -81,7 +81,7 @@
   debug:
     var: "{{ item }}"
   with_subelements:
-    -  "{{ JOB_LISTS.result }}"
+    -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
 - name: var_dump item.0

@@ -76,7 +76,7 @@
 - name: vardump
   debug:
     var: "{{ item }}"
-  with_items: "{{ JOB_LISTS.results | json_query('stdout_lines') }}"
+  with_items: "{{ JOB_LISTS.results['stdout_lines'] }}"
 
 #- name: ディレクトリへJob DLS用の定義ファイルを作成する
 #  become: yes

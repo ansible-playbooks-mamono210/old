@@ -133,8 +133,8 @@
 #  with_dict:
 #    - "{{ JOB_LISTS.results }}"
 
-- name: echo JOB_LIST.results / item.item.0.name
-  shell: "echo {{ item.item.0.name }}"
+- name: echo JOB_LIST.results / item.item.0.cmd
+  shell: "echo {{ item.item.0.cmd }}"
   with_list:
     - "{{ JOB_LISTS.results }}"
 

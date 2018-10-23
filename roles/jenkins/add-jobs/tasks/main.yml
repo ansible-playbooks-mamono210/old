@@ -87,8 +87,8 @@
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
-- name: echo item.0.version
-  shell: "echo {{ item.0.version }}"
+- name: echo item.0.stdout
+  shell: "echo {{ item.0.stdout }}"
   with_subelements:
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines

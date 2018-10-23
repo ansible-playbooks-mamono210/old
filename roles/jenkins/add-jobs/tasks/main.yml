@@ -87,6 +87,12 @@
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
+- name: echo item.0.version
+  shell: "echo {{ item.0.version }}"
+  with_subelements:
+    -  "{{ JOB_LISTS.results }}"
+    - stdout_lines
+
 # This expression would fail
 #- name: var_dump JOB_LIST.results / item
 #  debug:

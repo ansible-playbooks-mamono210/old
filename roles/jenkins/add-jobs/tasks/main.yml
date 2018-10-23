@@ -89,6 +89,10 @@
   debug:
     var: JOB_LISTS.results.item.0
 
+- name: var_dump JOB_LIST.results['item']
+  debug:
+    var: JOB_LISTS.results.item['item']
+
 - name: var_dump JOB_LIST.results
   debug:
     var: "{{ item }}"

@@ -83,9 +83,9 @@
 
 - name: var_dump JOB_LIST.results
   debug:
-    var: "{{ item }}"
+    var: "{{ name }}"
   with_lists:
-    -  "{{ JOB_LISTS.results.items }}"
+    -  "{{ JOB_LISTS.results.item }}"
 
 - name: var_dump item
   debug:

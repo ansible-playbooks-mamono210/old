@@ -133,11 +133,10 @@
 #  with_dict:
 #    - "{{ JOB_LISTS.results }}"
 
-# This expression would fail
-#- name: echo JOB_LIST.results / item.item.name
-#  shell: "echo {{ item.item.name }}"
-#  with_list:
-#    - "{{ JOB_LISTS.results }}"
+- name: echo JOB_LIST.results / item.item.0.name
+  shell: "echo {{ item.item.0.name }}"
+  with_list:
+    - "{{ JOB_LISTS.results }}"
 
 - name: echo JOB_LIST.results / item[0].stdout
   shell: "echo {{ item[0].stdout }}"

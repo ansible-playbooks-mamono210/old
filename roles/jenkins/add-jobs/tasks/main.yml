@@ -81,10 +81,6 @@
   debug:
     var: JOB_LISTS.results
 
-- name: var_dump JOB_LIST.results
-  debug:
-    var: "{{ JOB_LISTS.results | from_json }}"
-
 - name: var_dump JOB_LIST.results.item
   debug:
     var: JOB_LISTS.results.item
@@ -108,7 +104,7 @@
 - name: var_dump JOB_LIST.results / item
   debug:
     var: item
-  with_items: JOB_LISTS.results
+  with_dict: JOB_LISTS.results
 
 - name: var_dump JOB_LIST.results / item.end
   debug:

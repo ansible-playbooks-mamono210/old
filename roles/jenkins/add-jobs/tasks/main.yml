@@ -122,9 +122,14 @@
 #  with_items:
 #    - "{{ JOB_LISTS.results }}"
 
-- name: echo JOB_LIST.results / item.item
+- name: echo JOB_LIST.results / item.cmd
   shell: "echo {{ item.cmd }}"
   with_items:
+    - "{{ JOB_LISTS.results }}"
+
+- name: echo JOB_LIST.results / item.cmd / with_dict
+  shell: "echo {{ item.cmd }}"
+  with_dict:
     - "{{ JOB_LISTS.results }}"
 
 - name: echo JOB_LIST.results / item.end

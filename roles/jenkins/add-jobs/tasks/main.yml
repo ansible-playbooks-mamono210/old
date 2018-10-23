@@ -73,9 +73,6 @@
     - "{{ jenkins_joblists }}"
     - lists
 
-- name: echo
-  command: "echo {{ JOB_LISTS.results | join(' ', attribute='end') }}"
-
 - name: var_dump JOB_LIST
   debug:
     var: JOB_LISTS
@@ -84,25 +81,11 @@
   debug:
     var: JOB_LISTS.results
 
-- name: var_dump JOB_LIST.results.stdout
-  debug:
-    var: JOB_LISTS.results.stdout
-
-- name: var_dump JOB_LIST.results.item.0
-  debug:
-    var: JOB_LISTS.results.item.0
-
-- name: var_dump JOB_LIST.results['item']
-  debug:
-    var: JOB_LISTS.results.item['item']
-
-- name: var_dump JOB_LIST.results['end']
-  debug:
-    var: JOB_LISTS.results.item['end']
-
-- name: var_dump JOB_LIST.results['end']
-  debug:
-    var: JOB_LISTS.results.item['end']
+- name: echo item.0
+  shell: "echo {{ item.0 }}"
+  with_subelements:
+    -  "{{ JOB_LISTS.results }}"
+    - stdout_lines
 
 # This expression would fail
 #- name: var_dump JOB_LIST.results / item

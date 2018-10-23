@@ -111,7 +111,7 @@
 #  with_dict: JOB_LISTS.results
 
 - name: echo JOB_LIST.results / item.item
-  shell: "echo {{ item.item }}"
+  shell: "echo {{ item.cmd }}"
   with_items:
     - "{{ JOB_LISTS.results }}"
 

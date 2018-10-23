@@ -73,9 +73,13 @@
     - "{{ jenkins_joblists }}"
     - lists
 
-- name: var_dump
+- name: var_dump JOB_LIST
   debug:
     var: JOB_LISTS
+
+- name: var_dump JOB_LIST.results
+  debug:
+    var: JOB_LISTS.results
 
 - name: var_dump item
   debug:

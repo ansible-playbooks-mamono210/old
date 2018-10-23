@@ -84,9 +84,9 @@
   debug:
     var: JOB_LISTS.results
 
-- name: var_dump JOB_LIST.results.item
+- name: var_dump JOB_LIST.results.stdout
   debug:
-    var: JOB_LISTS.results.item
+    var: JOB_LISTS.results.stdout
 
 - name: var_dump JOB_LIST.results.item.0
   debug:

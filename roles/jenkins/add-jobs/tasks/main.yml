@@ -101,6 +101,11 @@
   debug:
     var: JOB_LISTS.results.item['end']
 
+- name: var_dump JOB_LIST.results / item
+  debug:
+    var: item
+  with_items: JOB_LISTS.results
+
 - name: var_dump JOB_LIST.results / item.end
   debug:
     var: item.end

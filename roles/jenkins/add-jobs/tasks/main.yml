@@ -74,7 +74,7 @@
     - lists
 
 - name: echo
-  shell: "echo {{ JOB_LISTS.results | join(' ', attribute='end') }}"
+  command: "echo {{ JOB_LISTS.results | join(' ', attribute='end') }}"
 
 - name: var_dump JOB_LIST
   debug:

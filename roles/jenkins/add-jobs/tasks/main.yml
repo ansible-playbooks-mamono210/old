@@ -135,7 +135,7 @@
 
 - name: echo JOB_LIST.results / item.item.name
   shell: "echo {{ item.item.name }}"
-  with_items:
+  with_list:
     - "{{ JOB_LISTS.results }}"
 
 - name: echo JOB_LIST.results / item.end

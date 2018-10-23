@@ -110,6 +110,10 @@
 #    var: item
 #  with_dict: JOB_LISTS.results
 
+- name: echo JOB_LIST.results / item.item
+  shell: "echo {{ item.item }}"
+  with_items: JOB_LISTS.results
+
 - name: echo JOB_LIST.results / item.end
   shell: "echo {{ item.0.end }}"
   with_items: JOB_LISTS.results

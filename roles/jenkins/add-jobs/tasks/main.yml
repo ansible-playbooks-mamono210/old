@@ -87,11 +87,18 @@
 #    -  "{{ JOB_LISTS.results }}"
 #    - stdout_lines
 
-- name: echo item.0.stdout
-  shell: "echo {{ item.0.stdout }}"
+- name: echo item.0.stdout.item
+  shell: "echo {{ item.0.stdout.item }}"
   with_subelements:
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
+
+# This expression would fail
+#- name: echo item.0.stdout
+#  shell: "echo {{ item.0.stdout }}"
+#  with_subelements:
+#    -  "{{ JOB_LISTS.results }}"
+#    - stdout_lines
 
 # This expression would fail
 #- name: var_dump JOB_LIST.results / item

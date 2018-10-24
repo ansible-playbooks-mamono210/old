@@ -93,6 +93,12 @@
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
+- name: echo item.0.item.0.url
+  shell: "echo {{ item.0.item.0.url }}"
+  with_subelements:
+    -  "{{ JOB_LISTS.results }}"
+    - stdout_lines
+
 # This expression would fail
 #- name: command echo item.0.stdout.1.cmd
 #  command: "echo {{ item.0.stdout.1.cmd }}"

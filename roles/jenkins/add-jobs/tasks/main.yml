@@ -88,7 +88,7 @@
 #    - stdout_lines
 
 - name: echo item.0.stdout
-  shell: "echo {{ item.0.stdout }}"
+  command: "echo {{ item.0.stdout }}"
   with_subelements:
     -  "{{ JOB_LISTS.results | default([]) }}"
     - stdout_lines

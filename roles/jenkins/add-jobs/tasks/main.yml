@@ -87,11 +87,18 @@
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
-- name: command echo item.0.stdout.item.cmd
-  command: "echo {{ item.0.stdout.item.cmd }}"
+- name: command echo item.0.stdout.item
+  command: "echo {{ item.0.stdout.item }}"
   with_subelements:
     -  "{{ JOB_LISTS.results | default([]) }}"
     - stdout_lines
+
+# This expression would fail
+#- name: command echo item.0.stdout.item.cmd
+#  command: "echo {{ item.0.stdout.item.cmd }}"
+#  with_subelements:
+#    -  "{{ JOB_LISTS.results | default([]) }}"
+#    - stdout_lines
 
 # This expression would fail
 #- name: command echo item.0.stdout.cmd

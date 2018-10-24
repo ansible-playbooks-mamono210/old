@@ -87,23 +87,25 @@
     -  "{{ JOB_LISTS.results }}"
     - stdout_lines
 
-- name: command echo item.0.stdout
-  command: "echo {{ item.0.stdout }}"
+- name: command echo item.0.stdout.cmd
+  command: "echo {{ item.0.stdout.cmd }}"
   with_subelements:
     -  "{{ JOB_LISTS.results | default([]) }}"
     - stdout_lines
 
-- name: command echo item.0._ansible_parsed
-  command: "echo {{ item.0._ansible_parsed }}"
-  with_subelements:
-    -  "{{ JOB_LISTS.results | default([]) }}"
-    - stdout_lines
+## This expression would success
+#- name: command echo item.0._ansible_parsed
+#  command: "echo {{ item.0._ansible_parsed }}"
+#  with_subelements:
+#    -  "{{ JOB_LISTS.results | default([]) }}"
+#    - stdout_lines
 
-- name: command echo item.value._ansible_parsed
-  command: "echo {{ item.value._ansible_parsed }}"
-  with_subelements:
-    -  "{{ JOB_LISTS.results | default([]) }}"
-    - stdout_lines
+# This expression would fail
+#- name: command echo item.value._ansible_parsed
+#  command: "echo {{ item.value._ansible_parsed }}"
+#  with_subelements:
+#    -  "{{ JOB_LISTS.results | default([]) }}"
+#    - stdout_lines
 
 # This expression would fail
 #- name: command echo item.0.value._ansible_parsed

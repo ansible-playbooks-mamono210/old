@@ -99,11 +99,18 @@
     -  "{{ JOB_LISTS.results | default([]) }}"
     - stdout_lines
 
-- name: command echo item.0.value._ansible_parsed
-  command: "echo {{ item.0.value._ansible_parsed }}"
+- name: command echo item.value._ansible_parsed
+  command: "echo {{ item.value._ansible_parsed }}"
   with_subelements:
     -  "{{ JOB_LISTS.results | default([]) }}"
     - stdout_lines
+
+# This expression would fail
+#- name: command echo item.0.value._ansible_parsed
+#  command: "echo {{ item.0.value._ansible_parsed }}"
+#  with_subelements:
+#    -  "{{ JOB_LISTS.results | default([]) }}"
+#    - stdout_lines
 
 # This expression would fail
 #- name: echo item.0.stdout

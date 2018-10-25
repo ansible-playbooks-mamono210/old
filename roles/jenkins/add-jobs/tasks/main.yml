@@ -86,6 +86,11 @@
   with_items:
     - "{{ JOB_LISTS.results }}"
 
+- name: echo JOB_LIST.results / item.item.stdout_lines
+  shell: "echo {{ item.item.stdout_lines }}"
+  with_items:
+    - "{{ JOB_LISTS.results }}"
+
 - name: echo JOB_LIST.results.stdout_lines / item
   shell: "echo {{ item }}"
   with_items:

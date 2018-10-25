@@ -81,6 +81,14 @@
   debug:
     var: JOB_LISTS.results
 
+- name: command echo item.0._ansible_parsed >> ansible_parsed.txt
+  command: "echo {{ item.0._ansible_parsed }} >> ansible_parsed.txt"
+  args:
+    chdir: "{{ work_dir }}"
+  with_subelements:
+    -  "{{ JOB_LISTS.results | default([]) }}"
+    - stdout_lines
+
 - name: echo JOB_LIST.results / write tests to text.txtd
   shell: "echo '{{ item.0 }} {{ item.1 }} {{ item.1.stdout_lines }}' >> test.txt"
   args:

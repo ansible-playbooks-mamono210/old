@@ -81,6 +81,12 @@
   debug:
     var: JOB_LISTS.results
 
+- name: echo JOB_LIST.results / item.item.url
+  shell: "echo {{ results[i].url }}"
+  with_items:
+    - "{{ JOB_LISTS }}"
+
+
 - name: echo item.0
   shell: "echo {{ item.0 }}"
   with_subelements:

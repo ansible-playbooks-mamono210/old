@@ -82,7 +82,9 @@
     var: JOB_LISTS.results
 
 - name: echo JOB_LIST.results / item.cmd
-  shell: "echo {{ item.cmd }}"
+  shell: "touch {{ item.cmd }}"
+  args:
+    chdir: "{{ work_dir }}"
   with_items:
     - "{{ JOB_LISTS.results }}"
 

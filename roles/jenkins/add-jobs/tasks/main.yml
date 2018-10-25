@@ -82,7 +82,7 @@
     var: JOB_LISTS.results
 
 - name: echo JOB_LIST.results / item.item.url
-  shell: "echo {{ item.results[0].stdout }}"
+  shell: "echo {{ item.results[1].stdout }}"
   with_items:
     - "{{ JOB_LISTS }}"
 

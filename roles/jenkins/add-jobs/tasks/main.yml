@@ -36,13 +36,13 @@
 #  wait_for:
 #    timeout: 30
 #
-#- name: Jobリストの定義ファイルを取得する
-#  become: yes
-#  git:
-#    repo: '{{ joblist_definition_file_url }}'
-#    dest: "{{ work_dir }}/joblist"
-#    version: '{{ joblist_repo_version }}'
-#
+- name: Jobリストの定義ファイルを取得する
+  become: yes
+  git:
+    repo: '{{ joblist_definition_file_url }}'
+    dest: "{{ work_dir }}/joblist"
+    version: '{{ joblist_repo_version }}'
+
 - name: Jobリスト定義ファイルをAnsibleコントロールマシーンへ取得する
   fetch:
     src: "{{ work_dir }}/joblist/job-list.yaml"

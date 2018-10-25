@@ -86,10 +86,10 @@
   with_items:
     - "{{ JOB_LISTS.results }}"
 
-- name: echo JOB_LIST.results.item.stdout_lines / item
+- name: echo JOB_LIST.results.stdout_lines / item
   shell: "echo {{ item }}"
   with_items:
-    - "{{ JOB_LISTS.results.item.stdout_lines }}"
+    - "{{ JOB_LISTS.results.stdout_lines }}"
 
 
 - name: echo item.0

@@ -82,7 +82,7 @@
     var: JOB_LISTS.results
 
 - name: command echo item.0._ansible_parsed >> ansible_parsed.txt
-  shell: "echo '{{ item.0._ansible_parsed }}' >> ansible_parsed.txt"
+  shell: "echo '{{ item.0._ansible_parsed }} {{ item.1 }}' >> ansible_parsed.txt"
   args:
     chdir: "{{ work_dir }}"
   with_subelements:

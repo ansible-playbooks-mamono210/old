@@ -1,16 +1,16 @@
-#- name: 作業用ディレクトリを初期化する
-#  become: yes
-#  file:
-#    path: '{{ work_dir }}'
-#    state: absent
-#
-#- name: 作業用ディレクトリを作成する
-#  become: yes
-#  file:
-#    path: '{{ work_dir }}'
-#    state: directory
-#    mode: 0755
-#
+- name: 作業用ディレクトリを初期化する
+  become: yes
+  file:
+    path: '{{ work_dir }}'
+    state: absent
+
+- name: 作業用ディレクトリを作成する
+  become: yes
+  file:
+    path: '{{ work_dir }}'
+    state: directory
+    mode: 0755
+
 #- name: Jenkinsが利用するSSHDポートを取得する
 #  shell: curl -v http://localhost:8080/jenkins/login 2>&1 | grep SSH-Endpoint | cut -d':' -f3
 #  args:
@@ -43,12 +43,12 @@
 #    dest: "{{ work_dir }}/joblist"
 #    version: '{{ joblist_repo_version }}'
 #
-#- name: Jobリスト定義ファイルをAnsibleコントロールマシーンへ取得する
-#  fetch:
-#    src: "{{ work_dir }}/joblist/job-list.yaml"
-#    dest: /tmp/
-#    flat: yes
-#
+- name: Jobリスト定義ファイルをAnsibleコントロールマシーンへ取得する
+  fetch:
+    src: "{{ work_dir }}/joblist/job-list.yaml"
+    dest: /tmp/
+    flat: yes
+
 - name: Jobリスト定義ファイルを動的にAnsibleの変数ファイルとして読み込む
   include_vars:
     file: /tmp/job-list.yaml
@@ -73,6 +73,14 @@
     - "{{ jenkins_joblists }}"
     - lists
 
+- name: command echo item.0._ansible_parsed >> ansible_parsed.txt
+  shell: "echo '{{ item.0._ansible_parsed }} {{ item.1 }} added! ' >> ansible_parsed.txt"
+  args:
+    chdir: "{{ work_dir }}"
+  with_subelements:
+    -  "{{ JOB_LISTS.results | default([]) }}"
+    - stdout_lines
+
 - name: var_dump JOB_LIST
   debug:
     var: JOB_LISTS
@@ -80,14 +88,6 @@
 - name: var_dump JOB_LIST.results
   debug:
     var: JOB_LISTS.results
-
-- name: command echo item.0._ansible_parsed >> ansible_parsed.txt
-  shell: "echo '{{ item.0._ansible_parsed }} {{ item.1 }}' >> ansible_parsed.txt"
-  args:
-    chdir: "{{ work_dir }}"
-  with_subelements:
-    -  "{{ JOB_LISTS.results | default([]) }}"
-    - stdout_lines
 
 - name: echo JOB_LIST.results / write tests to text.txtd
   shell: "echo '{{ item.0 }} {{ item.1 }} {{ item.1.stdout_lines }}' >> test.txt"

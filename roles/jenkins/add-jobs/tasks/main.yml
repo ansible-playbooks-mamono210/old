@@ -82,14 +82,13 @@
     var: JOB_LISTS.results
 
 - name: echo JOB_LIST.results / write tests to text.txtd
-  shell: "echo {{ item }}"
+  shell: "echo {{ item.1 }} > test.txt"
   args:
     chdir: "{{ work_dir }}"
   with_subelements:
     - "{{ JOB_LISTS.results }}"
     - stdout_lines
 
-- name: echo JOB_LIST.stdout_lines / item.stdout_lines
 - name: echo JOB_LIST.results / item.cmd
   shell: "echo {{ item.stdout_lines }} > test.txt"
   args:

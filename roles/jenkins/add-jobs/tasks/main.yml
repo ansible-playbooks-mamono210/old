@@ -60,6 +60,16 @@
   debug:
     var: JOB_LISTS
 
+- name: Jobディレクトリを作成する
+  become: yes
+  file:
+    path: "{{ work_dir }}/{{ item.0._ansible_parsed }}/{{ item.1 }} | regex_replace('Jenkinsfile')"
+    state: derectory
+    recurse: yes
+  with_subelements:
+    -  "{{ JOB_LISTS.results | default([]) }}"
+    - stdout_lines
+
 - name: JenkinsへJobを登録する
   become: yes
   copy:

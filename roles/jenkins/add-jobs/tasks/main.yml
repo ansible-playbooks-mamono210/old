@@ -11,31 +11,6 @@
     state: directory
     mode: 0755
 
-#- name: Jenkinsが利用するSSHDポートを取得する
-#  shell: curl -v http://localhost:8080/jenkins/login 2>&1 | grep SSH-Endpoint | cut -d':' -f3
-#  args:
-#    warn: false
-#  register: JENKINS_SSHD_PORT
-#
-#- name: JenkinsへPluginをインストールする
-#  shell: "sudo -u {{ jenkins_admin_user }}
-#          ssh
-#          -o StrictHostKeyChecking=no
-#          -l {{ jenkins_admin_user }}
-#          -p {{ JENKINS_SSHD_PORT.stdout }}
-#          localhost
-#          install-plugin job-dsl"
-#
-#- name: Jenkinsを再起動する
-#  become: yes
-#  service:
-#    name: jenkins
-#    state: restarted
-#
-#- name: Jenkinsが起動するまで待機する
-#  wait_for:
-#    timeout: 30
-#
 - name: Jobリストの定義ファイルを取得する
   become: yes
   git:
@@ -85,3 +60,11 @@
   debug:
     var: JOB_LISTS
 
+- name: JenkinsへJobを登録する
+  become: yes
+  copy:
+    src: "{{ work_dir }}/{{ item.0.name }}/{{ item }}"
+    dest: "{{ jenkins_installed_dir }}/jobs/"
+  with_subelements:
+    -  "{{ JOB_LISTS.results | default([]) }}"
+    - stdout_lines

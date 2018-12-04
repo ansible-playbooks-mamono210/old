@@ -59,6 +59,11 @@
 #- name: var_dump JOB_LIST
 #  debug:
 #    var: JOB_LISTS
+- name: Jobディレクトリを削除する
+  become: yes
+  file:
+    path: "{{ jenkins_installed_dir }}/jobs"
+    state: absent
 
 - name: Jobディレクトリを作成する
   become: yes

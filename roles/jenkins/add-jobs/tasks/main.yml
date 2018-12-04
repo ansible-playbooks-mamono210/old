@@ -63,7 +63,7 @@
 - name: Jobディレクトリを作成する
   become: yes
   file:
-    path: "{{ work_dir }}/{{ item.0._ansible_parsed }}/{{ item.1 | regex_replace('Jenkinsfile') }}"
+    path: "{{ work_dir }}/{{ item.1 | regex_replace('Jenkinsfile') }}"
     state: directory
     recurse: yes
   with_subelements:

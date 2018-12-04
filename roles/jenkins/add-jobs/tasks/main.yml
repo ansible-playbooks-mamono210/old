@@ -63,8 +63,8 @@
 - name: JenkinsへJobを登録する
   become: yes
   copy:
-    src: "{{ work_dir }}/{{ item.0._ansible_item_label.name }}/{{ item.1 }}"
+    src: "{{ work_dir }}/{{ item.0._ansible_parsed }}/{{ item.1 }}"
     dest: "{{ jenkins_installed_dir }}/jobs/"
   with_subelements:
-    -  "{{ JOB_LISTS.results }}"
+    -  "{{ JOB_LISTS.results | default([]) }}"
     - stdout_lines

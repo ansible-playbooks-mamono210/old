@@ -48,22 +48,22 @@
     - "{{ jenkins_joblists }}"
     - lists
 
-- name: command echo item.0._ansible_parsed >> ansible_parsed.txt
-  shell: "echo '{{ item.0._ansible_parsed }} {{ item.1 }} added! ' >> ansible_parsed.txt"
-  args:
-    chdir: "{{ work_dir }}"
-  with_subelements:
-    -  "{{ JOB_LISTS.results | default([]) }}"
-    - stdout_lines
-
-- name: var_dump JOB_LIST
-  debug:
-    var: JOB_LISTS
+#- name: command echo item.0._ansible_parsed >> ansible_parsed.txt
+#  shell: "echo '{{ item.0._ansible_parsed }} {{ item.1 }} added! ' >> ansible_parsed.txt"
+#  args:
+#    chdir: "{{ work_dir }}"
+#  with_subelements:
+#    -  "{{ JOB_LISTS.results | default([]) }}"
+#    - stdout_lines
+#
+#- name: var_dump JOB_LIST
+#  debug:
+#    var: JOB_LISTS
 
 - name: Jobディレクトリを作成する
   become: yes
   file:
-    path: "{{ work_dir }}/{{ item.1 | regex_replace('Jenkinsfile') }}"
+    path: "{{ jenkins_installed_dir }}/jobs/{{ item.1 | regex_replace('Jenkinsfile') }}"
     state: directory
     recurse: yes
   with_subelements:

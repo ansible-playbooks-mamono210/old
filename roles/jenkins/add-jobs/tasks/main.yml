@@ -66,5 +66,5 @@
     src: "{{ work_dir }}/{{ item.0.name }}/{{ item }}"
     dest: "{{ jenkins_installed_dir }}/jobs/"
   with_subelements:
-    -  "{{ JOB_LISTS.results | default([]) }}"
+    -  "{{ JOB_LISTS }}"
     - stdout_lines

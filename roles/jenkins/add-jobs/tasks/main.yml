@@ -64,7 +64,7 @@
   become: yes
   file:
     path: "{{ work_dir }}/{{ item.0._ansible_parsed }}/{{ item.1 }} | regex_replace('Jenkinsfile')"
-    state: derectory
+    state: directory
     recurse: yes
   with_subelements:
     -  "{{ JOB_LISTS.results | default([]) }}"

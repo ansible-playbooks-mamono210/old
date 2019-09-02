@@ -1,4 +1,0 @@
-- hosts: all
- 
-  roles:
-    - system/ssh/reset-sshd-config-and-firewall

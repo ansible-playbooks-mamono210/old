@@ -1,9 +1,0 @@
-- name: PostgreSQLとヘッダファイルをインストールする
-  become: yes
-  yum:
-    name: '{{ item }}'
-    state: latest
-  with_items:
-    - postgresql-devel
-    - postgresql-server
-    - python-psycopg2

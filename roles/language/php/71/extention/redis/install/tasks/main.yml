@@ -1,7 +1,0 @@
-- name: php-pecl-redis をインストールする
-  become: yes
-  yum:
-    name: php-pecl-redis
-    enablerepo: remi-php71
-    state: present 
-
